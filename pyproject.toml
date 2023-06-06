@@ -1,3 +1,34 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["worldathletics"]
+
+[project]
+name = "worldathletics"
+version = "1.0.0"
+authors = [
+  { name="Kai Chang", email="kaijchang@gmail.com" },
+]
+description = "Python Wrapper for World Athletics' GraphQL API"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+  "pydantic",
+  "httpx",
+  "websockets"
+]
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+]
+keywords = ["worldathletics", "api-wrapper", "graphql"]
+
+[project.urls]
+"Homepage" = "https://github.com/kajchang/worldathletics"
+
 [tool.ariadne-codegen]
 queries_path = "graphql/queries.graphql"
 schema_path = "graphql/schema.graphql"
