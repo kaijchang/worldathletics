@@ -1,0 +1,5052 @@
+"""This directive allows results to be deferred during execution"""
+directive @defer on FIELD
+
+"""
+Tells the service this field/object has access authorized by an OIDC token.
+"""
+directive @aws_oidc on OBJECT | FIELD_DEFINITION
+
+"""Directs the schema to enforce authorization on a field"""
+directive @aws_auth(
+  """List of cognito user pool groups which have access on this field"""
+  cognito_groups: [String]
+) on FIELD_DEFINITION
+
+"""Tells the service which mutation triggers this subscription."""
+directive @aws_subscribe(
+  """
+  List of mutations which will trigger this subscription when they are called.
+  """
+  mutations: [String]
+) on FIELD_DEFINITION
+
+"""
+Tells the service this field/object has access authorized by an API key.
+"""
+directive @aws_api_key on OBJECT | FIELD_DEFINITION
+
+"""
+Tells the service this field/object has access authorized by a Cognito User Pools token.
+"""
+directive @aws_cognito_user_pools(
+  """List of cognito user pool groups which have access on this field"""
+  cognito_groups: [String]
+) on OBJECT | FIELD_DEFINITION
+
+"""
+Tells the service this field/object has access authorized by sigv4 signing.
+"""
+directive @aws_iam on OBJECT | FIELD_DEFINITION
+
+"""
+Tells the service this field/object has access authorized by a Lambda Authorizer.
+"""
+directive @aws_lambda on OBJECT | FIELD_DEFINITION
+
+"""
+Tells the service which subscriptions will be published to when this mutation is
+called. This directive is deprecated use @aws_susbscribe directive instead.
+"""
+directive @aws_publish(
+  """
+  List of subscriptions which will be published to when this mutation is called.
+  """
+  subscriptions: [String]
+) on FIELD_DEFINITION
+
+input AAapiQuery {
+  disciplineCode: String
+  gender: String
+  environment: String
+  ageCategory: String
+  windReading: String
+  categoryId: Int
+  competitionId: Int
+  eventGroup: String
+  bestResultsOnly: Boolean
+  region: String
+  regionType: String
+  limit: Int
+  season: Int
+  page: Int
+  maxYearAvailable: Int
+}
+
+type AACompetitor {
+  name: String
+  id: Int
+  urlSlug: String
+  countryUrlSlug: String
+  birthDate: AWSDateTime
+  teamMembers: [AARelayCompetitor]
+}
+
+type AAMetaData {
+  countryCodes: [MetaData]
+  disciplineCodes: [MetaData]
+}
+
+type AARelayCompetitor {
+  id: Int
+  name: String
+  iaafId: Int
+  urlSlug: String
+}
+
+type AirQualityDevice {
+  serial_number: String
+  tag: String
+  status: Int
+  last_connection_ts: AWSTimestamp
+  location: DeviceLocation
+}
+
+type AirQualityDeviceElementReads {
+  value: String
+  validation: String
+  reason: String
+  ts: AWSTimestamp
+}
+
+enum AirQualityDeviceFilter {
+  all
+  linked
+  unlinked
+}
+
+type allTimePersonalTop10Details {
+  discipline: String
+  date: String
+  competition: String
+  country: String
+  category: String
+  race: String
+  place: String
+  result: String
+  wind: String
+  drop: String
+  withWind: Boolean
+  withDrop: Boolean
+  score: Int
+  records: [String]
+  remark: String
+}
+
+type allTimePersonalTop10Disciplines {
+  id: Int
+  name: String
+}
+
+type allTimePersonalTop10ParamsType {
+  allTimePersonalTop10Discipline: Int
+}
+
+type allTimePersonalTop10Type {
+  parameters: allTimePersonalTop10ParamsType
+  disciplines: [allTimePersonalTop10Disciplines]
+  results: [allTimePersonalTop10Details]
+}
+
+type AlternativeEntryStandard {
+  entryStandard: String
+  event: String
+}
+
+type Appearance {
+  id: String
+  name: String
+  logoId: String
+  logo: NewMedia
+  logoEdited: String
+  featureImageId: String
+  featureImage: NewMedia
+  featureImageEdited: String
+  theme: String
+  defaultSponsorIds: [String]
+  defaultSponsors: [Sponsor]
+  sponsorIds: [String]
+  sponsors: [Sponsor]
+  eventId: Int
+  primaryColor: String
+  secondaryColor: String
+  tertiaryColor: String
+  additionalColours: [String]
+  languageCodes: [String]
+}
+
+type Article {
+  id: ID
+  title: String
+  location: ArticleLocation
+  body: String
+  standFirst: String
+  metaDescription: String
+  sEOTitle: String
+  urlSlug: String
+  plainTextBody: String
+  authorIds: [String]
+  competitorAuthorId: Int
+  articleType: Int
+  featured: Boolean
+  featuredOrder: Int
+  status: Int
+  liveFrom: AWSDateTime
+  createdOn: AWSDateTime
+  updatedOn: AWSDateTime
+  liveFromDay: Int
+  liveFromMonth: Int
+  liveFromYear: Int
+  relatedMedia: [Media]
+  relatedMediaIds: [String]
+  relatedArticles: [Article]
+  relatedArticleIds: [String]
+  relatedDiscipline: [DisciplineDetail]
+  relatedDisciplineCodes: [String]
+  relatedCompetitors: [Athlete]
+  relatedCompetitorIds: [Int]
+  relatedCompetitions: [Competition]
+  relatedCompetitionIds: [String]
+  relatedDisciplineTypeNameUrlsSlugs: [String]
+  relatedEventIds: [Int]
+  relatedLinks: [String]
+  relatedDocumentIds: [String]
+  relatedSpikesArticleIds: [String]
+  relatedMinisiteIds: [String]
+  tags: [String]
+  gatedContent: Boolean
+}
+
+type ArticleContentModules {
+  moduleType: String
+  title: String
+  backgroundColor: String
+  locations: [LocationItem]
+  layout: Int
+  videoIds: [String]
+  videoPlaylistId: String
+  relatedVideos: [VideoPublished]
+  videoId: String
+  relatedVideo: VideoPublished
+}
+
+type ArticleLocation {
+  name: String
+}
+
+type Asset {
+  id: String
+  slug: String
+  typeId: String
+  thumbnailFeatureImageId: String
+  thumbnailFeatureImageEdited: String
+  thumbnailFeatureImage: NewMedia
+  gatedContent: Boolean
+  downloadOnly: Boolean
+  tags: [String]
+  publishedByName: String
+  published: String
+  language: String
+  title: String
+  seoDescription: String
+  video: String
+  documentId: String
+  document: NewMedia
+  filters: [Filter]
+  campaignId: String
+  campaign: Campaign
+  date: AWSDateTime
+}
+
+type AssetsDates {
+  dates: [AWSDateTime]
+}
+
+type AssetsTotal {
+  total: String
+}
+
+type Athlete {
+  id: Int
+  mediaIds: [Int]
+  relatedMedia: [NewMedia]
+  updatedOn: AWSDateTime
+  hash: String
+  typeCode: String
+  firstName: String
+  lastName: String
+  sexCode: String
+  sexName: String
+  countryCode: String
+  countryName: String
+  birthDateStr: String
+  urlSlug: String
+  representativeId: Int
+  competitorId_WA: Int
+  name: String
+  countryUrlSlug: String
+  sexNameUrlSlug: String
+  friendlyName: String
+  friendlyNameLetter: String
+  friendlyNameFirst3Letter: String
+}
+
+type AthleteData {
+  birthDate: String
+  country: String
+  iaafId: Int
+  id: Int
+  name: String
+  urlSlug: String
+}
+
+type AthleteNewData {
+  id: Int
+  iaafId: Int
+  firstName: String
+  lastName: String
+  friendlyName: String
+  fullName: String
+  friendlyNameLetter: String
+  friendlyNameFirst3Letter: String
+  sexCode: String
+  sexName: String
+  countryCode: String
+  countryName: String
+  birthDate: String
+  birthPlace: String
+  birthPlaceCountryName: String
+  sexNameUrlSlug: String
+  countryUrlSlug: String
+  birthPlaceCountryUrlSlug: String
+  birthCountryCode: String
+  primaryMediaId: String
+  primaryMediaEdited: String
+  primaryMedia: [Media]
+  urlSlug: String
+  representativeId: Int
+  biography: String
+  twitterLink: String
+  instagramLink: String
+  facebookLink: String
+  transfersOfAllegiance: [String]
+  aaId: Int
+  countryFullName: String
+  familyName: String
+  givenName: String
+  birthDateStr: String
+  facebookUsername: String
+  twitterUsername: String
+  instagramUsername: String
+  mediaIds: [String]
+}
+
+type AthleteProfileAthleteRepresentative {
+  athleteRepresentativeId: Int
+  countryCode: String
+  telephone: [String]
+  firstName: String
+  website: [String]
+  lastName: String
+  mobile: [String]
+  country: String
+  email: [String]
+}
+
+type AthleteRepresentativeAthleteSearch {
+  countries: [AthleteSearchCountry]
+  athletes: [AthleteSearchGroup]
+}
+
+type AthleteRepresentativeProfile {
+  athleteRepresentativeId: Int
+  countryCode: String
+  instagram: [String]
+  telephone: [String]
+  facebook: [String]
+  twitter: [String]
+  website: [String]
+  youtube: [String]
+  firstName: String
+  mobile: [String]
+  lastName: String
+  toplist: Toplist
+  country: String
+  email: [String]
+}
+
+type AthleteResult {
+  athlete: AthleteData
+  competition: String
+  date: String
+  discipline: String
+  mark: String
+  matchType: String
+  place: String
+  race: String
+  team: String
+  venue: String
+}
+
+type AthleteSearch {
+  id: Int
+  iaafId: Int
+  firstName: String
+  lastName: String
+  friendlyName: String
+  fullName: String
+  friendlyNameLetter: String
+  friendlyNameFirst3Letter: String
+  sexCode: String
+  sexName: String
+  countryCode: String
+  countryName: String
+  birthDate: AWSDateTime
+  birthPlace: String
+  birthPlaceCountryName: String
+  sexNameUrlSlug: String
+  countryUrlSlug: String
+  birthPlaceCountryUrlSlug: String
+  birthCountryCode: String
+  primaryMediaId: String
+  primaryMedia: [Media]
+  urlSlug: String
+  representativeId: Int
+  biography: String
+  twitterLink: String
+  instagramLink: String
+  facebookLink: String
+  transfersOfAllegiance: [String]
+  aaId: Int
+  countryFullName: String
+  familyName: String
+  givenName: String
+  birthDateStr: String
+  facebookUsername: String
+  twitterUsername: String
+  instagramUsername: String
+  disciplines: [DisciplineDetail]
+  competitionEntries: [CompetitionEntries]
+}
+
+type AthleteSearchCountry {
+  country: String
+  countryCode: String
+}
+
+type AthleteSearchGroup {
+  group: String
+  children: [AthleteShortProfile]
+}
+
+type AthleteSearchResult {
+  aaAthleteId: ID
+  familyName: String
+  givenName: String
+  birthDate: String
+  disciplines: String
+  iaafId: Int
+  gender: String
+  country: String
+  urlSlug: String
+}
+
+type AthleteShortProfile {
+  athleteRepresentativeId: Int
+  countryCode: String
+  firstName: String
+  birthdate: String
+  athleteId: Int
+  lastName: String
+  country: String
+  gender: String
+}
+
+type AthletesRepresentativeTopList {
+  genders: [Gender]
+  events: [EventToplist]
+  toplist: TopList
+  eventTypes: [EventType]
+}
+
+type AthleteTopList {
+  rank: Int
+  result: String
+  country: String
+  lastName: String
+  athleteId: Int
+  birthdate: String
+  firstName: String
+  resultDate: String
+  athleteName: String
+  countryCode: String
+  resultVenue: String
+  representativeName: String
+  representativeTypeId: Int
+  representativeLastName: String
+  athleteRepresentativeId: Int
+  representativeFirstName: String
+}
+
+type AthleteType {
+  athleteId: Int
+  athlete: String
+  country: String
+  rank: Int
+  points: String
+  results: [ResultType]
+}
+
+"""
+The `AWSDate` scalar type provided by AWS AppSync, represents a valid
+***extended*** [ISO 8601
+Date](https://en.wikipedia.org/wiki/ISO_8601#Calendar_dates) string. In other
+words, this scalar type accepts date strings of the form `YYYY-MM-DD`.  The
+scalar can also accept "negative years" of the form `-YYYY` which correspond to
+years before `0000`. For example, "**-2017-05-01**" and "**-9999-01-01**" are
+both valid dates.  This scalar type can also accept an optional [time zone
+offset](https://en.wikipedia.org/wiki/ISO_8601#Time_zone_designators). For
+example, "**1970-01-01**", "**1970-01-01Z**", "**1970-01-01-07:00**" and
+"**1970-01-01+05:30**" are all valid dates. The time zone offset must either be
+`Z` (representing the UTC time zone) or be in the format `±hh:mm:ss`. The
+seconds field in the timezone offset will be considered valid even though it is
+not part of the ISO 8601 standard.
+"""
+scalar AWSDate
+
+"""
+The `AWSDateTime` scalar type provided by AWS AppSync, represents a valid
+***extended*** [ISO 8601 DateTime](https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations)
+string. In other words, this scalar type accepts datetime strings of the form
+`YYYY-MM-DDThh:mm:ss.SSSZ`.  The scalar can also accept "negative years" of the
+form `-YYYY` which correspond to years before `0000`. For example,
+"**-2017-01-01T00:00Z**" and "**-9999-01-01T00:00Z**" are both valid datetime
+strings.  The field after the two digit seconds field is a nanoseconds field. It
+can accept between 1 and 9 digits. So, for example,
+"**1970-01-01T12:00:00.2Z**", "**1970-01-01T12:00:00.277Z**" and
+"**1970-01-01T12:00:00.123456789Z**" are all valid datetime strings.  The
+seconds and nanoseconds fields are optional (the seconds field must be specified
+if the nanoseconds field is to be used).  The [time zone
+offset](https://en.wikipedia.org/wiki/ISO_8601#Time_zone_designators) is
+compulsory for this scalar. The time zone offset must either be `Z`
+(representing the UTC time zone) or be in the format `±hh:mm:ss`. The seconds
+field in the timezone offset will be considered valid even though it is not part
+of the ISO 8601 standard.
+"""
+scalar AWSDateTime
+
+"""
+The `AWSJSON` scalar type provided by AWS AppSync, represents a JSON string that
+complies with [RFC 8259](https://tools.ietf.org/html/rfc8259).  Maps like
+"**{\\"upvotes\\": 10}**", lists like "**[1,2,3]**", and scalar values like
+"**\\"AWSJSON example string\\"**", "**1**", and "**true**" are accepted as
+valid JSON and will automatically be parsed and loaded in the resolver mapping
+templates as Maps, Lists, or Scalar values rather than as the literal input
+strings.  Invalid JSON strings like "**{a: 1}**", "**{'a': 1}**" and "**Unquoted
+string**" will throw GraphQL validation errors.
+"""
+scalar AWSJSON
+
+"""
+The `AWSTimestamp` scalar type provided by AWS AppSync, represents the number of
+seconds that have elapsed since `1970-01-01T00:00Z`. Negative values are also
+accepted and these represent the number of seconds till `1970-01-01T00:00Z`. 
+Timestamps are serialized and deserialized as integers. The minimum supported
+timestamp value is **`-31557014167219200`** which corresponds to
+`-1000000000-01-01T00:00Z`. The maximum supported timestamp value is
+**`31556889864403199`** which corresponds to
+`1000000000-12-31T23:59:59.999999999Z`.
+"""
+scalar AWSTimestamp
+
+type Banner {
+  id: ID
+  title: String
+  bannerItems: [BannerMediaItem]
+}
+
+type BannerMediaItem {
+  id: ID
+  url: String
+  primaryMediaId: [String]
+  primaryMedia: [Media]
+  order: Int
+}
+
+type BannerObj {
+  imageId: String
+  url: String
+  imageEdited: String
+  pageId: String
+  page: Page
+}
+
+type byLimitResults {
+  result: String
+  count: Int
+  totalCount: Int
+}
+
+type CalendarAreaOption {
+  id: Int
+  name: String
+  count: Int
+}
+
+type CalendarCompetitionResults {
+  competition: CalendarResultsCompetition
+  eventTitles: [CalendarResultsEventTitle]
+  options: CalendarResultsOptions
+  parameters: CalendarResultsParameters
+}
+
+type CalendarCountryOption {
+  id: Int
+  name: String
+  count: Int
+}
+
+type CalendarDisciplineOption {
+  id: Int
+  name: String
+  count: Int
+}
+
+type CalendarEvent {
+  id: Int
+  iaafId: Int
+  hasResults: Boolean
+  hasApiResults: Boolean
+  hasStartlist: Boolean
+  name: String
+  venue: String
+  area: String
+  country: String
+  rankingCategory: String
+  disciplines: String
+  competitionGroup: String
+  competitionSubgroup: String
+  startDate: String
+  endDate: String
+  dateRange: String
+  season: String
+  wasUrl: String
+  hasCompetitionInformation: Boolean
+  undeterminedCompetitionPeriod: UndeterminedCompetitionPeriod
+}
+
+type CalendarEvents {
+  hits: Int
+  defaultOffset: Int
+  paginationPage: Int
+  parameters: CalendarParams
+  results: [CalendarEvent]
+  options: CalendarOptions
+}
+
+type CalendarGroupOption {
+  id: Int
+  name: String
+  count: Int
+}
+
+type CalendarOption {
+  id: Int
+  name: String
+  count: Int
+}
+
+type CalendarOptions {
+  regions: CalendarRegions
+  seasons: [SeasonsCalendarOption]
+  disciplines: [CalendarDisciplineOption]
+  rankingCategories: [CalendarRankingOption]
+  permitLevels: [CalendarPermitOption]
+  competitionGroups: [CalendarGroupOption]
+  competitionSubgroups: [CalendarSubgroupOption]
+}
+
+type CalendarParams {
+  startDate: String
+  endDate: String
+  query: String
+  regionType: String
+  regionId: Int
+  disciplineId: Int
+  rankingCategoryId: Int
+  permitLevelId: Int
+  competitionGroupId: Int
+  competitionSubgroupId: Int
+  limit: Int
+  offset: Int
+  showOptionsWithNoHits: Boolean
+  hideCompetitionsWithNoResults: Boolean
+  season: String
+}
+
+type CalendarPermitOption {
+  id: Int
+  name: String
+  count: Int
+}
+
+type CalendarRankingOption {
+  id: Int
+  name: String
+  count: Int
+}
+
+type CalendarRegions {
+  world: [CalendarOption]
+  area: [CalendarAreaOption]
+  country: [CalendarCountryOption]
+}
+
+type CalendarResultsCompetition {
+  dateRange: String
+  endDate: String
+  name: String
+  rankingCategory: String
+  startDate: String
+  venue: String
+}
+
+type CalendarResultsCompetitor {
+  name: String
+  urlSlug: String
+  id: String
+  iaafId: Int
+  birthDate: String
+  hasProfile: Boolean
+  teamMembers: [TeamMembersResult]
+}
+
+type CalendarResultsEvent {
+  event: String
+  eventId: Int
+  gender: String
+  isRelay: Boolean
+  perResultWind: Boolean
+  races: [CalendarResultsRace]
+  summary: [CalendarResultsSummary]
+  withWind: Boolean
+}
+
+type CalendarResultsEventTitle {
+  eventTitle: String
+  events: [CalendarResultsEvent]
+  rankingCategory: String
+}
+
+type CalendarResultsOptionEvent {
+  gender: String
+  id: Int
+  name: String
+  combined: Boolean
+}
+
+type CalendarResultsOptions {
+  days: [CalendarResultsOptionsDay]
+  events: [CalendarResultsOptionEvent]
+}
+
+type CalendarResultsOptionsDay {
+  date: String
+  day: Int
+}
+
+type CalendarResultsParameters {
+  competitionId: Int
+  day: Int
+  eventId: Int
+}
+
+type CalendarResultsRace {
+  date: String
+  day: Int
+  race: String
+  raceId: Int
+  raceNumber: Int
+  wind: String
+  results: [CalendarResultsRaceResult]
+  startList: [CalendarStartListRaceResult]
+}
+
+type CalendarResultsRaceResult {
+  competitor: CalendarResultsCompetitor
+  mark: String
+  nationality: String
+  place: String
+  points: Int
+  qualified: Boolean
+  records: String
+  wind: String
+  remark: String
+  details: [CalendarResultsRaceResultDetails]
+}
+
+type CalendarResultsRaceResultDetails {
+  event: String
+  eventId: Int
+  raceNumber: Int
+  mark: String
+  wind: String
+  placeInRound: Int
+  placeInRace: Int
+  points: Int
+  overallPoints: Int
+  placeInRoundByPoints: Int
+  overallPlaceByPoints: Int
+}
+
+type CalendarResultsSummary {
+  competitor: CalendarResultsCompetitor
+  mark: String
+  nationality: String
+  placeInRace: String
+  placeInRound: String
+  points: Int
+  raceNumber: Int
+  records: String
+  wind: String
+}
+
+type CalendarStartListCompetitor {
+  birthDate: String
+  country: String
+  id: String
+  name: String
+  urlSlug: String
+}
+
+type CalendarStartListRaceResult {
+  competitor: CalendarStartListCompetitor
+  order: String
+  pb: String
+  sb: String
+  bib: String
+}
+
+type CalendarSubgroupOption {
+  id: Int
+  name: String
+  count: Int
+}
+
+type Campaign {
+  id: String
+  name: String
+  tag: String
+  type: String
+  description: String
+  thankYouMessage: String
+  alreadySignedMessage: String
+  closeDate: AWSDateTime
+  redirectUrl: String
+  tagUserFriendlyName: String
+  backgroundImageEdited: String
+  headerImageEdited: String
+  visibleOnPreferenceCenter: Boolean
+  shortForm: Boolean
+  topLevelBucketId: String
+}
+
+type CampaignToRemove {
+  id: String
+  value: String
+  key: String
+  type: String
+  description: String
+  thankYouMessage: String
+  alreadySignedMessage: String
+  closeDate: AWSDateTime
+  redirectUrl: String
+  tagUserFriendlyName: String
+  deleted: Boolean
+  visibleOnPreferenceCenter: Boolean
+  shortForm: Boolean
+  topLevelBucketId: String
+}
+
+type CaptchaResponse {
+  isSuccess: Boolean
+  errorCodes: [String]
+  hostname: String
+}
+
+type Carousel {
+  id: ID
+  title: String
+  carouselItems: [CarouselMediaItem]
+  media: [Media]
+  primaryMediaIds: [String]
+}
+
+type CarouselMediaItem {
+  id: ID
+  title: String
+  description: String
+  descriptionSecond: String
+  descriptionThird: String
+  titleSecond: String
+  titleThird: String
+  titleFourth: String
+  titleFifth: String
+  titleDirection: Int
+  homeCarouselId: String
+  url: String
+  urlSecond: String
+  urlThird: String
+  urlFourth: String
+  urlFifth: String
+  primaryMediaId: [String]
+  primaryMedia: [Media]
+  order: Int
+}
+
+enum CarouselTypeEnum {
+  Home
+  News
+  SingleNews
+  SingleFeature
+  AthleteHero
+  BeActiveHero
+  PersonalBest
+  Video
+  UpcomingEvent
+  EventReport
+}
+
+type ChampionshipCompetitor {
+  birthDate: String
+  country: String
+  iaafId: Int
+  id: Int
+  name: String
+  urlSlug: String
+  teamMembers: [ChampionshipCompetitor]
+  countryUrlSlug: String
+}
+
+type ChampionshipCompetitorMedia {
+  birthDate: String
+  country: String
+  iaafId: Int
+  id: Int
+  name: String
+  urlSlug: String
+  primaryMediaId: [String]
+  primaryMedia: [Media]
+}
+
+type ChampionshipDay {
+  date: String
+  day: Int
+}
+
+type ChampionshipHighlights {
+  days: [ChampionshipDay]
+  rounds: [ChampionshipRound]
+}
+
+type ChampionshipQualificationCompetitorQualification {
+  qualifiedBy: String
+  qualified: Boolean
+  qualificationPosition: Int
+  countryPosition: Int
+  name: String
+  urlSlug: String
+  iaafId: Int
+  birthDate: String
+  competitorIaafId: Int
+  result: String
+  wind: String
+  venue: String
+  date: String
+  countryCode: String
+  place: Int
+  score: Int
+  calculationId: Int
+  label: String
+}
+
+type ChampionshipQualificationCompetitors {
+  eventId: Int
+  groupByCountry: Boolean
+  entryNumber: Int
+  entryStandard: String
+  alternativeEntryStandards: [AlternativeEntryStandard]
+  maxCompetitorsByCoutnry: Int
+  firstQualificationDay: String
+  lastQualificationDay: String
+  rankDate: String
+  firstRankingDay: String
+  lastRankingDay: String
+  numberOfCompetitorsQualifiedByEntryStandard: Int
+  numberOfCompetitorsQualifiedByDesignatedCompetition: Int
+  numberOfCompetitorsFilledUpByWorldRankings: Int
+  numberOfCompetitorsQualifiedByTopList: Int
+  numberOfCompetitorsQualifiedByUniversalityPlaces: Int
+  qualifications: [ChampionshipQualificationCompetitorQualification]
+  events: [ChampionshipQualificationQualifiedEvent]
+  countries: [ChampionshipQualificationQualifiedCountry]
+  qualificationTypes: [ChampionshipQualificationQualifiedQualificationType]
+  disciplineName: String
+}
+
+type ChampionshipQualificationQualifiedCountry {
+  shortname: String
+  name: String
+}
+
+type ChampionshipQualificationQualifiedEvent {
+  genderCode: String
+  eventId: String
+  disciplineName: String
+}
+
+type ChampionshipQualificationQualifiedQualificationType {
+  id: String
+  name: String
+}
+
+type ChampionshipRecord {
+  defendingChampion: Boolean
+  equal: Boolean
+  mark: String
+  pending: Boolean
+  competitor: ChampionshipCompetitor
+  year: String
+}
+
+type ChampionshipRound {
+  championshipRecords: [ChampionshipRecord]
+  environment: String
+  event: String
+  eventType: String
+  disciplineCode: String
+  headToHead: [HeadToHead]
+  highlights: Highlights
+  pastMedalists: [PastMedalist]
+  round: String
+  sex: String
+  time: String
+  title: String
+  worldRecords: [WorldRecord]
+}
+
+input ChunkType {
+  size: Int
+  chunkOrder: Int
+  chunkId: String
+}
+
+type Circuit {
+  UpdatedOn: AWSDateTime
+  hash: String
+  circuitCode: String
+  circuitTypeCode: String
+  circuitName: String
+  season: Int
+  circuitOrder: Int
+  circuitTypeName: String
+}
+
+type CircuitStandingsParamsType {
+  gender: String
+  season: String
+}
+
+type CISbasicDataType {
+  firstName: String
+  lastName: String
+  sexName: String
+  countryName: String
+  countryCode: String
+  countryUrlSlug: String
+  birthDate: String
+  birthDateStr: String
+  butlersBio: String
+  urlSlug: String
+  representativeId: Int
+  biography: String
+  twitterLink: String
+  instagramLink: String
+  facebookLink: String
+  iaafId: Int
+  aaId: Int
+}
+
+type CIShonour {
+  categoryName: String
+  withWind: Boolean
+  withDrop: Boolean
+  results: [CIShonourResult]
+}
+
+type CIShonourResult {
+  place: String
+  indoor: Boolean
+  disciplineCode: String
+  disciplineNameUrlSlug: String
+  typeNameUrlSlug: String
+  discipline: String
+  competition: String
+  venue: String
+  mark: String
+  wind: String
+  date: String
+}
+
+type CISpersonalBestsType {
+  withWind: Boolean
+  withRecords: Boolean
+  results: [CISsingleCompetitorResult]
+}
+
+type CISraceStatus {
+  year: String
+  labelStatus: String
+}
+
+type CISrepresentativeType {
+  name: String
+  countryCode: String
+  countryName: String
+  email: String
+  telephone: String
+  mobile: String
+  repEmail: String
+  website: String
+}
+
+type CISresultByYearParamsType {
+  resultsByYear: Int
+  resultsByYearOrderBy: String
+}
+
+type CISresultsByDateResults {
+  date: String
+  competition: String
+  venue: String
+  indoor: Boolean
+  disciplineCode: String
+  disciplineNameUrlSlug: String
+  typeNameUrlSlug: String
+  discipline: String
+  country: String
+  category: String
+  race: String
+  place: String
+  mark: String
+  wind: String
+  notLegal: Boolean
+  resultScore: Int
+  remark: String
+}
+
+type CISresultsByDateType {
+  parameters: CISresultByYearParamsType
+  activeYears: [String]
+  withRemark: Boolean
+  resultsByDate: [CISresultsByDateResults]
+}
+
+type CISresultsByEvent {
+  indoor: Boolean
+  disciplineCode: String
+  disciplineNameUrlSlug: String
+  typeNameUrlSlug: String
+  discipline: String
+  withWind: Boolean
+  withRemark: Boolean
+  results: [CISresultsByEventResult]
+}
+
+type CISresultsByEventResult {
+  date: String
+  competition: String
+  venue: String
+  country: String
+  category: String
+  race: String
+  place: String
+  mark: String
+  wind: String
+  notLegal: Boolean
+  resultScore: Int
+  remark: String
+}
+
+type CISresultsByEventType {
+  parameters: CISresultByYearParamsType
+  activeYears: [String]
+  resultsByEvent: [CISsingleCompetitorResult]
+}
+
+type CISresultsByYearType {
+  parameters: CISresultByYearParamsType
+  activeYears: [String]
+  resultsByEvent: [CISresultsByEvent]
+}
+
+type CISseasonsBestsParamsType {
+  seasonsBestsSeason: Int
+}
+
+type CISseasonsBestsType {
+  parameters: CISseasonsBestsParamsType
+  activeSeasons: [String]
+  withWind: Boolean
+  withRecords: Boolean
+  results: [CISsingleCompetitorResult]
+}
+
+type CISsingleCompetitor {
+  basicData: CISbasicDataType
+  personalBests: CISpersonalBestsType
+  seasonsBests: CISseasonsBestsType
+  progressionOfSeasonsBests: [CISsingleCompetitorProgression]
+  worldRankings: CISworldRankingsType
+  honours: [CIShonour]
+  resultsByYear: CISresultsByYearType
+  resultsByDate: CISresultsByDateType
+  primaryMediaId: String
+  athleteRepresentative: CISrepresentativeType
+  roadRaceLabelStatus: [CISraceStatus]
+}
+
+type CISsingleCompetitorEventResultOnly {
+  indoor: Boolean
+  disciplineCode: String
+  disciplineNameUrlSlug: String
+  typeNameUrlSlug: String
+  discipline: String
+  withWind: Boolean
+  withRemark: Boolean
+  results: [CISsingleCompetitorResultOnly]
+}
+
+type CISsingleCompetitorProgression {
+  indoor: Boolean
+  disciplineCode: String
+  disciplineNameUrlSlug: String
+  typeNameUrlSlug: String
+  discipline: String
+  withWind: Boolean
+  mainEvent: Boolean
+  results: [CISsingleCompetitorProgressionResult]
+}
+
+type CISsingleCompetitorProgressionResult {
+  season: String
+  numericResult: Float
+  mark: String
+  wind: String
+  venue: String
+  date: String
+  listPosition: Int
+  resultScore: Int
+}
+
+type CISsingleCompetitorResult {
+  indoor: Boolean
+  disciplineCode: String
+  disciplineNameUrlSlug: String
+  typeNameUrlSlug: String
+  discipline: String
+  linkToList: Boolean
+  mark: String
+  combinedPerformances: String
+  wind: String
+  notLegal: Boolean
+  venue: String
+  date: String
+  listPosition: String
+  resultScore: Int
+}
+
+type CISsingleCompetitorResultOnly {
+  date: String
+  competition: String
+  venue: String
+  indoor: Boolean
+  country: String
+  category: String
+  race: String
+  place: String
+  mark: String
+  wind: String
+  notLegal: Boolean
+  resultScore: Int
+  remark: String
+}
+
+type CISsingleCompetitorResults {
+  parameters: CISresultByYearParamsType
+  activeYears: [String]
+  resultsByEvent: [CISsingleCompetitorEventResultOnly]
+  resultsByDate: [CISsingleCompetitorResultOnly]
+}
+
+type CISworldRankingBest {
+  eventGroup: String
+  eventGroupId: Int
+  urlSlug: String
+  place: String
+  weeks: Int
+}
+
+type CISworldRankingCurrent {
+  rankingCalculationId: String
+  eventGroup: String
+  male: Boolean
+  urlSlug: String
+  place: Int
+  rankingScore: Int
+}
+
+type CISworldRankingsParamsType {
+  worldRankingsProgressionYear: Int
+}
+
+type CISworldRankingsType {
+  parameters: CISworldRankingsParamsType
+  current: [CISworldRankingCurrent]
+  best: [CISworldRankingBest]
+}
+
+input ClientMetadataInput {
+  key: String
+  value: String
+}
+
+type combinedDiscipline {
+  disciplineOrder: Int
+  disciplineId: String
+  disciplineName: String
+}
+
+type combinedPoints {
+  competitorName: String
+  competitorFirstName: String
+  competitorLastName: String
+  competitorId_WA: Int
+  competitorCountryCode: String
+  competitorCountryName: String
+  resultCountryName: String
+  resultCountryCode: String
+  totalResultMark: String
+  disciplines: [combinedPointsDiscipline]
+}
+
+type combinedPointsDiscipline {
+  resultMark: String
+  resultRank: Int
+  resultOrder: Int
+  resultWind: String
+  summaryRank: Int
+  summaryPoints: Int
+  overallRank: Int
+  record: String
+  disciplineOrder: Int
+  disciplineId: String
+  disciplineName: String
+  combinedPoints: String
+  pointsTally: String
+}
+
+type combinedPointsResponse {
+  allDisciplines: [combinedDiscipline]
+  competitors: [combinedPoints]
+}
+
+type Competition {
+  id: ID
+  name: String
+  circuitTypeCode: String
+  eventSubCategoryCode: String
+  description: String
+  circuitCode: String
+  urlSlug: String
+  order: Int
+  category: Int
+  about: String
+  primaryMediaId: String
+  relatedMediaIds: [String]
+  logoLightId: String
+  logoDarkId: String
+  styleOverrides: String
+  relatedInfo: [String]
+  nextEvent: WAWEvent
+  lastEvent: WAWEvent
+  nextEventStartDate: AWSDateTime
+  pageId: String
+  page: Page
+}
+
+type CompetitionByCountry {
+  area: String
+  competitionGroup: String
+  dateRange: String
+  disciplines: String
+  endDate: String
+  hasResults: Boolean
+  hasStartlist: Boolean
+  id: Int
+  matchType: String
+  name: String
+  rankingCategory: String
+  startDate: String
+  undeterminedCompetitionPeriod: String
+  venue: String
+}
+
+type CompetitionByCountryResult {
+  results: [CompetitionByCountry]
+  parameters: ParametersCompetitionByCountry
+}
+
+type CompetitionDocument {
+  eventId: Int
+  eventId_WA: Int
+  fileName: String
+  filePath: String
+  hash: String
+  id: Int
+  phaseId: Int
+  typeId: Int
+  typeName: String
+  typeOrder: Int
+  unitId: Int
+  updatedOn: AWSDateTime
+}
+
+type CompetitionEntries {
+  id: Int
+  eventId: Int
+  eventId_WA: Int
+  updatedOn: AWSDateTime
+  hash: String
+  sexCode: String
+  countryCode: String
+  countryName: String
+  competitorId: Int
+  discipline: DisciplineDetail
+}
+
+type competitionInformation {
+  units: [compInformationUnits]
+  websiteUrl: String
+  resultsPageUrl: String
+  liveStreamingUrl: String
+  contactPersonsGeneralMatters: [compInformationContacts]
+  contactPersonsGeneralResults: [compInformationContacts]
+}
+
+type CompetitionSuccess {
+  status: Int
+}
+
+type CompetitonResponse {
+  pageNextEvent: Competition
+  allEvents: [Competition]
+}
+
+type Competitor {
+  competitorId: Int
+  oldCompetitorId: Int
+  firstName: String
+  lastName: String
+  birthDate: String
+  birthPlace: String
+  birthCountryCode: String
+  birthPlaceCountryName: String
+  teamName: String
+  countryName: String
+  countryCode: String
+  sexCode: String
+  sexName: String
+  fullBio: String
+  butlersBio: String
+  eventStoreId: String
+}
+
+type CompetitorBest {
+  id: Int
+  competitorId: Int
+  updatedOn: AWSDateTime
+  resultDate: AWSDateTime
+  hash: String
+  bestTypeCode: String
+  bestTypeName: String
+  season: Int
+  bestOrder: Int
+  bestTypeOrder: String
+  bestSubTypeOrder: Int
+  indoorOutdoor: String
+  resultId: Int
+  resultWind: String
+  resultVenue: String
+  resultMark: String
+  discipline: CompetitorDiscipline
+}
+
+type competitorCombinedPoints {
+  competitorName: String
+  competitorId_WA: Int
+}
+
+type CompetitorDiscipline {
+  _id: String
+  updatedOn: AWSDateTime
+  hash: String
+  name: String
+  typeCode: String
+  typeName: String
+  typeOrder: Int
+  order: Int
+  isTrack: Boolean
+  isField: Boolean
+  isRoad: Boolean
+  isCombined: Boolean
+  isWalk: Boolean
+  isIndoor: Boolean
+  isReaction: Boolean
+  isOutdoor: Boolean
+  isWind: Boolean
+  isRelay: Boolean
+  isValidIAAF: Boolean
+  nameUrlSlug: String
+  typeNameUrlSlug: String
+}
+
+type CompetitorHonour {
+  id: Int
+  competitorId: Int
+  resultId: Int
+  eventId: Int
+  hash: String
+  eventName: String
+  eventCategoryName: String
+  eventSubCategoryName: String
+  updatedOn: AWSDateTime
+  eventStartDate: AWSDateTime
+  eventEndDate: AWSDateTime
+  resultDate: AWSDateTime
+  resultMark: String
+  resultVenue: String
+  resultRankDetail: String
+  eventCategoryNameUrlSlug: String
+  eventSubCategoryNameUrlSlug: String
+  eventNameUrlSlug: String
+  honourOrder: Int
+  honourTypeOrder: Int
+  discipline: CompetitorDiscipline
+}
+
+input CompetitorInput {
+  competitorId: Int
+  oldCompetitorId: Int
+  firstName: String
+  lastName: String
+  birthDate: String
+  birthPlace: String
+  birthCountryCode: String
+  birthPlaceCountryName: String
+  teamName: String
+  countryName: String
+  countryCode: String
+  sexCode: String
+  sexName: String
+  fullBio: String
+  butlersBio: String
+}
+
+type CompetitorObj {
+  _id: Int
+  updatedOn: AWSDateTime
+  hash: String
+  typeCode: String
+  firstName: String
+  lastName: String
+  information: String
+  sexCode: String
+  sexName: String
+  countryCode: String
+  countryName: String
+  birthDate: AWSDateTime
+  birthDateStr: String
+  urlSlug: String
+  representativeTypeCode: String
+  representativeId: Int
+  competitorId_WA: Int
+  name: String
+  countryUrlSlug: String
+  sexNameUrlSlug: String
+  friendlyName: String
+  friendlyNameLetter: String
+  friendlyNameFirst3Letter: String
+}
+
+type CompetitorPrimaryMedia {
+  id: String
+  competitorId: Int
+  fileName: String
+}
+
+input CompetitorQueryInput {
+  competitorId: Int!
+}
+
+type compInformationContacts {
+  name: String
+  email: String
+  phoneNumber: String
+}
+
+type compInformationUnits {
+  events: [String]
+  gender: String
+}
+
+type Content {
+  content: String
+}
+
+type Country {
+  updatedOn: AWSDateTime
+  hash: String
+  id: ID
+  countryName: String
+  countryOrder: Int
+  areaCode: String
+  areaName: String
+  areaOrder: Int
+  isValid: Boolean
+  areaNameUrlSlug: String
+  countryNameUrlSlug: String
+}
+
+type CountryObj {
+  updatedOn: AWSDateTime
+  hash: String
+  _id: String
+  countryName: String
+  countryOrder: Int
+  areaCode: String
+  areaName: String
+  areaOrder: Int
+  isValid: Boolean
+  areaNameUrlSlug: String
+  countryNameUrlSlug: String
+}
+
+type DeviceLocation {
+  latitude: String
+  longitude: String
+}
+
+type Discipline {
+  disciplineName: String
+  disciplineCode: String
+  typeName: String
+  men: Boolean
+  women: Boolean
+  isRoad: Boolean
+  isWalk: Boolean
+  isWind: Boolean
+  isRelay: Boolean
+  isTrack: Boolean
+  isField: Boolean
+  isIndoor: Boolean
+  isOutdoor: Boolean
+  isCombined: Boolean
+  isReaction: Boolean
+  isValidIAAF: Boolean
+  order: Int
+  typeOrder: Int
+  id: String
+  name: String
+  hash: String
+  typeCode: String
+  nameUrlSlug: String
+  typeNameUrlSlug: String
+  updatedOn: AWSDateTime
+}
+
+type DisciplineDetail {
+  id: ID
+  updatedOn: AWSDateTime
+  hash: String
+  name: String
+  typeCode: String
+  typeName: String
+  typeOrder: Int
+  order: Int
+  isTrack: Boolean
+  isField: Boolean
+  isRoad: Boolean
+  isCombined: Boolean
+  isWalk: Boolean
+  isIndoor: Boolean
+  isReaction: Boolean
+  isOutdoor: Boolean
+  isWind: Boolean
+  isRelay: Boolean
+  isValidIAAF: Boolean
+  nameUrlSlug: String
+  typeNameUrlSlug: String
+}
+
+type DisciplineObj {
+  _id: String
+  updatedOn: AWSDateTime
+  hash: String
+  name: String
+  typeCode: String
+  typeName: String
+  typeOrder: Int
+  order: Int
+  isTrack: Boolean
+  isField: Boolean
+  isRoad: Boolean
+  isCombined: Boolean
+  isWalk: Boolean
+  isIndoor: Boolean
+  isReaction: Boolean
+  isOutdoor: Boolean
+  isWind: Boolean
+  isRelay: Boolean
+  isValidIAAF: Boolean
+  nameUrlSlug: String
+  typeNameUrlSlug: String
+}
+
+type disciplineObject {
+  updatedOn: AWSDateTime
+  hash: String
+  _id: String
+  name: String
+  typeCode: String
+  typeName: String
+  typeOrder: Int
+  order: Int
+  isTrack: Boolean
+  isField: Boolean
+  isRoad: Boolean
+  isCombined: Boolean
+  isWalk: Boolean
+  isIndoor: Boolean
+  isReaction: Boolean
+  isOutdoor: Boolean
+  isWind: Boolean
+  isRelay: Boolean
+  isValidIAAF: Boolean
+  nameUrlSlug: String
+  typeNameUrlSlug: String
+}
+
+type DisciplineType {
+  name: String
+}
+
+type DraftedArticle {
+  id: String
+  slug: String
+  tags: [String]
+  columns: Int
+  eventId: Int
+  campaignId: String
+  articleType: Int
+  gatedContent: Boolean
+  relatedLinks: [RelatedLinksObj]
+  featureImageId: String
+  backgroundColour: String
+
+  """  languageVersions: [LanguageVersion]"""
+  hideOnTheMainSite: Boolean
+  featureImageEdited: String
+  thumbnailFeatureImageId: String
+  thumbnailFeatureImageEdited: String
+  relatedArticlesBackgroundColour: String
+  body: String
+  title: String
+  seoTitle: String
+  language: String
+  liveBlog: Boolean
+  standFirst: String
+  blogUpdated: AWSDate
+  seoDescription: String
+  contentModules: [ArticleContentModules]
+  relatedCompetitorIds: [Int]!
+  relatedCompetitors: [Athlete]
+  relatedDisciplineCodes: [String]!
+  relatedDiscipline: [DisciplineDetail]
+  relatedCompetitionIds: [String]!
+  relatedCompetitions: [Competition]
+  relatedEventIds: [Int]!
+  relatedEvents: [WAWEvent]
+  relatedArticleIds: [String]!
+  relatedArticles: [NewArticle]
+  relatedMinisiteIds: [String]
+  relatedMinisitePages: [Page]
+  relatedCountryCodes: [String]
+  relatedRegionCodes: [String]
+  event: WAWEvent
+  urlSlug: String
+  mediaIds: [String]
+  imageEdited: String
+  relatedMedia: [NewMedia]
+}
+
+type Event {
+  id: ID
+  mediaIds: [Int]
+  relatedMedia: [NewMedia]
+  timezone: String
+  updatedOn: AWSDateTime
+  hash: String
+  name: String
+  startDate: AWSDateTime
+  endDate: AWSDateTime
+  venue: String
+  countryCode: String
+  countryName: String
+  areaCode: String
+  areaName: String
+  ageCode: String
+  indoorOutdoor: String
+  categoryCode: String
+  categoryName: String
+  categoryOrder: Int
+  subCategoryCode: String
+  subCategoryName: String
+  subCategoryOrder: Int
+  showWebLiveBanner: Boolean
+  eventId_WA: Int
+  classCode: String
+  className: String
+  classOrder: Int
+  isPublished: Boolean
+  hasCompDocResults: Boolean
+  nameUrlSlug: String
+  startDateYear: Int
+  circuits: [Circuit]
+  areaNameUrlSlug: String
+  categoryNameUrlSlug: String
+  subCategoryNameUrlSlug: String
+  disciplineCodes: [String]
+}
+
+type EventBrokenRecord {
+  id: Int
+  phaseId: Int
+  eventId: Int
+  recordOrder: Int
+  recordTypeOrder: Int
+  competitorId_WA: Int
+  record: String
+  sexCode: String
+  sexName: String
+  surname: String
+  forename: String
+  unitName: String
+  areaCode: String
+  phaseName: String
+  phaseCode: String
+  sexUrlSlug: String
+  resultRank: String
+  resultMark: String
+  recordName: String
+  eventId_WA: String
+  birthDateStr: String
+  unitTypeName: String
+  phaseUrlSlug: String
+  competitorId: String
+  disciplineCode: String
+  discipline: Discipline
+  competitorTypeCode: String
+  competitorCountryCode: String
+  equalled: Boolean
+  updatedOn: AWSDateTime
+}
+
+type EventCircuitStandingDetails {
+  id: Int
+  resultDate: AWSDateTime
+  resultVenue: String
+  resultMark: String
+  standingDetailScore: String
+  rank: String
+
+  """  From appsync/functions/waw/eventPhase/eventPhase.graphql"""
+  discipline: disciplineObject
+}
+
+type EventCircuitStandings {
+  circuitName: String
+  parameters: CircuitStandingsParamsType
+  seasons: [String]
+  standings: [StandingsType]
+}
+
+input EventInput {
+  id: ID!
+  timezone: String
+  updatedOn: AWSDateTime
+  hash: String
+  name: String
+  startDate: AWSDateTime
+  endDate: AWSDateTime
+  venue: String
+  countryCode: String
+  countryName: String
+  areaCode: String
+  areaName: String
+  ageCode: String
+  indoorOutdoor: String
+  categoryCode: String
+  categoryName: String
+  categoryOrder: Int
+  subCategoryCode: String
+  subCategoryName: String
+  subCategoryOrder: Int
+  eventId_WA: Int
+  classCode: String
+  className: String
+  classOrder: Int
+  isPublished: Boolean
+  hasCompDocResults: Boolean
+  nameUrlSlug: String
+  startDateYear: Int
+  areaNameUrlSlug: String
+  categoryNameUrlSlug: String
+  subCategoryNameUrlSlug: String
+  disciplineCodes: [String]
+}
+
+type EventLeadingStandingsType {
+  eventCircuitCode: String
+  sexCode: String
+  season: Int
+  eventCircuitTypeCode: String
+  rank: String
+  competitorId: Int
+  competitorId_WA: Int
+  competitorName: String
+  competitorCountryCode: String
+  totalResults: Int
+  totalPoints: String
+  eventCircuitStandingOrder: Int
+  discipline: DisciplineType
+}
+
+type EventMedia {
+  query: EventMediaQuery
+  media: [Media]
+}
+
+type EventMediaQuery {
+  source: [String]
+  type: Int
+}
+
+type EventOrganizerDetails {
+  id: Int
+  eventId_WA: Int
+  name: String
+  startDate: AWSDateTime
+  venue: String
+  countryCode: String
+  organizerDetails: [OrganizerDetailItem]
+}
+
+type eventPhase {
+  id: Int
+  updatedOn: AWSDateTime
+  hash: String
+  phaseCode: String
+  phaseName: String
+  eventID: Int
+  phaseDateAndTime: AWSDateTime
+  sexCode: String
+  sexName: String
+  discipline: disciplineObject
+  isStartlistPublished: Boolean
+  isResultPublished: Boolean
+  isPhaseSummaryPublished: Boolean
+  isTeamStandingPublished: Boolean
+  combinedDisciplineOrder: Int
+  phaseOrder: Int
+  phaseSessionName: String
+  phaseSessionOrder: Int
+  status: Int
+  hasTime: Boolean
+  eventId_WA: Int
+  primaryPhaseOrder: Int
+  isPointsPublished: Boolean
+  phaseNameUrlSlug: String
+  sexNameUrlSlug: String
+  unitName: String
+  unitTypeName: String
+}
+
+type eventPhaseDocuments {
+  type: Int
+  typeName: String
+  fileName: String
+  filePath: String
+  unitId: Int
+}
+
+enum eventPhaseOrderByEnum {
+  PhaseDateAndTime
+  PhaseOrder
+}
+
+type eventPhaseResult {
+  competitorName: String
+  competitorFirstName: String
+  competitorLastName: String
+  competitorId_WA: Int
+  teamId_WA: Int
+  competitorTypeCode: String
+  resultCountryName: String
+  resultCountryCode: String
+  competitorCountryName: String
+  competitorCountryCode: String
+  standingPoints: String
+  combinedPoints: String
+  competitorId: Int
+  resultMark: String
+  resultWind: String
+  resultRank: Int
+  resultOrder: Int
+  reactionTime: String
+  record: String
+  bib: String
+  qualified: String
+  teamMembers: [eventPhaseTeamMember]
+}
+
+type EventPhaseResults {
+  id: Int
+  updatedOn: AWSDateTime
+  hash: String
+  phaseCode: String
+  phaseName: String
+  combinedType: String
+  eventID: Int
+  phaseDateAndTime: AWSDateTime
+  sexCode: String
+  sexName: String
+  discipline: disciplineObject
+  isStartlistPublished: Boolean
+  isResultPublished: Boolean
+  isPhaseSummaryPublished: Boolean
+  isTeamStandingPublished: Boolean
+  combinedDisciplineOrder: Int
+  phaseOrder: Int
+  phaseSessionName: String
+  phaseSessionOrder: Int
+  status: Int
+  hasTime: Boolean
+  eventId_WA: Int
+  primaryPhaseOrder: Int
+  isPointsPublished: Boolean
+  phaseNameUrlSlug: String
+  sexNameUrlSlug: String
+  result: LocEventPhaseResult
+}
+
+type eventPhaseTeamMember {
+  competitorId: Int
+  competitorId_WA: Int
+  competitorName: String
+  competitorFirstName: String
+  competitorLastName: String
+  competitorCountryCode: String
+  resultMark: String
+  resultRank: String
+  resultCountryName: String
+  resultCountryCode: String
+  countryName: String
+  competitorOrder: Int
+  standingDetailScoring: Boolean
+}
+
+type eventPhaseUnit {
+  unitId: Int
+  unitDateTime: AWSDateTime
+  hasStandingPoints: Boolean
+  unitRuleDetail: String
+  unitTypeCode: String
+  unitTypeName: String
+  unitCode: String
+  unitOrder: Int
+  results: [eventPhaseResult]
+  startlist: [eventPhaseUnitStartlist]
+  series: [series]
+  splits: [[split]]
+  teamStandings: [teamStanding]
+}
+
+type eventPhaseUnitStartlist {
+  competitorName: String
+  competitorFirstName: String
+  competitorLastName: String
+  competitorId_WA: Int
+  teamId_WA: Int
+  competitorTypeCode: String
+  competitorCountryName: String
+  competitorCountryCode: String
+  resultCountryName: String
+  resultCountryCode: String
+  competitorId: Int
+  personalBestMark: String
+  seasonBestMark: String
+  worldRanking: String
+  bib: String
+  startlistOrder: Int
+  record: String
+  start: Int
+  teamMembers: [eventPhaseTeamMember]
+}
+
+type eventPhaseWithResults {
+  id: Int
+  updatedOn: AWSDateTime
+  hash: String
+  phaseCode: String
+  phaseName: String
+  eventID: Int
+  phaseDateAndTime: AWSDateTime
+  sexCode: String
+  sexName: String
+  discipline: disciplineObject
+  isStartlistPublished: Boolean
+  isResultPublished: Boolean
+  isPhaseSummaryPublished: Boolean
+  isTeamStandingPublished: Boolean
+  combinedDisciplineOrder: Int
+  phaseOrder: Int
+  phaseSessionName: String
+  phaseSessionOrder: Int
+  status: Int
+  hasTime: Boolean
+  eventId_WA: Int
+  primaryPhaseOrder: Int
+  isPointsPublished: Boolean
+  phaseNameUrlSlug: String
+  sexNameUrlSlug: String
+  isTrack: Boolean
+  units: [eventPhaseUnit]
+  summary: [eventSummaryResult]
+  documents: [eventPhaseDocuments]
+}
+
+type eventSummaryResult {
+  competitorName: String
+  competitorFirstName: String
+  competitorLastName: String
+  competitorId_WA: Int
+  teamId_WA: Int
+  competitorTypeCode: String
+  competitorCountryName: String
+  competitorCountryCode: String
+  resultCountryName: String
+  resultCountryCode: String
+  phaseSummaryOrder: String
+  combinedPoints: String
+  competitorId: Int
+  resultMark: String
+  resultWind: String
+  resultRank: Int
+  resultOrder: Int
+  unitCode: Int
+  unitName: String
+  reactionTime: String
+  record: String
+  bib: String
+  qualified: String
+  summaryRank: Int
+  teamMembers: [eventPhaseTeamMember]
+}
+
+type EventTeamStandingDetails {
+  id: Int
+  updatedOn: AWSDateTime
+  hash: String
+  teamStandingsId: Int
+  teamStandingDetailOrder: Int
+  eventId: Int
+  sexCode: String
+  sexName: String
+  rank: Int
+  resultRank: Int
+  resultMark: String
+  record: String
+  standingPoints: Int
+  teamId: Int
+  teamName: String
+  teamCountryCode: String
+  standingMark: Int
+  competitorId_WA: Int
+  eventId_WA: Int
+  teamId_WA: Int
+  competitorId: Int
+
+  """  From functions\waw\medal\medals.graphql"""
+  competitor: CompetitorObj
+
+  """  From functions\waw\medal\medals.graphql"""
+  discipline: DisciplineObj
+}
+
+type EventTeamStandings {
+  id: Int
+  updatedOn: AWSDateTime
+  hash: String
+  eventId: Int
+  rank: Int
+  teamName: String
+  teamCountryCode: String
+  teamId: Int
+  teamId_WA: Int
+  eventId_WA: Int
+  eventSubCategoryCode: String
+  sexCode: String
+  sexName: String
+  standingMark: String
+  eventTeamStandingOrder: Int
+}
+
+type EventToplist {
+  event: String
+  eventId: Int
+  genderCode: String
+  eventTypeId: Int
+  selectedEvent: Boolean
+}
+
+type EventType {
+  eventType: String
+  eventTypeId: Int
+  selectedEventType: Boolean
+}
+
+type FeaturedAthlete {
+  updatedOn: AWSDateTime
+  hash: String
+  typeCode: String
+  firstName: String
+  lastName: String
+  sexCode: String
+  sexName: String
+  countryCode: String
+  countryName: String
+  birthDate: AWSDateTime
+  birthDateStr: String
+  urlSlug: String
+  representativeId: Int
+  name: String
+  countryUrlSlug: String
+  sexNameUrlSlug: String
+  friendlyName: String
+  friendlyNameLetter: String
+  friendlyNameFirst3Letter: String
+  id: ID
+}
+
+type FeatureLinksObj {
+  name: String
+  url: String
+}
+
+type Filter {
+  id: String
+  contentId: String
+  typeId: String
+  type: FilterType
+  published: AWSDateTime
+  publishedById: String
+  publishedByName: String
+  language: String
+  title: String
+  slug: String
+}
+
+type FilterType {
+  id: String
+  contentId: String
+  published: AWSDateTime
+  publishedById: String
+  publishedByName: String
+  filters: [Filter]
+  language: String
+  title: String
+  slug: String
+  typeId: String
+  siteId: String
+}
+
+type FlashInterview {
+  id: Int
+  phaseId: Int
+  phaseDate: AWSDateTime
+  phaseName: String
+  unitId: Int
+  unitCode: Int
+  unitTypeName: String
+  unitName: String
+  title: String
+  body: String
+  competitorId: Int
+  competitorTeamName: String
+  competitorForename: String
+  competitorSurname: String
+  competitorCountryCode: String
+  competitorSex: String
+  competitorType: String
+  updatedOn: AWSDateTime
+  eventId: Int
+  disciplineCode: String
+  disciplineName: String
+  disciplineSexName: String
+  flashInterviewOrder: Int
+  flashInterviewDate: AWSDateTime
+  flashInterviewHasTime: Boolean
+  eventStoreId: String
+  isApproved: Boolean
+}
+
+input FlashInterviewInput {
+  id: Int
+  phaseId: Int
+  phaseDate: AWSDateTime
+  phaseName: String
+  unitId: Int
+  unitCode: Int
+  unitTypeName: String
+  unitName: String
+  title: String
+  body: String
+  competitorId: Int
+  competitorTeamName: String
+  competitorForename: String
+  competitorSurname: String
+  competitorCountryCode: String
+  competitorSex: String
+  competitorType: String
+  updatedOn: AWSDateTime
+  eventId: Int
+  disciplineCode: String
+  disciplineName: String
+  disciplineSexName: String
+  flashInterviewOrder: Int
+  flashInterviewDate: AWSDateTime
+  flashInterviewHasTime: Boolean
+  eventStoreId: String
+}
+
+type FlashInterviewType {
+  unitId: Int!
+  payload: [FlashInterview]
+}
+
+type FlashInterviewUnit {
+  disciplineName: String
+  disciplineSexName: String
+  unitTypeName: String
+  unitName: String
+  phaseName: String
+  phaseId: Int
+  unitId: Int
+  interviews: [FlashInterview]
+}
+
+type Gender {
+  gender: String
+  genderCode: String
+  selectedGender: Boolean
+}
+
+enum GenderType {
+  male
+  female
+}
+
+type GoldEvent {
+  NameofEvent: String
+  NameofLocation: String
+  YoutubeVideoId: String
+  EventDate: String
+}
+
+type GoldEvents {
+  events: [GoldEvent]
+}
+
+type HCaptchaResponse {
+  isSuccess: Boolean
+  errorCodes: [String]
+  hostname: String
+}
+
+type HeadToHead {
+  competitor: ChampionshipCompetitorMedia
+  opponents: [OpponentData]
+}
+
+type HeadToHeadDiscipline {
+  id: String
+  name: String
+}
+
+type HeadToHeadOpponent {
+  birthDate: String
+  country: String
+  familyName: String
+  gender: String
+  givenName: String
+  id: Int
+}
+
+type HeadToHeadParameters {
+  headToHeadDiscipline: String
+  headToHeadEndDate: String
+  headToHeadFinalOnly: Boolean
+  headToHeadOpponent: Int
+  headToHeadStartDate: String
+}
+
+type HeadToHeadResponseType {
+  disciplines: [HeadToHeadDiscipline]
+  opponents: [HeadToHeadOpponent]
+  parameters: HeadToHeadParameters
+  results: headToHeadResults
+}
+
+type headToHeadResults {
+  athlete1Wins: Int
+  athlete2Wins: Int
+  results: [headToHeadResultsResults]
+}
+
+type headToHeadResultsResults {
+  athlete1Wins: Boolean
+  athlete2Wins: Boolean
+  competition: String
+  date: String
+  discipline: String
+  place1: String
+  place2: String
+  race: String
+  raceType: String
+  result1: String
+  result2: String
+}
+
+type HeroAthletesCarousel {
+  id: Int
+  iaafId: Int
+  firstName: String
+  lastName: String
+  friendlyName: String
+  fullName: String
+  friendlyNameLetter: String
+  friendlyNameFirst3Letter: String
+  sexCode: String
+  sexName: String
+  countryCode: String
+  countryName: String
+  birthDate: AWSDateTime
+  birthPlace: String
+  birthPlaceCountryName: String
+  sexNameUrlSlug: String
+  countryUrlSlug: String
+  birthPlaceCountryUrlSlug: String
+  birthCountryCode: String
+  mediaIds: [String]
+  relatedMedia: [NewMedia]
+  urlSlug: String
+  representativeId: Int
+  biography: String
+  twitterLink: String
+  instagramLink: String
+  facebookLink: String
+  transfersOfAllegiance: [String]
+  aaId: Int
+  countryFullName: String
+  familyName: String
+  givenName: String
+  birthDateStr: String
+  facebookUsername: String
+  twitterUsername: String
+  instagramUsername: String
+}
+
+type Highlights {
+  competitors: [HighlightsCompetitor]
+  label: String
+}
+
+type HighlightsCompetitor {
+  competitor: ChampionshipCompetitor
+  mark: String
+  place: Int
+  name: String
+  country: String
+  worldLeadHolder: Boolean
+  worldRecordLabel: String
+  personalBest: String
+  seasonsBest: String
+  worldRankingPosition: String
+}
+
+type honour {
+  categoryName: String
+  withWind: Boolean
+  withDrop: Boolean
+  results: [honourResult]
+}
+
+type honourResult {
+  place: String
+  indoor: Boolean
+  disciplineCode: String
+  disciplineNameUrlSlug: String
+  typeNameUrlSlug: String
+  discipline: String
+  competition: String
+  venue: String
+  mark: String
+  date: String
+}
+
+type honourSummary {
+  count: Int
+  honour: String
+}
+
+type LanguageVersion {
+  body: String
+  title: String
+  seoTitle: String
+  language: String
+  liveBlog: Boolean
+  standFirst: String
+  blogUpdated: AWSDate
+  seoDescription: String
+  contentModules: [ArticleContentModules]
+}
+
+type LatestQualifiedCompetitors {
+  moduleTitle: String
+  moduleSubtitle: String
+  competitionName: String
+  competitionYear: Int
+  columns: [LatestQualifiedCompetitorsColumn]
+  qualifications: [LatestQualifiedCompetitorsQualification]
+}
+
+type LatestQualifiedCompetitorsColumn {
+  heading: String
+  align: String
+  field: String
+}
+
+type LatestQualifiedCompetitorsQualification {
+  countryCode: String
+  eventName: String
+  mark: String
+  date: AWSDateTime
+  competitor: AACompetitor
+}
+
+type LatestRecordItem {
+  recordType: String
+  mark: String
+  eventName: String
+  competitor: AACompetitor
+  date: AWSDateTime
+  location: String
+  countryName: String
+}
+
+type LatestRecords {
+  moduleTitle: String
+  moduleSubtitle: String
+  records: [LatestRecordItem]
+}
+
+type LeadingAthletes {
+  eventResults: [LeadingAthletesResults]
+}
+
+type LeadingAthletesResultItem {
+  mark: String
+  countryCode: String
+  competitor: AACompetitor
+  primaryMediaId: [String]
+  primaryMedia: [Media]
+}
+
+type LeadingAthletesResults {
+  eventName: String
+  environment: String
+  ageCategory: String
+  season: Int
+  disciplineUrlSlug: String
+  disciplineTypeUrlSlug: String
+  sexCode: String
+  results: [LeadingAthletesResultItem]
+}
+
+type LegacyAthlete {
+  id: Int
+  updatedOn: AWSDateTime
+  hash: String
+  typeCode: String
+  firstName: String
+  lastName: String
+  sexCode: String
+  sexName: String
+  countryCode: String
+  countryName: String
+  birthDateStr: String
+  urlSlug: String
+  representativeId: Int
+  name: String
+  countryUrlSlug: String
+  sexNameUrlSlug: String
+  friendlyName: String
+  friendlyNameLetter: String
+  friendlyNameFirst3Letter: String
+}
+
+type lifestyleLinksObj {
+  articleId: String
+  title: String
+  subtitle: String
+  url: String
+}
+
+type LinksObj {
+  name: String
+  url: String
+  pageId: String
+  page: Page
+  fileId: [String]
+  file: [NewMedia]
+}
+
+type LiveAthlete {
+  competitorId: [Int]
+  detail: [LegacyAthlete]
+  firstName: String
+  lastName: String
+  birthDate: AWSDateTime
+  birthPlace: String
+  birthCountryCode: String
+  birthPlaceCountryName: String
+  teamName: String
+  countryName: String
+  countryCode: String
+  sexCode: String
+  sexName: String
+}
+
+type LiveBlogPost {
+  id: String
+  parentId: String
+  postId: String
+  language: String
+  title: String
+  imageId: String
+  imageEdited: String
+  text: String
+  dateTime: AWSDateTime
+}
+
+type LiveBlogPostsUpdate {
+  parentId: String!
+  liveBlogPosts: [LiveBlogPost]
+}
+
+type LiveCombinedSummaryDetail {
+  id: String
+  phaseId: Int!
+  competitionId: Int
+  overallRank: Int
+  bib: String
+  competitorId: Int
+  competitorFirstName: String
+  competitorLastName: String
+  competitorCountryCode: String
+  competitorBirthDate: String
+  resultMark: String
+  record: String
+  detailsDiscOrder: Int
+  disciplineCode: String
+  disciplineMark: String
+  detailWind: String
+  overallPoints: Int
+  overallOrder: Int
+  detailCombinedRank: String
+  disciplineRank: String
+  disciplinePoints: String
+  updateOn: String
+  combinedType: String
+  eventStoreId: String
+}
+
+input LiveCombinedSummaryDetailInput {
+  id: String
+  competitionId: Int
+  phaseId: Int!
+  overallRank: Int
+  bib: String
+  competitorId: Int
+  competitorFirstName: String
+  competitorLastName: String
+  competitorCountryCode: String
+  competitorBirthDate: String
+  resultMark: String
+  record: String
+  detailsDiscOrder: Int
+  disciplineCode: String
+  disciplineMark: String
+  detailWind: String
+  overallPoints: Int
+  overallOrder: Int
+  detailCombinedRank: String
+  disciplineRank: String
+  disciplinePoints: String
+  updateOn: String
+  combinedType: String
+}
+
+type LiveCombinedSummaryDetailsTypeType {
+  phaseId: Int!
+  combinedType: String
+  payload: [LiveCombinedSummaryDetail]
+}
+
+type LivePhaseSummary {
+  id: ID!
+  phaseSummaryId: Int
+  phaseId: Int
+  unitId: Int
+  unitName: String
+  unitType: String
+  competitorId: Int
+  competitorTeamName: String
+  competitorForename: String
+  competitorSurname: String
+  competitorCountryName: String
+  competitorCountryCode: String
+  competitorSex: String
+  competitorType: String
+  bib: String
+  rank: String
+  mark: String
+  wind: String
+  resultWind: String
+  record: String
+  qualified: String
+  combinedPoints: String
+  updatedOn: String
+  resultRank: String
+  phaseSummaryOrder: Int
+  provisionalQualifier: Boolean
+  eventStoreId: String
+  competitionId: Int
+  reactionTime: String
+  phaseSummaryMilliseconds: String
+}
+
+input LivePhaseSummaryInput {
+  id: ID!
+  phaseSummaryId: Int
+  phaseId: Int
+  unitId: Int
+  unitName: String
+  unitType: String
+  competitorId: Int
+  competitorTeamName: String
+  competitorForename: String
+  competitorSurname: String
+  competitorCountryName: String
+  competitorCountryCode: String
+  competitorSex: String
+  competitorType: String
+  bib: String
+  rank: String
+  mark: String
+  wind: String
+  resultWind: String
+  record: String
+  qualified: String
+  combinedPoints: String
+  updatedOn: String
+  resultRank: String
+  phaseSummaryOrder: Int
+  provisionalQualifier: Boolean
+  competitionId: Int
+  reactionTime: String
+  phaseSummaryMilliseconds: String
+}
+
+type LivePhaseSummaryPhaseIdType {
+  phaseId: Int!
+  payload: [LivePhaseSummary]
+}
+
+input LivePhaseSummaryQuery {
+  phaseId: Int
+}
+
+type LiveResult {
+  type: String
+  id: ID!
+  phaseId: Int!
+  unitId: Int
+  unitName: String
+  unitType: String
+  intermediateType: String
+  intermediateId: Int
+  splitName: String
+  intermediateIdType: String
+  intermediateResultOrder: Int
+  intermediateOrder: Int
+  standingPoints: String
+  gap: String
+  resultId: Int
+  noStart: Boolean
+  lane: String
+  seasonBestMark: String
+  personalBestMark: String
+  phaseSummaryOrder: Int
+  resultRanks: Int
+  summaryYank: Int
+  competitorId: Int
+  competitorForename: String
+  competitorSurname: String
+  competitorTeamName: String
+  competitorCountryName: String
+  competitorCountryCode: String
+  competitorSex: String
+  competitorType: String
+  bib: String
+  rank: String
+  mark: String
+  combinedPoints: String
+  reactionTime: String
+  record: String
+  resultOrder: Int
+  startOrder: Int
+  qualified: String
+  next: Boolean
+  last: Boolean
+  updatedOn: String
+  wind: String
+  teamName: String
+  teamMembers: [LiveResultTeamMember]
+  eventStoreId: String
+  competitionId: Int
+  resultMilliseconds: String
+  worldRanking: String
+}
+
+input LiveResultInput {
+  type: String
+  id: ID!
+  phaseId: Int!
+  unitId: Int
+  unitName: String
+  unitType: String
+  intermediateType: String
+  intermediateId: Int
+  splitName: String
+  intermediateIdType: String
+  intermediateResultOrder: Int
+  intermediateOrder: Int
+  standingPoints: String
+  gap: String
+  resultId: Int
+  noStart: Boolean
+  lane: String
+  seasonBestMark: String
+  personalBestMark: String
+  phaseSummaryOrder: Int
+  resultRanks: Int
+  summaryYank: Int
+  competitorId: Int
+  competitorForename: String
+  competitorSurname: String
+  competitorTeamName: String
+  competitorCountryName: String
+  competitorCountryCode: String
+  competitorSex: String
+  competitorType: String
+  bib: String
+  rank: String
+  mark: String
+  combinedPoints: String
+  reactionTime: String
+  record: String
+  resultOrder: Int
+  startOrder: Int
+  qualified: String
+  next: Boolean
+  last: Boolean
+  updatedOn: String
+  wind: String
+  teamName: String
+  teamMembers: [LiveResultTeamMemberInput]
+  competitionId: Int
+  resultMilliseconds: String
+  worldRanking: String
+}
+
+type LiveResultTeamMember {
+  phaseId: Int
+  unitId: Int
+  unitName: String
+  liveResultId: Int
+  competitorId: Int
+  competitorForename: String
+  competitorSurname: String
+  competitorCountryName: String
+  competitorCountryCode: String
+}
+
+input LiveResultTeamMemberInput {
+  phaseId: Int
+  unitId: Int
+  unitName: String
+  liveResultId: Int
+  competitorId: Int
+  competitorForename: String
+  competitorSurname: String
+  competitorCountryName: String
+  competitorCountryCode: String
+}
+
+type LiveResultType {
+  unitId: Int!
+  payload: [LiveResult]
+}
+
+type Location {
+  id: String
+  name: String
+  latitude: Float
+  longitude: Float
+}
+
+type LocationItem {
+  locationId: String
+  location: Location
+  headline: String
+  description: String
+  link: String
+  imageId: String
+  imageEdited: String
+}
+
+type LocEventPhaseResult {
+  id: Int
+  updatedOn: AWSDateTime
+  competitorId: Int
+  teamId: Int
+  competitorName: String
+  competitorCountryCode: String
+  competitorCountryName: String
+  competitorBirthDate: String
+  competitorTypeCode: String
+  resultCountryCode: String
+  resultMark: String
+  resultRank: Int
+  resultOrder: Int
+  unitId: Int
+  unitCode: String
+  unitName: String
+  unitTypeCode: String
+  unitDateAndTime: AWSDateTime
+  eventID: Int
+  phaseID: Int
+  standingPoints: String
+  discipline: disciplineObject
+  competitorFirstName: String
+  competitorLastName: String
+  resultCountryName: String
+}
+
+type majorChampionshipParamsType {
+  majorChampionshipsByCategory: Boolean
+}
+
+type majorChampionshipResult {
+  category: String
+  results: [majorChampionshipsDetails]
+}
+
+type majorChampionshipsDetails {
+  id: Int
+  discipline: String
+  competition: String
+  venue: String
+  race: String
+  place: String
+  result: String
+  withWind: Boolean
+  wind: String
+  withDrop: Boolean
+  drop: String
+  date: String
+}
+
+type majorChampionshipType {
+  parameters: majorChampionshipParamsType
+  results: [majorChampionshipResult]
+}
+
+type Medal {
+  id: Int!
+  eventId: Int!
+  countryCode: String
+  countryName: String
+  eventMedalTableOrder: Int
+  eventSubCategoryCode: String
+  medalRank: Int
+  bronze: Int
+  silver: Int
+  gold: Int
+  total: Int
+  updatedOn: String
+  eventStoreId: String
+}
+
+type MedalDetail {
+  id: Int
+  medalTableId: Int
+  typeId: Int
+  disciplineCode: String
+  disciplineName: String
+  sexCode: String
+  resultId: Int
+  resultMark: String
+  medalDate: String
+  detailsOrder: Int
+  competitorId: Int
+  competitorFirstName: String
+  competitorLastName: String
+  eventId: Int
+  phaseId: Int
+  updatedOn: String
+  eventStoreId: String
+}
+
+input MedalDetailInput {
+  id: Int
+  medalTableId: Int
+  typeId: Int
+  disciplineCode: String
+  disciplineName: String
+  sexCode: String
+  resultId: Int
+  resultMark: String
+  medalDate: String
+  detailsOrder: Int
+  competitorId: Int
+  competitorFirstName: String
+  competitorLastName: String
+  eventId: Int
+  phaseId: Int
+  updatedOn: String
+}
+
+input MedalInput {
+  id: Int!
+  eventId: Int!
+  countryCode: String
+  countryName: String
+  eventMedalTableOrder: Int
+  eventSubCategoryCode: String
+  medalRank: Int
+  bronze: Int
+  silver: Int
+  gold: Int
+  total: Int
+  updatedOn: String
+}
+
+input MedalMutationInput {
+  eventId: Int!
+  payload: [MedalInput!]!
+}
+
+type MedalMutationType {
+  eventId: Int!
+  payload: [Medal]
+}
+
+type Medals {
+  id: Int
+  updatedOn: AWSDateTime
+  hash: String
+  eventId: Int
+  eventId_WA: Int
+  countryCode: String
+  medalRank: String
+  silver: Int
+  gold: Int
+  bronze: Int
+  total: Int
+  eventMedalTableOrder: Int
+  country: CountryObj
+  eventSubCategoryCode: String
+}
+
+enum medalsOrderByEnum {
+  GOLD
+  TOTAL
+}
+
+type Media {
+  id: String
+  title: String
+  sEOTitle: String
+  urlSlug: String
+  credit: String
+  showInMedia: Boolean
+  complete: Boolean
+  fileName: String
+  remoteItemCode: String
+  xMLFileName360: String
+  fileNameUrl: String
+  type: Int
+  format: Int
+  hosting: Int
+  relatedLinks: [String]
+  sourceWidth: Int
+  sourceHeight: Int
+  availableRatios: [Int]
+  relatedSexCodes: [Int]
+  relatedAgeGroups: [Int]
+  relatedEventPhases: [Int]
+  status: Int
+  liveFrom: AWSDateTime
+  createdOn: String
+  updatedOn: AWSDateTime
+  createdById: String
+  updatedById: String
+}
+
+type MetaData {
+  code: String
+  name: String
+}
+
+enum MetaDataTypes {
+  countryCodes
+  disciplineCodes
+}
+
+type Mutation {
+  upsertCompetitor(input: CompetitorInput!): Competitor
+  setEvent(eventId: Int!, input: EventInput!): Event
+  upsertLiveResult(unitId: Int!, payload: [LiveResultInput]!): LiveResultType
+  upsertLiveStartList(unitId: Int!, payload: [LiveResultInput]!): LiveResultType
+  upsertLiveIntermediate(unitId: Int!, payload: [LiveResultInput]!): LiveResultType
+  upsertLiveOffResult(unitId: Int!, payload: [LiveResultInput]!): LiveResultType
+  upsertLivePhaseSummary(phaseId: Int!, payload: [LivePhaseSummaryInput]!): LivePhaseSummaryPhaseIdType
+  upsertLiveCombinedSummaryDetails(phaseId: Int!, combinedType: String, payload: [LiveCombinedSummaryDetailInput!]!): LiveCombinedSummaryDetailsTypeType
+  upsertMedal(eventId: Int!, payload: [MedalInput]!): MedalMutationType
+  upsertMedalDetails(input: [MedalDetailInput]!): [MedalDetail]
+  setNewsTicker(content: String): NewsTicker
+  updatePhase(id: Int, name: String): [Phase]
+  upsertPhases(input: [PhaseInput]!): [Phase]
+  upsertPlacingTable(eventId: Int!, payload: [PlacingTableInput]!): PlacingTableType
+  upsertPlacingTableDetails(eventId: Int!, payload: [PlacingTableDetailInput]!): PlacingTableDetailType
+  setTeamScoring(phaseId: Int!, type: String!, payload: [TeamScoringInput]!, chunk: ChunkType): TeamScoringLive
+  teamStandingsMutation(unitId: Int!, type: String!, payload: [TeamStandingsInput]!, chunk: ChunkType): TeamStandingsLive
+  competitionEntry(email: String!, designersAge: String!, mascotStory: String!, mascotImage: String!, mascotName: String!, mascotImageBase64: String!, designersName: String!, competitionName: String!, verified: Boolean!): CompetitionSuccess
+  removeProfile: SuccessRemoveProfile
+  syncMailchimp(email: String): SuccessMailChimp
+  updateUser(firstName: String, lastName: String, ageGroup: String, sex: String, email: String, countryCode: String, nationalTeamSupportCountryCode: String, userTypes: [String], userSubTypes: [String], disciplineCategories: [String], interests: [String], mailingListConsent: Boolean, contactPreferences: [String], tags: [String]): Success
+  updateUserFollowedCompetitors(competitorId: Int): UserFollowedCompetitorsSuccess
+  updateUserTermsAndConditions: UserTermsAndConditionsSuccess
+  register(firstName: String!, lastName: String!, email: String!, password: String!, ageGroup: String, sex: String, countryCode: String, nationalTeamSupportCountryCode: String, mailingListConsent: Boolean, kidsAthleticsTermsAndConditions: String, interests: [String], userTypes: [String], userSubTypes: [String], disciplineCategories: [String], contactPreferences: [String], source: String!, tags: [String], clientMetadata: [ClientMetadataInput]): Success
+  verifyEmail(confirmationCode: String!, username: String!): SuccessVerifyEmail
+  liveBlogPostUpdated(id: String!): LiveBlogPostsUpdate
+  sendSpikesEmail(email: String!, firstName: String!, lastName: String!, emailMessage: String!, emailText: String!): SendSpikesEmailSuccess
+  voting(voteIds: [String], userCognitoId: String, voteOptionsIds: [String]): SuccessVoting
+}
+
+type MyAthletesResult {
+  id: Int
+  iaafId: Int
+  name: String
+  country: String
+  urlSlug: String
+  birthDate: String
+  typeCode: String
+  isFollowed: Boolean
+  primaryMediaId: [String]
+  primaryMediaId2: Boolean
+  primaryMedia: [Media]
+}
+
+type NewArticle {
+  id: String
+  title: String
+  body: String
+  contentId: String
+  standFirst: String
+  standfirst: String
+  backgroundColour: String
+  seoDescription: String
+  sEOTitle: String
+  seoTitle: String
+  urlSlug: String
+  slug: String
+  campaignId: String
+  relatedUrls: String
+  liveFrom: AWSDateTime
+  articleType: Int
+  featureImageId: String
+  featureImageEdited: String
+  hideOnTheMainSite: Boolean
+  imageEdited: String
+  mediaIds: [String]
+  relatedMedia: [NewMedia]
+  eventId: Int
+  event: WAWEvent
+  blogUpdated: String
+  liveBlog: Boolean
+  language: String
+  relatedCompetitorIds: [Int]!
+  relatedCompetitors: [AthleteNewData]
+  relatedDisciplineCodes: [String]!
+  relatedDiscipline: [DisciplineDetail]
+  relatedCompetitionIds: [String]!
+  relatedCompetitions: [Competition]
+  relatedEventIds: [Int]!
+  relatedEvents: [WAWEvent]
+  relatedArticleIds: [String]!
+  relatedArticles: [NewArticle]
+  relatedMinisiteIds: [String]
+  relatedMinisitePages: [Page]
+  relatedCountryCodes: [String]
+  relatedRegionCodes: [String]
+  tags: [String]
+  relatedLinks: [RelatedLinksObj]
+  published: AWSDateTime
+  columns: Int
+  publishedById: String
+  publishedByName: String
+  relatedArticlesBackgroundColor: String
+  contentModules: [ArticleContentModules]
+  gatedContent: Boolean
+}
+
+type NewMedia {
+  id: String
+  mediaType: String
+  title: String
+  copyright: String
+  fileName: String
+  relatedAthletes: [Int]
+  relatedDisciplines: [String]
+  relatedCompetitions: [String]
+  relatedEvents: [Int]
+  isDeleted: Boolean
+  liveFrom: AWSDateTime
+}
+
+type NewsTicker {
+  content: String
+}
+
+type OnThisDay {
+  moduleTitle: String
+  moduleSubtitle: String
+  results: [OnThisDayResultItem]
+}
+
+type OnThisDayResultItem {
+  id: Int
+  category: String
+  title: String
+  body: String
+  competitorId: Int
+}
+
+type OpponentData {
+  competitorWins: Int
+  opponent: ChampionshipCompetitorMedia
+  opponentWins: Int
+  results: [OpponentResult]
+}
+
+type OpponentResult {
+  competitionId: Int
+  competitorMark: String
+  competitorPlace: Int
+  eventId: Int
+  opponentMark: String
+  opponentPlace: Int
+}
+
+enum OrderByEnum {
+  LiveFrom
+  EndDate
+  StartDate
+}
+
+enum OrderByLiveBlogPostEnum {
+  CreatedDate
+  PublishedDate
+}
+
+enum OrderByNewArticleEnum {
+  PublishedDate
+  CreatedDate
+  Title
+}
+
+enum OrderDirectionEnum {
+  Ascending
+  Descending
+}
+
+type OrganizerDetailItem {
+  name: String
+  value: String
+}
+
+type Page {
+  id: String
+  typeId: String
+  language: String
+  title: String
+  competitionId: String
+  eventId: Int
+  event: WAWEvent
+  siteId: String
+  minisite: Appearance
+  seoDescription: String
+  slug: String
+  publishedById: String
+  publishedByName: String
+  published: AWSDateTime
+  contentModules: [PageModules]
+  gatedContent: Boolean
+  campaignId: String
+  campaign: Campaign
+}
+
+type PageModules {
+  moduleType: String
+  language: String
+  relatedArticleIds: [String]!
+  relatedArticles: [NewArticle]
+  eventIds: [Int]!
+  relatedEvents: [WAWEvent]
+  relatedCompetitorIds: [Int]!
+  relatedCompetitors: [AthleteNewData]
+  relatedDisciplineCodes: [String]
+  relatedDiscipline: [DisciplineDetail]
+  athleteIds: [String]
+  mediaIds: [String]!
+  relatedMedia: [NewMedia]
+  socialLinks: [String]
+  lifestyleLinks: [lifestyleLinksObj]
+  featureLinks: [FeatureLinksObj]
+  minisiteId: String
+  minisitePage: Page
+  minisite: Appearance
+  locationId: String
+  locations: [LocationItem]
+  eventId: Int
+  tags: [String]
+  videos: [Video]
+  banners: [BannerObj]
+  slides: [SlidesObj]
+  sections: [SectionsObj]
+  description: String
+  eventName: String
+  tagId: String
+  moreNewsLink: String
+  moreNewsText: String
+  colour: String
+  imageEdited: String
+  textPosition: String
+  textColour: String
+  title: String
+  topTitle: String
+  bottomTitle: String
+  subtitle: String
+  category: String
+  standfirst: String
+  url: String
+  buttonText: String
+  imagePosition: String
+  backgroundColor: String
+  showTimestamp: Boolean
+  content: String
+  parentId: String
+  eventIdWa: Int
+  layout: Int
+  slug: String
+  videoIds: [String]
+  videoPlaylistId: String
+  relatedVideos: [VideoPublished]
+  videoId: String
+  relatedVideo: VideoPublished
+}
+
+type ParametersAthleteResult {
+  athleteIds: [Int]
+  countryOfResidence: String
+  limit: Int
+  preferredCountry: String
+}
+
+type ParametersCompetitionByCountry {
+  countryOfResidence: String
+  limit: Int
+  preferredCountry: String
+}
+
+type PastMedalist {
+  competitor: ChampionshipCompetitor
+  place: Int
+  mark: String
+}
+
+type PersonalBestInfo {
+  id: Int
+  IndoorOutdoor: String
+}
+
+type personalBestsType {
+  withWind: Boolean
+  withRecords: Boolean
+  results: [singleCompetitorResult]
+}
+
+type PersonalHonourInfo {
+  id: Int
+}
+
+type Phase {
+  id: Int
+  phaseCode: String
+  disciplineName: String
+  disciplineOrder: Int
+  typeName: String
+  typeCode: String
+  typeOrder: Int
+  isTrack: Boolean
+  isField: Boolean
+  isRoad: Boolean
+  isCombined: Boolean
+  isWalk: Boolean
+  isIndoor: Boolean
+  isReaction: Boolean
+  isOutdoor: Boolean
+  isWind: Boolean
+  isRelay: Boolean
+  isValidIAAF: Boolean
+  isInLane: Boolean
+  hasReactionTimes: Boolean
+  hasWindMeasurement: Boolean
+  inoutCode: Boolean
+  hasTeamStanding: Boolean
+  discCodeGroup: String
+  phaseName: String
+  eventId: Int
+  phaseDateAndTime: String
+  sexCode: String
+  sexName: String
+  disciplineCode: String
+  isStartlistPublished: Boolean
+  isResultPublished: Boolean
+  isPhaseSummaryPublished: Boolean
+  isTeamStandingPublished: Boolean
+  combinedDisciplineOrder: String
+  phaseOrder: Int
+  phaseSessionOrder: Int
+  phaseSessionName: String
+  primaryPhaseOrder: Int
+  status: Int
+  hasTime: Int
+  updatedOn: String
+  units: [Unit]
+  eventStoreId: String
+}
+
+input PhaseInput {
+  id: Int
+  phaseCode: String
+  disciplineName: String
+  disciplineOrder: Int
+  typeName: String
+  typeCode: String
+  typeOrder: Int
+  isCombined: Boolean
+  isIndoor: Boolean
+  isReaction: Boolean
+  isOutdoor: Boolean
+  isWind: Boolean
+  isValidIAAF: Boolean
+  isRelay: Boolean
+  isWalk: Boolean
+  isRoad: Boolean
+  isField: Boolean
+  isTrack: Boolean
+  isInLane: Boolean
+  hasReactionTimes: Boolean
+  hasWindMeasurement: Boolean
+  inoutCode: Boolean
+  hasTeamStanding: Boolean
+  discCodeGroup: String
+  phaseName: String
+  eventId: Int
+  eventId_WA: Int
+  phaseDateAndTime: String
+  sexCode: String
+  sexName: String
+  disciplineCode: String
+  isStartlistPublished: Boolean
+  isResultPublished: Boolean
+  isPhaseSummaryPublished: Boolean
+  isTeamStandingPublished: Boolean
+  combinedDisciplineOrder: String
+  phaseOrder: Int
+  phaseSessionOrder: Int
+  phaseSessionName: String
+  primaryPhaseOrder: Int
+  status: Int
+  hasTime: Int
+  updatedOn: String
+  units: [UnitInput!]!
+}
+
+input PhaseQueryInput {
+  competitionId: Int!
+  sexCode: String
+  disciplineCode: String
+}
+
+type PlacingTable {
+  id: Int!
+  eventId: Int!
+  rank: Int
+  countryName: String
+  countryCode: String
+  gold: Int
+  silver: Int
+  bronze: Int
+  forth: Int
+  fifth: Int
+  sixth: Int
+  seventh: Int
+  eighth: Int
+  points: Int
+  tableOrder: Int
+  subCategoryCode: String
+  updatedOn: AWSDateTime
+  eventStoreId: String
+}
+
+type PlacingTableDetail {
+  id: Int!
+  placingTableId: Int!
+  competitorId: Int
+  disciplineCode: String
+  disciplineName: String
+  competitorFirstName: String
+  competitorLastName: String
+  sexCode: String
+  placingDate: AWSDateTime
+  detailsOrder: Int
+  eventId: Int
+  typeId: Int
+  typeName: String
+  typeAbbreviation: String
+  resultMark: String
+  placingPoints: String
+  resultId: Int
+  phaseId: Int
+  countryCode: String
+  updatedOn: AWSDateTime
+  eventStoreId: String
+}
+
+input PlacingTableDetailInput {
+  id: Int!
+  placingTableId: Int!
+  competitorId: Int
+  disciplineCode: String
+  disciplineName: String
+  competitorFirstName: String
+  competitorLastName: String
+  sexCode: String
+  placingDate: AWSDateTime
+  detailsOrder: Int
+  eventId: Int
+  typeId: Int
+  typeName: String
+  typeAbbreviation: String
+  resultMark: String
+  placingPoints: String
+  resultId: Int
+  phaseId: Int
+  countryCode: String
+  updatedOn: AWSDateTime
+}
+
+type PlacingTableDetailType {
+  eventId: Int!
+  payload: [PlacingTableDetail]
+}
+
+input PlacingTableInput {
+  id: Int!
+  eventId: Int!
+  rank: Int
+  countryName: String
+  countryCode: String
+  gold: Int
+  silver: Int
+  bronze: Int
+  forth: Int
+  fifth: Int
+  sixth: Int
+  seventh: Int
+  eighth: Int
+  points: Int
+  tableOrder: Int
+  subCategoryCode: String
+  updatedOn: AWSDateTime
+}
+
+enum PlacingTableOrderBy {
+  RANK
+  TABLE_ORDER
+}
+
+type PlacingTableType {
+  eventId: Int!
+  payload: [PlacingTable]
+}
+
+type Playlist {
+  id: String
+  title: String
+  slug: String
+}
+
+type PreChampionshipEvent {
+  discipline: String
+  rankingLeaders: [ChampionshipCompetitor]
+  reigningChampions: [ChampionshipCompetitor]
+  sex: String
+  worldLeaders: [ChampionshipCompetitor]
+}
+
+type PreChampionshipHighlights {
+  events: [PreChampionshipEvent]
+}
+
+type PreviousMedal {
+  id: Int
+  competitorId_WA: Int
+  medalTableId: Int
+  typeId: Int
+  resultMark: String
+  firstName: String
+  lastName: String
+  name: String
+  countryCode: String
+  countryName: String
+  urlSlug: String
+  countryUrlSlug: String
+}
+
+input PreviousMedalQuery {
+  eventId: Int
+  eventId_WA: Int
+  eventEndDate: String
+  subCategoryCode: String
+  gender: String
+  disciplineCode: String
+  indoorOutDoor: String
+}
+
+type QualifiedEvent {
+  genderCode: String
+  eventId: String
+  disciplineName: String
+}
+
+type Query {
+  getWorldRanking(query: AAapiQuery!, field: String!): [WorldRanking]
+  getRankingGroups(query: AAapiQuery!, field: String!): [RankingGroups]
+  recordsByEvent(query: AAapiQuery!, field: String!): [RecordsByDiscipline]
+  getRecordsDisciplines(query: AAapiQuery!, field: String!): [Discipline]
+  getRecordsByCategory(query: AAapiQuery!, field: String!): [RecordsByDiscipline]
+  currentRecordHolder(query: AAapiQuery!, field: String!): [RecordsByDiscipline]
+  getTopList(query: AAapiQuery!, field: String!): TopListResultResponse
+  getTopListsDisciplines(query: AAapiQuery!, field: String!): [Discipline]
+  getAllTimeList(query: AAapiQuery!, field: String!): TopListResultResponse
+  getEventBrokenRecords(eventId: Int!, limit: Int): [EventBrokenRecord]
+  competitionDocument(EventId: Int, PhaseId: Int, UnitId: Int, TypeId: [Int]): [CompetitionDocument]
+  getCompetitor(input: CompetitorQueryInput): Competitor
+  getCISSingleCompetitor(id: Int, urlSlug: String!, ids: [Int]): CISsingleCompetitor
+  getCISCompetitorResDisp(id: Int, resultsByYear: Int, resultsByYearOrderBy: String): CISsingleCompetitorResults
+  getCISCompetitorResDate(id: Int, resultsByYear: Int, resultsByYearOrderBy: String): CISresultsByDateType
+  getEvent(id: ID!): Event
+  getFlashInterviews(eventId: Int!, isApproved: Boolean): [[FlashInterviewUnit]]
+  getLiveResult(phaseId: Int, unitId: Int, competitionId: Int, type: String, qualified: String, competitorCountryCode: String, competitorType: String, types: [String]): [LiveResult]
+  getLivePhaseSummary(phaseId: Int!, qualified: Boolean, provisionalQualifier: Boolean): [LivePhaseSummary]
+  getLiveCombinedSummaryDetails(input: [Int]): [LiveCombinedSummaryDetail]
+  getAthleteResults(competitionId: Int!, competitorId: Int!): [LiveResult]
+  getTeamResults(competitionId: Int!, teamId: Int!, teamSex: String): [LiveResult]
+  getMedal(eventId: Int!): [Medal]
+  getMedalDetails(medalTableId: Int!): [MedalDetail]
+  previousMedalists(input: PreviousMedalQuery): [PreviousMedal]
+  eventMedia(RelatedEventNameUrlSlug: String, limit: Int, offset: Int, type: Int): [EventMedia]
+  getNewsTicker: NewsTicker
+  getPhases(input: PhaseQueryInput!): [Phase]
+  getPlacingTable(eventId: Int!): [PlacingTable]
+  getPlacingTableDetails(placingTableId: Int!): [PlacingTableDetail]
+  teamProfile(input: TeamQuery!, field: String!): TeamProfile
+  getTeamScoring(phaseId: Int!, type: String!, teamCountryCode: String): [TeamScoring]
+  teamStandings(unitId: Int!, type: String!, teamCountryCode: String, competitionIntermediateOrder: Int): [TeamStandings]
+  getCampaigns: [CampaignToRemove]
+  getCampaign(tag: String!): Campaign
+  verifyCaptchaToken(token: String!): CaptchaResponse
+  verifyHCaptchaToken(token: String!): HCaptchaResponse
+  getUser: User
+  getVerification: [VerifyEmail]
+  getLatestRecords(limit: Int, days: Int): LatestRecords
+  airQualityDevices(filter: AirQualityDeviceFilter): [AirQualityDevice]
+  airQualityDeviceElementReads(deviceId: String!, elementId: String!, from: AWSDateTime!, number: Int): [AirQualityDeviceElementReads]
+  getAppearance(eventId: Int, competitionId: String, siteId: String): Appearance
+  getArticles(ids: [String], RelatedEventIds: [Int], RelatedArticleIds: [Int], types: [Int], orderBy: OrderByEnum, orderDirection: OrderDirectionEnum, limit: Int, offset: Int, relatedCompetition: RelatedCompetitionEnum, RelatedCompetitorIds: [Int], relatedCompetitionIds: [String], RelatedDisciplineTypeNameUrlsSlugs: [String], RelatedEventNameUrlSlug: [String]): [Article]
+  getArticle(urlSlug: String!): Article
+  getNewArticles(language: String, orderBy: OrderByNewArticleEnum, orderDirection: OrderDirectionEnum, limit: Int, offset: Int, relatedEventIds: [Int], relatedCompetitionIds: [String], relatedDisciplineUrlSlug: [String], relatedDisciplineCodes: [String], relatedAthleteUrlSlug: [String], relatedAthleteIds: [String], relatedCompetitionUrlSlug: [String], types: [Int], relatedEventNameUrlSlug: [String], relatedMinisiteIds: [String], relatedLocationIds: [String], relatedCountryCodes: [String], relatedRegionCodes: [String], tags: [String], filterArticleSlug: String, checkHiddenOnMainSite: Boolean, publishedYear: String): [NewArticle]
+  getNewArticle(urlSlug: String!, language: String): NewArticle
+  getDraftedArticle(urlSlug: String!, language: String): NewArticle
+  getAssets(limit: Int, offset: Int, language: String, typeId: String, minisiteId: String, filters: [String], isPublished: Boolean, specificFilterDate: AWSDateTime): [Asset]
+  getAsset(slug: String!, language: String, minisiteId: String): Asset
+  getAssetsTotal(language: String, filters: [String], minisiteId: String, isPublished: Boolean, specificFilterDate: AWSDateTime): AssetsTotal
+  getAssetsDates(language: String, filters: [String], minisiteId: String, isPublished: Boolean, specificFilterDate: AWSDateTime): AssetsDates
+  getTrendingAthletes: [TrendingAthletes]
+  getAthlete(urlSlug: String!): AthleteNewData
+  searchAthletes(eventId: Int!, countryCode: String, disciplineCode: String, sexCode: String, searchValue: String): [AthleteSearch]
+  getAthleteRepresentativeAthleteSearch(countryCode: String, athleteName: String): AthleteRepresentativeAthleteSearch
+  getAthleteProfileAthleteRepresentative(athleteId: Int): AthleteProfileAthleteRepresentative
+  getAthleteRepresentativeProfile(athleteRepresentativeId: Int): AthleteRepresentativeProfile
+  getAthleteRepresentativeTopList(eventId: Int): AthletesRepresentativeTopList
+  getAthleteRepresentativeDirectory: [AthleteShortProfile]
+  getBanners: Banner
+  getCarousel(type: CarouselTypeEnum!): Carousel
+  getHeroAthletesCarousel(ids: [Int]): [HeroAthletesCarousel]
+  getChampionshipHighlights(competitionId: String, day: Int, currentDay: Int, currentTime: String): ChampionshipHighlights
+  getAllCompetitions: CompetitonResponse
+  getCompetitionOrganiserInfo(competitionId: Int!): competitionInformation
+  getWawCompetition(urlSlug: String!): Competition
+  getWawCompetitionEventsOrganizerDetails(urlSlug: String!): [EventOrganizerDetails]
+  getSingleCompetitor(id: Int, urlSlug: String, ids: [Int]): singleCompetitor
+  getSingleCompetitorResultsDiscipline(id: Int, resultsByYear: Int, resultsByYearOrderBy: String): singleCompetitorResults
+  getSingleCompetitorResultsDate(id: Int, resultsByYear: Int, resultsByYearOrderBy: String): resultsByDateType
+  getSingleCompetitorMajorChampionships(id: Int, urlSlug: String!, ids: [Int]): majorChampionshipType
+  getSingleCompetitorAllTimePersonalTop10(id: Int, urlSlug: String, ids: [Int], allTimePersonalTop10Discipline: Int): allTimePersonalTop10Type
+  getSingleCompetitorHonourSummary(id: Int, urlSlug: String!, ids: [Int]): [honourSummary]
+  getSingleCompetitorResultsByLimit(id: Int, urlSlug: String, ids: [Int], resultsByLimitsDiscipline: String, resultsByLimitsStartDate: String, resultsByLimitsEndDate: String, resultsByLimitsOnlyRegular: Boolean): resultsByLimit
+  getSingleCompetitorWinningStreak(id: Int, urlSlug: String, ids: [Int], winningStreaksDisciplineOption: String, winningStreaksStartDate: String, winningStreaksEndDate: String, winningStreaksFinalOnly: Boolean): winningStreaksType
+  headToHead(id: Int, headToHeadDiscipline: String, headToHeadOpponent: Int, headToHeadStartDate: String, headToHeadEndDate: String, headToHeadFinalOnly: Boolean): HeadToHeadResponseType
+  getSingleCompetitorSeasonBests(id: Int, seasonsBestsSeason: Int): seasonsBestsType
+  getCompetitorAAId(iaafId: Int): Int
+  countriesByEventId(eventId: Int): [Country]
+  getCountries: [Country]
+  getDiscipline(urlSlug: String!): DisciplineDetail
+  disciplinesByEventId(eventId: Int!): [DisciplineDetail]
+  getCalendarEvents(startDate: String, endDate: String, query: String, regionType: String, regionId: Int, disciplineId: Int, rankingCategoryId: Int, permitLevelId: Int, currentSeason: Boolean, competitionGroupId: Int, competitionGroupSlug: String, competitionSubgroupId: Int, limit: Int, offset: Int, showOptionsWithNoHits: Boolean, hideCompetitionsWithNoResults: Boolean, orderDirection: OrderDirectionEnum): CalendarEvents
+  getCalendarCompetitionResults(competitionId: Int, day: Int, eventId: Int): CalendarCompetitionResults
+  getMinisiteCalendarEvents(season: String, competitionGroupId: Int, competitionSubgroupId: Int): CalendarEvents
+  getEventCircuitStandings(eventCircuitTypeCode: String, season: Int, sexCode: String): EventCircuitStandings
+  getEventLeadingStandings(eventCircuitTypeCode: String): [EventLeadingStandingsType]
+  getEventPhases(eventId: Int, orderBy: eventPhaseOrderByEnum, orderDirection: OrderDirectionEnum): [eventPhase]
+  getEventPhaseByDiscipline(eventId: Int, disciplineCode: String, sexCode: String, phaseCode: String, combinedEvent: String): eventPhaseWithResults
+  getAllEventPhasesByDiscipline(eventId: Int, disciplineCode: String, sexCode: String, combinedEvent: String): [eventPhase]
+  getCombinedPoints(eventId: Int, sexCode: String, combinedDisciplineType: String, currentCombinedDiscipline: String): combinedPointsResponse
+  getEventPhaseResults(phaseCode: String, resultOrder: Int, eventId: Int, orderBy: eventPhaseOrderByEnum, orderDirection: OrderDirectionEnum): [EventPhaseResults]
+  getEventPhaseResultDetail(countryCode: String, eventId: Int): [EventPhaseResults]
+  getEventTeamStandings(eventId: Int, orderBy: TeamStandingOrderBy, orderDirection: OrderDirectionEnum): [EventTeamStandings]
+  getEventTeamStandingDetails(teamId: Int, orderDirection: OrderDirectionEnum): [EventTeamStandingDetails]
+  getEventTimetable(eventId: Int, orderBy: eventPhaseOrderByEnum, orderDirection: OrderDirectionEnum): [eventPhase]
+  getEvents(subCategoryNameUrlSlug: String, circuitTypeCode: String, orderBy: OrderByEnum, orderDirection: OrderDirectionEnum, limit: Int, offset: Int): [WAWEvent]
+  getWawEvent(nameUrlSlug: String, id: Int, circuitTypeCode: String, subCategoryNameUrlSlug: String): WAWEvent
+  getWawEventCountryList(nameUrlSlug: String, id: Int): [WawEventCountryList]
+  getFilterTypes(limit: Int, offset: Int, language: String, minisiteId: String): [FilterType]
+  getAllGoldTourEvents: GoldEvents
+  getLatestQualifiedCompetitors(competitionId: Int!, limit: Int, offset: Int): LatestQualifiedCompetitors
+  getChampionshipQualifications(competitionId: Int!, eventId: Int, country: String, qualificationType: String): ChampionshipQualificationCompetitors
+  getLeadingAthletes(limit: Int, countryOfResidence: String, preferredCountry: String, all: Boolean): LeadingAthletes
+  getLiveBlogPosts(parentId: String, limit: Int, offset: Int, orderBy: OrderByLiveBlogPostEnum, orderDirection: OrderDirectionEnum): [LiveBlogPost]
+  getArticleLocations(minisiteId: String, tags: [String]): [Location]
+  getMedals(eventId: Int, orderBy: medalsOrderByEnum, orderDirection: OrderDirectionEnum, countryCode: String): [Medals]
+  getWawMedalDetails(medalTableId: Int, orderDirection: OrderDirectionEnum): [WawMedalDetails]
+  getMedias(ids: [String], RelatedEventNameUrlSlug: String, types: [Int], orderBy: OrderByEnum, orderDirection: OrderDirectionEnum, limit: Int, offset: Int): [Media]
+  getNewMedias(featuredAthleteIds: [Int], relatedEventId: [Int], relatedCompetitionIds: [String], limit: Int, offset: Int, orderDirection: OrderDirectionEnum): [NewMedia]
+  getMedia(id: String!): Media
+  getCompetitorsLegacyPrimaryMedia(ids: [Int]!): [CompetitorPrimaryMedia]
+  getWawMenu(language: String, type: String, relatedEventId: Int, relatedEventNameUrlSlug: String, siteId: String): WawMenu
+  resultsByAthlete(athleteIds: [String], countryOfResidence: String, limit: Int, preferredCountry: String): ResultsByAthleteResult
+  competitionsByCountry(countryOfResidence: String, limit: Int, preferredCountry: String): CompetitionByCountryResult
+  myAthletes(countryOfResidence: String, athleteIds: [String], preferredCountry: String, limit: Int): [MyAthletesResult]
+  getOnThisDay(limit: Int): OnThisDay
+  getPage(urlSlug: String, relatedEventId: Int, language: String!, typeId: String, siteId: String): Page
+  getWawPlacingTables(eventId: Int, orderBy: PlacingTableOrderBy, orderDirection: OrderDirectionEnum): [WawPlacingTable]
+  getWawPlacingTableDetails(placingTableId: Int, orderDirection: OrderDirectionEnum): [WawPlacingTableDetails]
+  getPreChampionshipHighlights(competitionId: String): PreChampionshipHighlights
+  getRankingScoreCalculation(athleteId: Int): RankingScoreCalculation
+  getResultInfo(competitionId: String, eventId: Int, isOther: Boolean): [ResultInfo]
+  searchCompetitors(query: String, gender: GenderType, disciplineCode: String, environment: String, countryCode: String): [AthleteSearchResult]
+  getSocialCarousel: [SocialCarouselItem]
+  getSpikes(orderBy: OrderByEnum, orderDirection: OrderDirectionEnum, limit: Int, offset: Int, RelatedCompetitorIds: [Int]): [SpikeArticle]
+  getTopRankings(limit: Int, all: Boolean): TopRankings
+  getUpcomingCompetitions(today: String): [UpcomingCompetitions]
+  getVideoList(limit: Int, offset: Int, language: String, playlistId: String, type: String, slug: String, isRelatedVideos: Boolean): [VideoPublished]
+  getVideoById(contentId: String!, language: String): VideoPublished
+  getVideosTotalNumber(language: String, playlistId: String, type: String, slug: String): VideoTotalNumber
+  getVideoPlaylist: [Playlist]
+  getVocabulary(language: String!): Vocabulary
+  getVoteOptions: [VoteOption]
+  getUsersVotes(userCognitoId: String): [VoteUser]
+  getWorldLeadingCompetitors(limit: Int, all: Boolean): WorldLeadingCompetitors
+  getMetaData(types: [MetaDataTypes]!): AAMetaData
+  getRecentResults(limit: Int): RecentResults
+  getWorldRankings(rankDate: AWSDateTime, eventGroup: String, regionType: String, region: String, limit: Int, limitByCountry: Int): WorldRankings
+  getRandomWorldRankingDiscipline(limit: Int, rankingLimit: Int): [WorldRankingDiscipline]
+  getWorldRankingsChanges(all: Boolean, limit: Int): WorldRankingsChanges
+}
+
+type RankingGroups {
+  eventGroup: String
+  events: [SingleRankingGroup]
+}
+
+type RankingScoreCalculation {
+  rankDate: String
+  eventGroup: String
+  male: Boolean
+  athlete: String
+  athleteUrlSlug: String
+  birthDate: String
+  country: String
+  countryFullName: String
+  place: Int
+  withWind: Boolean
+  withDrop: Boolean
+  withWorldRecord: Boolean
+  withMonthCorrection: Boolean
+  averagePerformanceScore: Int
+  rankingScore: Int
+  results: [RankingScoreCalculationResults]
+}
+
+type RankingScoreCalculationResults {
+  date: String
+  competition: String
+  country: String
+  category: String
+  disciplineCode: String
+  disciplineNameUrlSlug: String
+  typeNameUrlSlug: String
+  indoor: Boolean
+  discipline: String
+  race: String
+  place: String
+  mark: String
+  wind: String
+  drop: String
+  resultScore: Int
+  worldRecord: Int
+  placingScore: Int
+  performanceScore: Int
+  monthCorrectionApplied: Boolean
+}
+
+type RecentResults {
+  moduleTitle: String
+  moduleSubtitle: String
+  results: [RecentResultsItem]
+}
+
+type RecentResultsItem {
+  id: Int
+  iaafId: Int
+  name: String
+  venue: String
+  startDate: AWSDateTime
+  endDate: AWSDateTime
+  event: WAWEvent
+}
+
+type RecordsByDiscipline {
+  progressionListId: Int
+  category: String
+  performance: String
+  equal: Boolean
+  pending: Boolean
+  setIndoor: Boolean
+  womenOnly: Boolean
+  mixed: Boolean
+  yard: Boolean
+  wind: String
+  competitor: StatsResultCompetitior
+  country: String
+  venue: String
+  date: String
+  legend: String
+  discipline: String
+  disciplineNameUrlSlug: String
+}
+
+enum RelatedCompetitionEnum {
+  FeaturedResults
+}
+
+type RelatedLinksObj {
+  displayText: String
+  url: String
+}
+
+type RelatedTags {
+  id: ID
+  displayText: String
+  url: String
+}
+
+type representativeType {
+  _id: Int
+  name: String
+  countryCode: String
+  countryName: String
+  email: String
+  telephone: String
+  mobile: String
+  website: [String]
+}
+
+type Response {
+  status: Int
+  message: String
+}
+
+type resultByYearParamsType {
+  resultsByYear: Int
+  resultsByYearOrderBy: String
+}
+
+type ResultInfo {
+  id: String
+  title: String
+  fileName: String
+  infoType: Int
+  eventId: Int
+  competitionId: String
+}
+
+type ResultsByAthleteResult {
+  results: [AthleteResult]
+  parameters: ParametersAthleteResult
+}
+
+type resultsByDateResults {
+  date: String
+  competition: String
+  venue: String
+  indoor: Boolean
+  disciplineCode: String
+  disciplineNameUrlSlug: String
+  typeNameUrlSlug: String
+  discipline: String
+  country: String
+  category: String
+  race: String
+  place: String
+  mark: String
+  wind: String
+  notLegal: Boolean
+  resultScore: Int
+  remark: String
+}
+
+type resultsByDateType {
+  parameters: resultByYearParamsType
+  activeYears: [String]
+  resultsByDate: [resultsByDateResults]
+}
+
+type resultsByEvent {
+  indoor: Boolean
+  disciplineCode: String
+  disciplineNameUrlSlug: String
+  typeNameUrlSlug: String
+  discipline: String
+  withWind: Boolean
+  results: [resultsByEventResult]
+}
+
+type resultsByEventResult {
+  date: String
+  competition: String
+  venue: String
+  country: String
+  category: String
+  race: String
+  place: String
+  mark: String
+  wind: String
+  notLegal: Boolean
+  resultScore: Int
+  remark: String
+}
+
+type resultsByEventType {
+  parameters: resultByYearParamsType
+  activeYears: [String]
+  resultsByEvent: [singleCompetitorResult]
+}
+
+type resultsByLimit {
+  parameters: resultsByLimitParams
+  disciplines: [resultsByLimitDisciplines]
+  results: [byLimitResults]
+}
+
+type resultsByLimitDisciplines {
+  id: String
+  name: String
+}
+
+type resultsByLimitParams {
+  resultsByLimitsDiscipline: String
+  resultsByLimitsStartDate: String
+  resultsByLimitsEndDate: String
+  resultsByLimitsOnlyRegular: Boolean
+}
+
+type resultsByYearType {
+  parameters: resultByYearParamsType
+  activeYears: [String]
+  resultsByEvent: [resultsByEvent]
+}
+
+type ResultType {
+  discipline: String
+  points: String
+  result: String
+  venue: String
+  place: Int
+  date: String
+  details: String
+}
+
+type seasonsBestsParamsType {
+  seasonsBestsSeason: Int
+}
+
+type seasonsBestsType {
+  parameters: seasonsBestsParamsType
+  activeSeasons: [String]
+  withWind: Boolean
+  withRecords: Boolean
+  results: [singleCompetitorResult]
+}
+
+type SeasonsCalendarOption {
+  id: String
+  name: String
+}
+
+type SectionsObj {
+  title: String
+  show: Boolean
+  links: [LinksObj]
+}
+
+type SendSpikesEmailSuccess {
+  status: Int
+}
+
+type series {
+  competitorName: String
+  competitorFirstName: String
+  competitorLastName: String
+  competitorId_WA: Int
+  teamId_WA: Int
+  competitorTypeCode: String
+  resultCountryName: String
+  resultCountryCode: String
+  competitorCountryName: String
+  competitorCountryCode: String
+  competitorId: Int
+  bib: String
+  startlistOrder: Int
+  qualified: String
+  resultWind: String
+  resultMark: String
+  resultOrder: String
+  record: String
+  attempts: [seriesAttempt]
+}
+
+type seriesAttempt {
+  intermediateMark: String
+  intermediateWind: String
+  competitionIntermediateName: String
+  intermediateGap: String
+}
+
+type singleCompetitor {
+  _id: Int
+  basicData: AthleteNewData
+  personalBests: personalBestsType
+  seasonsBests: seasonsBestsType
+  progressionOfSeasonsBests: [singleCompetitorProgression]
+  worldRankings: worldRankingsType
+  honours: [honour]
+  resultsByYear: resultsByYearType
+  resultsByDate: resultsByDateType
+  primaryMediaId: [String]
+  primaryMediaId2: Boolean
+  primaryMedia: [Media]
+  athleteRepresentative: representativeType
+}
+
+type singleCompetitorEventResultOnly {
+  indoor: Boolean
+  disciplineCode: String
+  disciplineNameUrlSlug: String
+  typeNameUrlSlug: String
+  discipline: String
+  withWind: Boolean
+  results: [singleCompetitorResultOnly]
+}
+
+type singleCompetitorProgression {
+  indoor: Boolean
+  disciplineCode: String
+  disciplineNameUrlSlug: String
+  typeNameUrlSlug: String
+  discipline: String
+  withWind: Boolean
+  mainEvent: Boolean
+  results: [singleCompetitorProgressionResult]
+}
+
+type singleCompetitorProgressionResult {
+  season: String
+  numericResult: Float
+  mark: String
+  wind: String
+  venue: String
+  date: String
+  listPosition: Int
+  resultScore: Int
+}
+
+type singleCompetitorResult {
+  indoor: Boolean
+  disciplineCode: String
+  disciplineNameUrlSlug: String
+  typeNameUrlSlug: String
+  discipline: String
+  linkToList: Boolean
+  mark: String
+  combinedPerformances: String
+  wind: String
+  notLegal: Boolean
+  venue: String
+  date: String
+  listPosition: String
+  resultScore: Int
+  records: [String]
+}
+
+type singleCompetitorResultOnly {
+  date: String
+  competition: String
+  venue: String
+  indoor: Boolean
+  country: String
+  category: String
+  race: String
+  place: String
+  mark: String
+  wind: String
+  notLegal: Boolean
+  resultScore: Int
+  remark: String
+}
+
+type singleCompetitorResults {
+  parameters: resultByYearParamsType
+  activeYears: [String]
+  resultsByEvent: [singleCompetitorEventResultOnly]
+  resultsByDate: [singleCompetitorResultOnly]
+}
+
+type SingleRankingGroup {
+  name: String
+  displayName: String
+  gender: String
+  urlSlug: String
+  disciplineCodes: [String]
+}
+
+type SlidesObj {
+  articleId: String
+  articleTitle: String
+  articleSlug: String
+  imageId: String
+  imageEdited: String
+  textPosition: String
+  colour: String
+  url: String
+  standfirst: String
+  linkUrl: String
+  subtitle: String
+  title: String
+  videoUrl: String
+  readMoreLink: String
+  headline: String
+  strapline: String
+  readMoreText: String
+  date: String
+  subheadline: String
+}
+
+type SocialCarouselItem {
+  id: ID
+  urlSlug: String
+  primaryMediaId: [String]
+  primaryMedia: [Media]
+  socialMediaName: String
+  title: String
+}
+
+type SpikeArticle {
+  id: ID
+  title: String
+  spikesLanguage: Int
+  seoTitle: String
+  urlSlug: String
+  metaDescription: String
+  standFirst: String
+  body: String
+  plainTextBody: String
+  articleType: Int
+  primaryMediaId: [String]
+  primaryMedia: [Media]
+  relatedDisciplineCodes: [String]
+  relatedDisciplineTypeNameUrlsSlugs: [String]
+  relatedCompetitorIds: [Int]
+  relatedCompetitionIds: [Int]
+  relatedTags: [RelatedTags]
+  championShip: Boolean
+  featured: Boolean
+  featuredOrder: Int
+  status: Int
+  liveFrom: AWSDateTime
+  createdOn: AWSDateTime
+  updatedById: String
+  updatedOn: AWSDateTime
+  tags: [String]
+  tumblrUrl: String
+  spikesArticleType: Int
+  liveFromDay: Int
+  liveFromMonth: Int
+  liveFromYear: Int
+}
+
+type split {
+  competitionIntermediateResultOrder: Int
+  competitionIntermediateName: String
+  intermediateMark: String
+  intermediateGap: String
+  competitorName: String
+  competitorFirstName: String
+  competitorLastName: String
+  competitorCountryCode: String
+  competitorCountryName: String
+  resultCountryName: String
+  resultCountryCode: String
+  competitorId_WA: Int
+}
+
+type Sponsor {
+  id: String
+  eventId: Int
+  type: String
+  name: String
+  url: String
+  logoScale: String
+  lightBgLogoId: String
+  lightBgLogo: NewMedia
+  lightBgLogoEdited: String
+  darkBgLogoId: String
+  darkBgLogo: NewMedia
+  darkBgLogoEdited: String
+}
+
+type StandingsType {
+  disciplines: String
+  entries: [AthleteType]
+}
+
+type StatsResultCompetitior {
+  name: String
+  iaafId: Int
+  urlSlug: String
+  birthDate: String
+}
+
+type Subscription {
+  updatedLiveResult(unitId: Int!): LiveResultType
+  updatedLivePhaseSummary(phaseId: Int!): LivePhaseSummaryPhaseIdType
+  updatedLiveCombinedSummaryDetails(phaseId: Int!): LiveCombinedSummaryDetailsTypeType
+  updateMedal(eventId: Int!): MedalMutationType
+  newsTickerSet: NewsTicker
+  phaseChanged: Phase
+  teamScoring(phaseId: Int!, type: String!): TeamScoringLive
+  teamStandings(unitId: Int!, type: String!): TeamStandingsLive
+  subscribeToLiveBlogPosts(parentId: String!): LiveBlogPostsUpdate
+}
+
+type Success {
+  status: Int
+}
+
+type SuccessMailChimp {
+  status: String
+  message: String
+}
+
+type SuccessRemoveProfile {
+  success: Boolean
+  message: String
+}
+
+type SuccessVerifyEmail {
+  username: String
+  email: String
+  email_verified: Boolean
+  source: String
+}
+
+type SuccessVoting {
+  vote: String
+}
+
+type SyncMailchimp {
+  email: String
+}
+
+type TeamMembersResult {
+  name: String
+  urlSlug: String
+  id: Int
+  iaafId: Int
+}
+
+type TeamProfile {
+  personalBestInfo: [PersonalBestInfo]
+  personalBests: [CompetitorBest]
+  personalHonourInfo: [PersonalHonourInfo]
+  personalHonour: [CompetitorHonour]
+}
+
+input TeamQuery {
+  teamId: Int
+  teamSex: String
+  indoorOutdoor: String
+}
+
+type TeamScoring {
+  id: ID!
+  teamId: Int
+  teamId_WA: Int
+  phaseId: Int
+  unitId: Int
+  resultId: Int
+  teamName: String
+  teamCountryCode: String
+  competitorId: [Int]
+  athlete: [LiveAthlete]
+  updatedOn: AWSDateTime
+  scoringTeamId: Int
+  scoringTeamOrder: Int
+  scoringTeamDetailOrder: Int
+  bib: String
+  eventStoreId: String
+  chunkOrder: Int
+  chunkId: String
+}
+
+input TeamScoringInput {
+  id: ID!
+  teamId: Int
+  teamId_WA: Int
+  phaseId: Int
+  unitId: Int
+  scoringTeamId: Int
+  resultId: Int
+  oldCompetitorId: Int
+  competitorId: Int
+  competitorId_WA: Int
+  teamName: String
+  teamCountryCode: String
+  updatedOn: AWSDateTime
+  scoringTeamOrder: Int
+  scoringTeamDetailOrder: Int
+  bib: String
+  eventStoreId: String
+  chunkOrder: Int
+  chunkId: String
+}
+
+type TeamScoringLive {
+  phaseId: Int
+  type: String
+  payload: [TeamScoring]
+}
+
+type teamStanding {
+  _id: Int
+  phaseId: Int
+  unitId: Int
+  rank: Int
+  teamId: Int
+  teamName: String
+  teamCountryCode: String
+  standingMark: String
+  competitorId: String
+  teamStandingOrder: Int
+  teamEventPoints: Int
+  teamId_WA: Int
+  competitorId_WA: Int
+  teamMembers: [eventPhaseTeamMember]
+}
+
+enum TeamStandingOrderBy {
+  EVENTTEAMSTANDINGORDER
+}
+
+type TeamStandings {
+  id: Int
+  phaseId: Int
+  unitId: Int
+  type: String
+  competitionIntermediateId: Int
+  competitionIntermediateName: String
+  rank: Int
+  teamId: Int
+  teamId_WA: Int
+  teamName: String
+  teamCountryCode: String
+  standingMark: String
+  liveCurrent: Boolean
+  updatedOn: AWSDateTime
+  teamStandingId: Int
+  competitionIntermediateOrder: Int
+  detailRank: Int
+  standingDetailBib: String
+  competitorId: [Int]
+  relatedAthlete: [LiveAthlete]
+  standingDetailScore: String
+  standingDetailScoring: String
+  teamStandingOrder: Int
+  teamStandingDetailOrder: Int
+  eventStoreId: String
+  chunkOrder: Int
+  chunkId: String
+}
+
+input TeamStandingsInput {
+  id: Int
+  phaseId: Int
+  unitId: Int
+  competitionIntermediateId: Int
+  competitionIntermediateName: String
+  rank: Int
+  teamId: Int
+  teamId_WA: Int
+  teamName: String
+  teamCountryCode: String
+  standingMark: String
+  liveCurrent: Boolean
+  updatedOn: AWSDateTime
+  teamStandingId: Int
+  competitionIntermediateOrder: Int
+  detailRank: Int
+  standingDetailBib: String
+  competitorId: Int
+  competitorId_WA: Int
+  oldCompetitorId: Int
+  standingDetailScore: String
+  standingDetailScoring: String
+  teamStandingOrder: Int
+  teamStandingDetailOrder: Int
+  chunkOrder: Int
+  chunkId: String
+}
+
+type TeamStandingsLive {
+  unitId: Int
+  type: String
+  payload: [TeamStandings]
+}
+
+type Toplist {
+  athletes: [AthleteShortProfile]
+  toplistDate: String
+}
+
+type TopList {
+  event: String
+  toplistDate: String
+  athletes: [AthleteTopList]
+}
+
+type TopListResult {
+  position: Int
+  place: String
+  achieverPosition: Int
+  result: String
+  achiever: String
+  nationality: String
+  venue: String
+  date: String
+  resultScore: Int
+}
+
+type TopListResultResponse {
+  page: Int
+  pages: Int
+  payload: [TopListResult]
+}
+
+type TopRankingItem {
+  rankingCalculationId: Int
+  competitorId: Int
+  oldCompetitorId: Int
+  competitorName: String
+  eventName: String
+  eventUrlSlug: String
+  sexCode: String
+  score: Int
+  countryCode: String
+  primaryMediaId: [String]
+  primaryMedia: [Media]
+}
+
+type TopRankings {
+  moduleTitle: String
+  moduleSubtitle: String
+  rankings: [TopRankingItem]
+}
+
+type TrendingAthletes {
+  id: String
+  athleteIds: [Int]
+  athletesList: [AthleteNewData]
+  primaryMediaId: [String]
+  primaryMedia: [Media]
+}
+
+type UndeterminedCompetitionPeriod {
+  status: String
+  label: String
+  remark: String
+}
+
+type Unit {
+  id: Int
+  phaseId: Int
+  unitName: String
+  unitType: String
+  unitOrder: Int
+  isStartlistPublished: Boolean
+  isResultPublished: Boolean
+  isPhaseSummaryPublished: Boolean
+  isTeamStandingPublished: Boolean
+  combinedDisciplineOrder: String
+  status: String
+  qualificationRuleCode: String
+  updatedOn: String
+  startDate: String
+  startTime: String
+  startDateTime: String
+  wind: String
+}
+
+input UnitInput {
+  id: Int
+  phaseId: Int
+  unitName: String
+  unitType: String
+  unitOrder: Int
+  isStartlistPublished: Boolean
+  isResultPublished: Boolean
+  isPhaseSummaryPublished: Boolean
+  isTeamStandingPublished: Boolean
+  combinedDisciplineOrder: String
+  status: String
+  qualificationRuleCode: String
+  updatedOn: String
+  startDate: String
+  startTime: String
+  startDateTime: String
+  wind: String
+}
+
+type UpcomingCompetitionItem {
+  competitionId: String
+  dateRange: String
+  endDate: String
+  isNextEvent: Boolean
+  name: String
+  startDate: String
+  venue: String
+  urlSlug: String
+}
+
+type UpcomingCompetitions {
+  competitions: [UpcomingCompetitionItem]
+  label: String
+}
+
+type User {
+  cognitoId: ID!
+  registrationDate: String
+  dateModified: String
+  name: String
+  settings: UserSettings
+}
+
+type UserFollowedCompetitorsSuccess {
+  followedCompetitors: [Int]
+}
+
+type UserSettings {
+  firstName: String
+  lastName: String
+  email: String
+  ageGroup: String
+  sex: String
+  countryCode: String
+  nationalTeamSupportCountryCode: String
+  mailingListConsent: Boolean
+  kidsAthleticsTermsAndConditions: String
+  userTypes: [String]
+  userSubTypes: [String]
+  disciplineCategories: [String]
+  interests: [String]
+  contactPreferences: [String]
+  source: String
+  tags: [String]
+  followedCompetitors: [Int]
+}
+
+type UserTermsAndConditionsSuccess {
+  kidsAthleticsTermsAndConditions: String
+}
+
+type VerifyEmail {
+  confirmationCode: String
+  username: String
+}
+
+type Video {
+  thumbnailImageId: String
+  thumbnailImageEdited: String
+  thumbnailImage: NewMedia
+  title: String
+  description: String
+  time: String
+  video: String
+}
+
+type VideoPublished {
+  id: String
+  contentId: String
+  publishedById: String
+  publishedByName: String
+  published: String
+  language: String
+  gatedContent: Boolean
+  campaignId: String
+  tags: [String]
+  title: String
+  thumbnailId: String
+  thumbnailEdited: String
+  videoId: String
+  playerId: String
+  tagId: String
+  standFirst: String
+}
+
+type VideoTotalNumber {
+  total: String
+}
+
+type Vocabulary {
+  vocabulary: AWSJSON
+}
+
+type VoteOption {
+  id: ID
+  order: Int
+  voteId: ID
+  voteName: String
+  optionYear: Int
+  optionAthleteName: String
+  optionDescription: String
+  imageUrl: String
+  votesCount: Int
+}
+
+type VoteUser {
+  id: ID
+  voteId: ID
+  userCognitoId: String
+}
+
+type WAWEvent {
+  id: Int
+  updatedOn: AWSDateTime
+  name: String
+  startDate: AWSDateTime
+  endDate: AWSDateTime
+  hash: String
+  venue: String
+  countryCode: String
+  countryName: String
+  areaCode: String
+  areaName: String
+  ageCode: String
+  indoorOutdoor: String
+  categoryCode: String
+  categoryName: String
+  categoryOrder: Int
+  subCategoryCode: String
+  subCategoryName: String
+  showWebLiveBanner: Boolean
+  subCategoryOrder: Int
+  classCode: String
+  classOrder: Int
+  isPublished: Boolean
+  hasCompDocResults: Boolean
+  nameUrlSlug: String
+  startDateYear: Int
+  circuits: [Circuit]
+  areaNameUrlSlug: String
+  categoryNameUrlSlug: String
+  subCategoryNameUrlSlug: String
+  disciplineCodes: [String]
+  eventId_WA: Int
+  hasTimetable: Boolean
+  page: Page
+  eventStartDateTime: AWSDateTime
+  eventEndDateTime: AWSDateTime
+  venueTimezone: String
+}
+
+type WawEventCountryList {
+  letter: String
+  countries: [WawEventCountryShort]
+}
+
+type WawEventCountryShort {
+  name: String
+  code: String
+  slug: String
+}
+
+type WawMedalDetails {
+  id: Int
+  updatedOn: AWSDateTime
+  hash: String
+  medalTableId: Int
+  typeId: Int
+  disciplineCode: String
+  sexCode: String
+  resultId: Int
+  resultMark: String
+  eventId: Int
+  phaseId: Int
+  medalDate: AWSDateTime
+  detailsOrder: Int
+  competitorId: Int
+  eventId_WA: Int
+  competitorId_WA: Int
+  competitor: CompetitorObj
+  discipline: DisciplineObj
+}
+
+type WawMenu {
+  id: ID
+  title: String
+  type: String
+  isVisible: Boolean
+  eventId: Int
+  event: WAWEvent
+  items: [WawMenuItem]
+}
+
+type WawMenuItem {
+  title: String
+  isVisible: Boolean
+  pageId: ID
+  page: Page
+  items: [WawMenuItem]
+}
+
+type WawPlacingTable {
+  id: Int
+  updatedOn: AWSDateTime
+  hash: String
+  eventId: Int
+  rank: Int
+  countryName: String
+  countryCode: String
+  gold: Int
+  silver: Int
+  bronze: Int
+  forth: Int
+  fifth: Int
+  sixth: Int
+  seventh: Int
+  eighth: Int
+  points: Int
+  tableOrder: Int
+  eventId_WA: Int
+  subCategoryCode: String
+}
+
+type WawPlacingTableDetails {
+  id: Int
+  updatedOn: AWSDateTime
+  hash: String
+  placingTableId: Int
+  typeId: Int
+  typeName: String
+  typeAbbreviation: String
+  disciplineCode: String
+  sexCode: String
+  resultId: Int
+  resultMark: String
+  placingPoints: Int
+  eventId: Int
+  phaseId: Int
+  competitorId_WA: Int
+  eventId_WA: Int
+  placingDate: AWSDateTime
+  detailsOrder: Int
+  competitorId: Int
+
+  """  From functions\waw\medal\medals.graphql"""
+  competitor: CompetitorObj
+
+  """  From functions\waw\medal\medals.graphql"""
+  discipline: DisciplineObj
+}
+
+type winningStreaks {
+  length: Int
+  results: [winningStreaksDetails]
+}
+
+type winningStreaksDetails {
+  date: String
+  venue: String
+  competition: String
+  race: String
+  result: String
+  discipline: String
+}
+
+type winningStreaksDisciplines {
+  id: String
+  name: String
+}
+
+type winningStreaksParamsType {
+  winningStreaksDisciplineOption: String
+  winningStreaksStartDate: String
+  winningStreaksEndDate: String
+  winningStreaksFinalOnly: Boolean
+}
+
+type winningStreaksType {
+  parameters: winningStreaksParamsType
+  disciplineOptions: [winningStreaksDisciplines]
+  streaks: [winningStreaks]
+}
+
+type WorldLeadingCompetitors {
+  moduleTitle: String
+  moduleSubtitle: String
+  eventResults: [WorldLeadingCompetitorsEventResults]
+}
+
+type WorldLeadingCompetitorsEventResults {
+  eventName: String
+  environment: String
+  ageCategory: String
+  season: Int
+  disciplineUrlSlug: String
+  disciplineTypeUrlSlug: String
+  sexCode: String
+  results: [WorldLeadingCompetitorsResultItem]
+}
+
+type WorldLeadingCompetitorsResultItem {
+  mark: String
+  countryCode: String
+  competitor: AACompetitor
+  primaryMediaId: [String]
+  primaryMedia: [Media]
+}
+
+type WorldRanking {
+  id: Int
+  place: Int
+  worldPlace: Int
+  athlete: String
+  athleteUrlSlug: String
+  birthDate: String
+  nationality: String
+  rankingScore: Int
+  disciplines: String
+  countryPlace: Int
+  previousId: Int
+  previousPlace: Int
+  previousRankingScore: Int
+}
+
+type worldRankingBest {
+  eventGroup: String
+  eventGroupId: Int
+  urlSlug: String
+  place: String
+  weeks: Int
+}
+
+type worldRankingCurrent {
+  rankingCalculationId: String
+  eventGroup: String
+  male: Boolean
+  urlSlug: String
+  place: Int
+  rankingScore: Int
+}
+
+type WorldRankingDiscipline {
+  name: String
+  displayName: String
+  gender: String
+  urlSlug: String
+  disciplineCodes: [String]
+  rankings: [WorldRankingItem]
+  query: WorldRankingQuery
+}
+
+type WorldRankingItem {
+  id: Int!
+  place: Int
+  competitorName: String
+  competitorCountryUrlSlug: String
+  competitorUrlSlug: String
+  competitorBirthDate: AWSDateTime
+  countryCode: String
+  rankingScore: Int
+  disciplineCodes: [String]
+  countryPlace: Int
+  previousId: Int
+  previousPlace: Int
+  previousRankingScore: Int
+}
+
+type WorldRankingQuery {
+  limit: Int
+  gender: String
+  eventGroup: String
+}
+
+type WorldRankings {
+  parameters: WorldRankingsParameters
+  rankDate: String
+  eventGroup: String
+  rankings: [WorldRankingItem]
+}
+
+type WorldRankingsChanges {
+  moduleTitle: String
+  moduleSubtitle: String
+  changes: [WorldRankingsChangesItem]
+}
+
+type WorldRankingsChangesItem {
+  rankingCalculationId: Int
+  place: Int
+  previousPlace: Int
+  improvement: String
+  eventName: String
+  eventUrlSlug: String
+  score: Int
+  competitorId: Int
+  competitorName: String
+  sexCode: String
+  countryCode: String
+}
+
+type WorldRankingsParameters {
+  rankDate: AWSDateTime
+  gender: String
+  eventGroup: String
+  regionType: String
+  limitedByCountry: Int
+  limit: Int
+}
+
+type worldRankingsParamsType {
+  worldRankingsProgressionYear: Int
+}
+
+type worldRankingsType {
+  parameters: worldRankingsParamsType
+  current: [worldRankingCurrent]
+  best: [worldRankingBest]
+}
+
+type WorldRecord {
+  competitor: ChampionshipCompetitor
+  equal: Boolean
+  mark: String
+  pending: Boolean
+  year: String
+}
+

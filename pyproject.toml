@@ -1,0 +1,4 @@
+[tool.ariadne-codegen]
+queries_path = "graphql/queries.graphql"
+remote_schema_url="https://shlwweoaknf2jhtcqtqvxge6hq.appsync-api.eu-west-1.amazonaws.com/graphql"
+remote_schema_headers={"x-api-key"="da2-ufjvaayl2nbfjkp7fnv6befsoq", "x-amz-user-agent"="aws-amplify/3.0.2"}
