@@ -1492,6 +1492,7 @@ query GetUser {
       countryCode
       nationalTeamSupportCountryCode
       mailingListConsent
+      globalTokyoMailingListConsent
       kidsAthleticsTermsAndConditions
       userTypes
       userSubTypes
@@ -1501,6 +1502,13 @@ query GetUser {
       source
       tags
       followedCompetitors
+      followedCountries {
+        competition
+        countries
+      }
+      nickname
+      locale
+      countryRegionCode
     }
   }
 }
@@ -2095,6 +2103,7 @@ query GetArticles($ids: [String], $RelatedEventIds: [Int], $RelatedArticleIds: [
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         lastEvent {
           id
@@ -2132,6 +2141,7 @@ query GetArticles($ids: [String], $RelatedEventIds: [Int], $RelatedArticleIds: [
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         nextEventStartDate
         pageId
@@ -2303,6 +2313,7 @@ query GetArticles($ids: [String], $RelatedEventIds: [Int], $RelatedArticleIds: [
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       lastEvent {
         id
@@ -2366,6 +2377,7 @@ query GetArticles($ids: [String], $RelatedEventIds: [Int], $RelatedArticleIds: [
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       nextEventStartDate
       pageId
@@ -2412,6 +2424,7 @@ query GetArticles($ids: [String], $RelatedEventIds: [Int], $RelatedArticleIds: [
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -2904,6 +2917,7 @@ query GetArticle($urlSlug: String!) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         lastEvent {
           id
@@ -2941,6 +2955,7 @@ query GetArticle($urlSlug: String!) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         nextEventStartDate
         pageId
@@ -3112,6 +3127,7 @@ query GetArticle($urlSlug: String!) {
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       lastEvent {
         id
@@ -3175,6 +3191,7 @@ query GetArticle($urlSlug: String!) {
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       nextEventStartDate
       pageId
@@ -3221,6 +3238,7 @@ query GetArticle($urlSlug: String!) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -3467,6 +3485,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -3557,6 +3576,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
       eventStartDateTime
       eventEndDateTime
       venueTimezone
+      bannerLeadTimeInHours
     }
     blogUpdated
     liveBlog
@@ -3628,6 +3648,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
       facebookUsername
       twitterUsername
       instagramUsername
+      male
       mediaIds
     }
     relatedDisciplineCodes
@@ -3653,6 +3674,120 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
       isValidIAAF
       nameUrlSlug
       typeNameUrlSlug
+    }
+    relatedDisciplineCodesWithSex
+    relatedDisciplineStats {
+      discipline {
+        sexName
+        disciplineName
+        disciplineCode
+        urlSlug
+        isRelay
+      }
+      seasonBest {
+        aaId
+        result
+        urlSlug
+        achiever
+        nationality
+        resultScore
+        achieverPosition
+      }
+      previousMedalists {
+        name
+        countryCode
+        typeId
+        resultMark
+        urlSlug
+        countryUrlSlug
+        linkUrl
+      }
+      records {
+        categoryId
+        resultMark
+        name
+        countryCode
+        urlSlug
+        linkUrl
+        pending
+      }
+      timetable {
+        id
+        updatedOn
+        hash
+        phaseCode
+        phaseName
+        eventID
+        phaseDateAndTime
+        sexCode
+        sexName
+        discipline {
+          updatedOn
+          hash
+          _id
+          name
+          typeCode
+          typeName
+          typeOrder
+          order
+          isTrack
+          isField
+          isRoad
+          isCombined
+          isWalk
+          isIndoor
+          isReaction
+          isOutdoor
+          isWind
+          isRelay
+          isValidIAAF
+          nameUrlSlug
+          typeNameUrlSlug
+        }
+        isStartlistPublished
+        isResultPublished
+        isPhaseSummaryPublished
+        isTeamStandingPublished
+        combinedDisciplineOrder
+        phaseOrder
+        phaseSessionName
+        phaseSessionOrder
+        status
+        hasTime
+        eventId_WA
+        primaryPhaseOrder
+        isPointsPublished
+        phaseNameUrlSlug
+        sexNameUrlSlug
+        unitName
+        unitTypeName
+        urlSlug
+      }
+      results {
+        date
+        day
+        race
+        raceId
+        raceNumber
+        wind
+        results {
+          id
+          mark
+          nationality
+          place
+          points
+          qualified
+          records
+          wind
+          remark
+        }
+        startList {
+          order
+          pb
+          sb
+          bib
+        }
+      }
     }
     relatedCompetitionIds
     relatedCompetitions {
@@ -3734,6 +3869,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       lastEvent {
         id
@@ -3797,6 +3933,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       nextEventStartDate
       pageId
@@ -3843,6 +3980,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -4018,6 +4156,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -4108,6 +4247,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
       eventStartDateTime
       eventEndDateTime
       venueTimezone
+      bannerLeadTimeInHours
     }
     relatedArticleIds
     relatedArticles {
@@ -4208,6 +4348,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       blogUpdated
       liveBlog
@@ -4279,6 +4420,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
         facebookUsername
         twitterUsername
         instagramUsername
+        male
         mediaIds
       }
       relatedDisciplineCodes
@@ -4304,6 +4446,80 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
         isValidIAAF
         nameUrlSlug
         typeNameUrlSlug
+      }
+      relatedDisciplineCodesWithSex
+      relatedDisciplineStats {
+        discipline {
+          sexName
+          disciplineName
+          disciplineCode
+          urlSlug
+          isRelay
+        }
+        seasonBest {
+          aaId
+          result
+          urlSlug
+          achiever
+          nationality
+          resultScore
+          achieverPosition
+        }
+        previousMedalists {
+          name
+          countryCode
+          typeId
+          resultMark
+          urlSlug
+          countryUrlSlug
+          linkUrl
+        }
+        records {
+          categoryId
+          resultMark
+          name
+          countryCode
+          urlSlug
+          linkUrl
+          pending
+        }
+        timetable {
+          id
+          updatedOn
+          hash
+          phaseCode
+          phaseName
+          eventID
+          phaseDateAndTime
+          sexCode
+          sexName
+          isStartlistPublished
+          isResultPublished
+          isPhaseSummaryPublished
+          isTeamStandingPublished
+          combinedDisciplineOrder
+          phaseOrder
+          phaseSessionName
+          phaseSessionOrder
+          status
+          hasTime
+          eventId_WA
+          primaryPhaseOrder
+          isPointsPublished
+          phaseNameUrlSlug
+          sexNameUrlSlug
+          unitName
+          unitTypeName
+          urlSlug
+        }
+        results {
+          date
+          day
+          race
+          raceId
+          raceNumber
+          wind
+        }
       }
       relatedCompetitionIds
       relatedCompetitions {
@@ -4359,6 +4575,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         lastEvent {
           id
@@ -4396,6 +4613,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         nextEventStartDate
         pageId
@@ -4479,6 +4697,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       relatedArticleIds
       relatedArticles {
@@ -4553,6 +4772,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         blogUpdated
         liveBlog
@@ -4595,6 +4815,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           facebookUsername
           twitterUsername
           instagramUsername
+          male
           mediaIds
         }
         relatedDisciplineCodes
@@ -4621,6 +4842,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           nameUrlSlug
           typeNameUrlSlug
         }
+        relatedDisciplineCodesWithSex
         relatedCompetitionIds
         relatedCompetitions {
           id
@@ -4679,6 +4901,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         relatedArticleIds
         relatedArticles {
@@ -4709,6 +4932,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           language
           relatedCompetitorIds
           relatedDisciplineCodes
+          relatedDisciplineCodesWithSex
           relatedCompetitionIds
           relatedEventIds
           relatedArticleIds
@@ -4760,6 +4984,8 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           videoIds
           videoPlaylistId
           videoId
+          tagId
+          slug
         }
         gatedContent
       }
@@ -4807,6 +5033,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -4938,8 +5165,13 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           playerId
           tagId
           standFirst
+          signedInCTA
+          signedOutCTA
+          metatags
+          thumbnailTitle
         }
         videoId
+        tagId
         relatedVideo {
           id
           contentId
@@ -4957,7 +5189,12 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           playerId
           tagId
           standFirst
+          signedInCTA
+          signedOutCTA
+          metatags
+          thumbnailTitle
         }
+        slug
       }
       gatedContent
     }
@@ -5031,6 +5268,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       siteId
       minisite {
@@ -5137,6 +5375,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           language
           relatedCompetitorIds
           relatedDisciplineCodes
+          relatedDisciplineCodesWithSex
           relatedCompetitionIds
           relatedEventIds
           relatedArticleIds
@@ -5188,6 +5427,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         relatedCompetitorIds
         relatedCompetitors {
@@ -5227,6 +5467,7 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           facebookUsername
           twitterUsername
           instagramUsername
+          male
           mediaIds
         }
         relatedDisciplineCodes
@@ -5407,6 +5648,10 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           playerId
           tagId
           standFirst
+          signedInCTA
+          signedOutCTA
+          metatags
+          thumbnailTitle
         }
         videoId
         relatedVideo {
@@ -5426,6 +5671,10 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
           playerId
           tagId
           standFirst
+          signedInCTA
+          signedOutCTA
+          metatags
+          thumbnailTitle
         }
       }
       gatedContent
@@ -5498,8 +5747,13 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
         playerId
         tagId
         standFirst
+        signedInCTA
+        signedOutCTA
+        metatags
+        thumbnailTitle
       }
       videoId
+      tagId
       relatedVideo {
         id
         contentId
@@ -5517,7 +5771,12 @@ query GetNewArticles($language: String, $orderBy: OrderByNewArticleEnum, $orderD
         playerId
         tagId
         standFirst
+        signedInCTA
+        signedOutCTA
+        metatags
+        thumbnailTitle
       }
+      slug
     }
     gatedContent
   }
@@ -5646,6 +5905,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -5736,6 +5996,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
       eventStartDateTime
       eventEndDateTime
       venueTimezone
+      bannerLeadTimeInHours
     }
     blogUpdated
     liveBlog
@@ -5807,6 +6068,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
       facebookUsername
       twitterUsername
       instagramUsername
+      male
       mediaIds
     }
     relatedDisciplineCodes
@@ -5832,6 +6094,120 @@ query GetNewArticle($urlSlug: String!, $language: String) {
       isValidIAAF
       nameUrlSlug
       typeNameUrlSlug
+    }
+    relatedDisciplineCodesWithSex
+    relatedDisciplineStats {
+      discipline {
+        sexName
+        disciplineName
+        disciplineCode
+        urlSlug
+        isRelay
+      }
+      seasonBest {
+        aaId
+        result
+        urlSlug
+        achiever
+        nationality
+        resultScore
+        achieverPosition
+      }
+      previousMedalists {
+        name
+        countryCode
+        typeId
+        resultMark
+        urlSlug
+        countryUrlSlug
+        linkUrl
+      }
+      records {
+        categoryId
+        resultMark
+        name
+        countryCode
+        urlSlug
+        linkUrl
+        pending
+      }
+      timetable {
+        id
+        updatedOn
+        hash
+        phaseCode
+        phaseName
+        eventID
+        phaseDateAndTime
+        sexCode
+        sexName
+        discipline {
+          updatedOn
+          hash
+          _id
+          name
+          typeCode
+          typeName
+          typeOrder
+          order
+          isTrack
+          isField
+          isRoad
+          isCombined
+          isWalk
+          isIndoor
+          isReaction
+          isOutdoor
+          isWind
+          isRelay
+          isValidIAAF
+          nameUrlSlug
+          typeNameUrlSlug
+        }
+        isStartlistPublished
+        isResultPublished
+        isPhaseSummaryPublished
+        isTeamStandingPublished
+        combinedDisciplineOrder
+        phaseOrder
+        phaseSessionName
+        phaseSessionOrder
+        status
+        hasTime
+        eventId_WA
+        primaryPhaseOrder
+        isPointsPublished
+        phaseNameUrlSlug
+        sexNameUrlSlug
+        unitName
+        unitTypeName
+        urlSlug
+      }
+      results {
+        date
+        day
+        race
+        raceId
+        raceNumber
+        wind
+        results {
+          id
+          mark
+          nationality
+          place
+          points
+          qualified
+          records
+          wind
+          remark
+        }
+        startList {
+          order
+          pb
+          sb
+          bib
+        }
+      }
     }
     relatedCompetitionIds
     relatedCompetitions {
@@ -5913,6 +6289,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       lastEvent {
         id
@@ -5976,6 +6353,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       nextEventStartDate
       pageId
@@ -6022,6 +6400,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -6197,6 +6576,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -6287,6 +6667,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
       eventStartDateTime
       eventEndDateTime
       venueTimezone
+      bannerLeadTimeInHours
     }
     relatedArticleIds
     relatedArticles {
@@ -6387,6 +6768,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       blogUpdated
       liveBlog
@@ -6458,6 +6840,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
         facebookUsername
         twitterUsername
         instagramUsername
+        male
         mediaIds
       }
       relatedDisciplineCodes
@@ -6483,6 +6866,80 @@ query GetNewArticle($urlSlug: String!, $language: String) {
         isValidIAAF
         nameUrlSlug
         typeNameUrlSlug
+      }
+      relatedDisciplineCodesWithSex
+      relatedDisciplineStats {
+        discipline {
+          sexName
+          disciplineName
+          disciplineCode
+          urlSlug
+          isRelay
+        }
+        seasonBest {
+          aaId
+          result
+          urlSlug
+          achiever
+          nationality
+          resultScore
+          achieverPosition
+        }
+        previousMedalists {
+          name
+          countryCode
+          typeId
+          resultMark
+          urlSlug
+          countryUrlSlug
+          linkUrl
+        }
+        records {
+          categoryId
+          resultMark
+          name
+          countryCode
+          urlSlug
+          linkUrl
+          pending
+        }
+        timetable {
+          id
+          updatedOn
+          hash
+          phaseCode
+          phaseName
+          eventID
+          phaseDateAndTime
+          sexCode
+          sexName
+          isStartlistPublished
+          isResultPublished
+          isPhaseSummaryPublished
+          isTeamStandingPublished
+          combinedDisciplineOrder
+          phaseOrder
+          phaseSessionName
+          phaseSessionOrder
+          status
+          hasTime
+          eventId_WA
+          primaryPhaseOrder
+          isPointsPublished
+          phaseNameUrlSlug
+          sexNameUrlSlug
+          unitName
+          unitTypeName
+          urlSlug
+        }
+        results {
+          date
+          day
+          race
+          raceId
+          raceNumber
+          wind
+        }
       }
       relatedCompetitionIds
       relatedCompetitions {
@@ -6538,6 +6995,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         lastEvent {
           id
@@ -6575,6 +7033,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         nextEventStartDate
         pageId
@@ -6658,6 +7117,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       relatedArticleIds
       relatedArticles {
@@ -6732,6 +7192,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         blogUpdated
         liveBlog
@@ -6774,6 +7235,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           facebookUsername
           twitterUsername
           instagramUsername
+          male
           mediaIds
         }
         relatedDisciplineCodes
@@ -6800,6 +7262,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           nameUrlSlug
           typeNameUrlSlug
         }
+        relatedDisciplineCodesWithSex
         relatedCompetitionIds
         relatedCompetitions {
           id
@@ -6858,6 +7321,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         relatedArticleIds
         relatedArticles {
@@ -6888,6 +7352,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           language
           relatedCompetitorIds
           relatedDisciplineCodes
+          relatedDisciplineCodesWithSex
           relatedCompetitionIds
           relatedEventIds
           relatedArticleIds
@@ -6939,6 +7404,8 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           videoIds
           videoPlaylistId
           videoId
+          tagId
+          slug
         }
         gatedContent
       }
@@ -6986,6 +7453,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -7117,8 +7585,13 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           playerId
           tagId
           standFirst
+          signedInCTA
+          signedOutCTA
+          metatags
+          thumbnailTitle
         }
         videoId
+        tagId
         relatedVideo {
           id
           contentId
@@ -7136,7 +7609,12 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           playerId
           tagId
           standFirst
+          signedInCTA
+          signedOutCTA
+          metatags
+          thumbnailTitle
         }
+        slug
       }
       gatedContent
     }
@@ -7210,6 +7688,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       siteId
       minisite {
@@ -7316,6 +7795,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           language
           relatedCompetitorIds
           relatedDisciplineCodes
+          relatedDisciplineCodesWithSex
           relatedCompetitionIds
           relatedEventIds
           relatedArticleIds
@@ -7367,6 +7847,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         relatedCompetitorIds
         relatedCompetitors {
@@ -7406,6 +7887,7 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           facebookUsername
           twitterUsername
           instagramUsername
+          male
           mediaIds
         }
         relatedDisciplineCodes
@@ -7586,6 +8068,10 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           playerId
           tagId
           standFirst
+          signedInCTA
+          signedOutCTA
+          metatags
+          thumbnailTitle
         }
         videoId
         relatedVideo {
@@ -7605,6 +8091,10 @@ query GetNewArticle($urlSlug: String!, $language: String) {
           playerId
           tagId
           standFirst
+          signedInCTA
+          signedOutCTA
+          metatags
+          thumbnailTitle
         }
       }
       gatedContent
@@ -7677,8 +8167,13 @@ query GetNewArticle($urlSlug: String!, $language: String) {
         playerId
         tagId
         standFirst
+        signedInCTA
+        signedOutCTA
+        metatags
+        thumbnailTitle
       }
       videoId
+      tagId
       relatedVideo {
         id
         contentId
@@ -7696,7 +8191,12 @@ query GetNewArticle($urlSlug: String!, $language: String) {
         playerId
         tagId
         standFirst
+        signedInCTA
+        signedOutCTA
+        metatags
+        thumbnailTitle
       }
+      slug
     }
     gatedContent
   }
@@ -7825,6 +8325,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -7915,6 +8416,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
       eventStartDateTime
       eventEndDateTime
       venueTimezone
+      bannerLeadTimeInHours
     }
     blogUpdated
     liveBlog
@@ -7986,6 +8488,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
       facebookUsername
       twitterUsername
       instagramUsername
+      male
       mediaIds
     }
     relatedDisciplineCodes
@@ -8011,6 +8514,120 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
       isValidIAAF
       nameUrlSlug
       typeNameUrlSlug
+    }
+    relatedDisciplineCodesWithSex
+    relatedDisciplineStats {
+      discipline {
+        sexName
+        disciplineName
+        disciplineCode
+        urlSlug
+        isRelay
+      }
+      seasonBest {
+        aaId
+        result
+        urlSlug
+        achiever
+        nationality
+        resultScore
+        achieverPosition
+      }
+      previousMedalists {
+        name
+        countryCode
+        typeId
+        resultMark
+        urlSlug
+        countryUrlSlug
+        linkUrl
+      }
+      records {
+        categoryId
+        resultMark
+        name
+        countryCode
+        urlSlug
+        linkUrl
+        pending
+      }
+      timetable {
+        id
+        updatedOn
+        hash
+        phaseCode
+        phaseName
+        eventID
+        phaseDateAndTime
+        sexCode
+        sexName
+        discipline {
+          updatedOn
+          hash
+          _id
+          name
+          typeCode
+          typeName
+          typeOrder
+          order
+          isTrack
+          isField
+          isRoad
+          isCombined
+          isWalk
+          isIndoor
+          isReaction
+          isOutdoor
+          isWind
+          isRelay
+          isValidIAAF
+          nameUrlSlug
+          typeNameUrlSlug
+        }
+        isStartlistPublished
+        isResultPublished
+        isPhaseSummaryPublished
+        isTeamStandingPublished
+        combinedDisciplineOrder
+        phaseOrder
+        phaseSessionName
+        phaseSessionOrder
+        status
+        hasTime
+        eventId_WA
+        primaryPhaseOrder
+        isPointsPublished
+        phaseNameUrlSlug
+        sexNameUrlSlug
+        unitName
+        unitTypeName
+        urlSlug
+      }
+      results {
+        date
+        day
+        race
+        raceId
+        raceNumber
+        wind
+        results {
+          id
+          mark
+          nationality
+          place
+          points
+          qualified
+          records
+          wind
+          remark
+        }
+        startList {
+          order
+          pb
+          sb
+          bib
+        }
+      }
     }
     relatedCompetitionIds
     relatedCompetitions {
@@ -8092,6 +8709,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       lastEvent {
         id
@@ -8155,6 +8773,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       nextEventStartDate
       pageId
@@ -8201,6 +8820,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -8376,6 +8996,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -8466,6 +9087,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
       eventStartDateTime
       eventEndDateTime
       venueTimezone
+      bannerLeadTimeInHours
     }
     relatedArticleIds
     relatedArticles {
@@ -8566,6 +9188,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       blogUpdated
       liveBlog
@@ -8637,6 +9260,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
         facebookUsername
         twitterUsername
         instagramUsername
+        male
         mediaIds
       }
       relatedDisciplineCodes
@@ -8662,6 +9286,80 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
         isValidIAAF
         nameUrlSlug
         typeNameUrlSlug
+      }
+      relatedDisciplineCodesWithSex
+      relatedDisciplineStats {
+        discipline {
+          sexName
+          disciplineName
+          disciplineCode
+          urlSlug
+          isRelay
+        }
+        seasonBest {
+          aaId
+          result
+          urlSlug
+          achiever
+          nationality
+          resultScore
+          achieverPosition
+        }
+        previousMedalists {
+          name
+          countryCode
+          typeId
+          resultMark
+          urlSlug
+          countryUrlSlug
+          linkUrl
+        }
+        records {
+          categoryId
+          resultMark
+          name
+          countryCode
+          urlSlug
+          linkUrl
+          pending
+        }
+        timetable {
+          id
+          updatedOn
+          hash
+          phaseCode
+          phaseName
+          eventID
+          phaseDateAndTime
+          sexCode
+          sexName
+          isStartlistPublished
+          isResultPublished
+          isPhaseSummaryPublished
+          isTeamStandingPublished
+          combinedDisciplineOrder
+          phaseOrder
+          phaseSessionName
+          phaseSessionOrder
+          status
+          hasTime
+          eventId_WA
+          primaryPhaseOrder
+          isPointsPublished
+          phaseNameUrlSlug
+          sexNameUrlSlug
+          unitName
+          unitTypeName
+          urlSlug
+        }
+        results {
+          date
+          day
+          race
+          raceId
+          raceNumber
+          wind
+        }
       }
       relatedCompetitionIds
       relatedCompetitions {
@@ -8717,6 +9415,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         lastEvent {
           id
@@ -8754,6 +9453,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         nextEventStartDate
         pageId
@@ -8837,6 +9537,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       relatedArticleIds
       relatedArticles {
@@ -8911,6 +9612,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         blogUpdated
         liveBlog
@@ -8953,6 +9655,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           facebookUsername
           twitterUsername
           instagramUsername
+          male
           mediaIds
         }
         relatedDisciplineCodes
@@ -8979,6 +9682,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           nameUrlSlug
           typeNameUrlSlug
         }
+        relatedDisciplineCodesWithSex
         relatedCompetitionIds
         relatedCompetitions {
           id
@@ -9037,6 +9741,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         relatedArticleIds
         relatedArticles {
@@ -9067,6 +9772,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           language
           relatedCompetitorIds
           relatedDisciplineCodes
+          relatedDisciplineCodesWithSex
           relatedCompetitionIds
           relatedEventIds
           relatedArticleIds
@@ -9118,6 +9824,8 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           videoIds
           videoPlaylistId
           videoId
+          tagId
+          slug
         }
         gatedContent
       }
@@ -9165,6 +9873,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -9296,8 +10005,13 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           playerId
           tagId
           standFirst
+          signedInCTA
+          signedOutCTA
+          metatags
+          thumbnailTitle
         }
         videoId
+        tagId
         relatedVideo {
           id
           contentId
@@ -9315,7 +10029,12 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           playerId
           tagId
           standFirst
+          signedInCTA
+          signedOutCTA
+          metatags
+          thumbnailTitle
         }
+        slug
       }
       gatedContent
     }
@@ -9389,6 +10108,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       siteId
       minisite {
@@ -9495,6 +10215,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           language
           relatedCompetitorIds
           relatedDisciplineCodes
+          relatedDisciplineCodesWithSex
           relatedCompetitionIds
           relatedEventIds
           relatedArticleIds
@@ -9546,6 +10267,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         relatedCompetitorIds
         relatedCompetitors {
@@ -9585,6 +10307,7 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           facebookUsername
           twitterUsername
           instagramUsername
+          male
           mediaIds
         }
         relatedDisciplineCodes
@@ -9765,6 +10488,10 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           playerId
           tagId
           standFirst
+          signedInCTA
+          signedOutCTA
+          metatags
+          thumbnailTitle
         }
         videoId
         relatedVideo {
@@ -9784,6 +10511,10 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
           playerId
           tagId
           standFirst
+          signedInCTA
+          signedOutCTA
+          metatags
+          thumbnailTitle
         }
       }
       gatedContent
@@ -9856,8 +10587,13 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
         playerId
         tagId
         standFirst
+        signedInCTA
+        signedOutCTA
+        metatags
+        thumbnailTitle
       }
       videoId
+      tagId
       relatedVideo {
         id
         contentId
@@ -9875,7 +10611,12 @@ query GetDraftedArticle($urlSlug: String!, $language: String) {
         playerId
         tagId
         standFirst
+        signedInCTA
+        signedOutCTA
+        metatags
+        thumbnailTitle
       }
+      slug
     }
     gatedContent
   }
@@ -10182,6 +10923,7 @@ query GetTrendingAthletes {
       facebookUsername
       twitterUsername
       instagramUsername
+      male
       mediaIds
     }
     primaryMediaId
@@ -10284,6 +11026,7 @@ query GetAthlete($urlSlug: String!) {
     facebookUsername
     twitterUsername
     instagramUsername
+    male
     mediaIds
   }
 }
@@ -10440,6 +11183,7 @@ query GetAthleteRepresentativeAthleteSearch($countryCode: String, $athleteName: 
         lastName
         country
         gender
+        expiry
       }
     }
   }
@@ -10484,11 +11228,13 @@ query GetAthleteRepresentativeProfile($athleteRepresentativeId: Int) {
         lastName
         country
         gender
+        expiry
       }
       toplistDate
     }
     country
     email
+    comment
   }
 }
 
@@ -10546,6 +11292,7 @@ query GetAthleteRepresentativeDirectory {
     lastName
     country
     gender
+    expiry
   }
 }
 
@@ -10908,6 +11655,7 @@ query GetAllCompetitions {
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       lastEvent {
         id
@@ -10971,6 +11719,7 @@ query GetAllCompetitions {
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       nextEventStartDate
       pageId
@@ -11017,6 +11766,7 @@ query GetAllCompetitions {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -11184,6 +11934,7 @@ query GetAllCompetitions {
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       lastEvent {
         id
@@ -11247,6 +11998,7 @@ query GetAllCompetitions {
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       nextEventStartDate
       pageId
@@ -11293,6 +12045,7 @@ query GetAllCompetitions {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -11390,18 +12143,19 @@ query GetCompetitionOrganiserInfo($competitionId: Int!) {
       events
       gender
     }
+    prizeMoney {
+      gender
+      prizes
+    }
     websiteUrl
     resultsPageUrl
     liveStreamingUrl
-    contactPersonsGeneralMatters {
+    additionalInfo
+    contactPersons {
       name
       email
       phoneNumber
-    }
-    contactPersonsGeneralResults {
-      name
-      email
-      phoneNumber
+      title
     }
   }
 }
@@ -11510,6 +12264,7 @@ query GetWawCompetition($urlSlug: String!) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -11600,6 +12355,7 @@ query GetWawCompetition($urlSlug: String!) {
       eventStartDateTime
       eventEndDateTime
       venueTimezone
+      bannerLeadTimeInHours
     }
     lastEvent {
       id
@@ -11687,6 +12443,7 @@ query GetWawCompetition($urlSlug: String!) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -11777,6 +12534,7 @@ query GetWawCompetition($urlSlug: String!) {
       eventStartDateTime
       eventEndDateTime
       venueTimezone
+      bannerLeadTimeInHours
     }
     nextEventStartDate
     pageId
@@ -11849,6 +12607,7 @@ query GetWawCompetition($urlSlug: String!) {
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       siteId
       minisite {
@@ -11955,6 +12714,7 @@ query GetWawCompetition($urlSlug: String!) {
           language
           relatedCompetitorIds
           relatedDisciplineCodes
+          relatedDisciplineCodesWithSex
           relatedCompetitionIds
           relatedEventIds
           relatedArticleIds
@@ -12006,6 +12766,7 @@ query GetWawCompetition($urlSlug: String!) {
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         relatedCompetitorIds
         relatedCompetitors {
@@ -12045,6 +12806,7 @@ query GetWawCompetition($urlSlug: String!) {
           facebookUsername
           twitterUsername
           instagramUsername
+          male
           mediaIds
         }
         relatedDisciplineCodes
@@ -12225,6 +12987,10 @@ query GetWawCompetition($urlSlug: String!) {
           playerId
           tagId
           standFirst
+          signedInCTA
+          signedOutCTA
+          metatags
+          thumbnailTitle
         }
         videoId
         relatedVideo {
@@ -12244,6 +13010,10 @@ query GetWawCompetition($urlSlug: String!) {
           playerId
           tagId
           standFirst
+          signedInCTA
+          signedOutCTA
+          metatags
+          thumbnailTitle
         }
       }
       gatedContent
@@ -12353,6 +13123,7 @@ query GetSingleCompetitor($id: Int, $urlSlug: String, $ids: [Int]) {
       facebookUsername
       twitterUsername
       instagramUsername
+      male
       mediaIds
     }
     personalBests {
@@ -12373,6 +13144,8 @@ query GetSingleCompetitor($id: Int, $urlSlug: String, $ids: [Int]) {
         date
         listPosition
         resultScore
+        eventId
+        competitionId
         records
       }
     }
@@ -12398,6 +13171,8 @@ query GetSingleCompetitor($id: Int, $urlSlug: String, $ids: [Int]) {
         date
         listPosition
         resultScore
+        eventId
+        competitionId
         records
       }
     }
@@ -12409,6 +13184,7 @@ query GetSingleCompetitor($id: Int, $urlSlug: String, $ids: [Int]) {
       discipline
       withWind
       mainEvent
+      eventId
       results {
         season
         numericResult
@@ -12418,6 +13194,7 @@ query GetSingleCompetitor($id: Int, $urlSlug: String, $ids: [Int]) {
         date
         listPosition
         resultScore
+        competitionId
       }
     }
     worldRankings {
@@ -12455,6 +13232,8 @@ query GetSingleCompetitor($id: Int, $urlSlug: String, $ids: [Int]) {
         venue
         mark
         date
+        competitionId
+        eventId
       }
     }
     resultsByYear {
@@ -12483,6 +13262,8 @@ query GetSingleCompetitor($id: Int, $urlSlug: String, $ids: [Int]) {
           notLegal
           resultScore
           remark
+          competitionId
+          eventId
         }
       }
     }
@@ -12510,6 +13291,8 @@ query GetSingleCompetitor($id: Int, $urlSlug: String, $ids: [Int]) {
         notLegal
         resultScore
         remark
+        competitionId
+        eventId
       }
     }
     primaryMediaId
@@ -12588,6 +13371,8 @@ query GetSingleCompetitorResultsDiscipline($id: Int, $resultsByYear: Int, $resul
         notLegal
         resultScore
         remark
+        competitionId
+        eventId
       }
     }
     resultsByDate {
@@ -12604,6 +13389,8 @@ query GetSingleCompetitorResultsDiscipline($id: Int, $resultsByYear: Int, $resul
       notLegal
       resultScore
       remark
+      competitionId
+      eventId
     }
   }
 }
@@ -12637,6 +13424,8 @@ query GetSingleCompetitorResultsDate($id: Int, $resultsByYear: Int, $resultsByYe
       notLegal
       resultScore
       remark
+      competitionId
+      eventId
     }
   }
 }
@@ -12661,6 +13450,8 @@ query GetSingleCompetitorMajorChampionships($id: Int, $urlSlug: String!, $ids: [
         withDrop
         drop
         date
+        eventId
+        competitionId
       }
     }
   }
@@ -12696,6 +13487,8 @@ query GetSingleCompetitorAllTimePersonalTop10($id: Int, $urlSlug: String, $ids: 
       score
       records
       remark
+      eventId
+      competitionId
     }
   }
 }
@@ -12764,6 +13557,8 @@ query GetSingleCompetitorWinningStreak($id: Int, $urlSlug: String, $ids: [Int], 
         race
         result
         discipline
+        competitionId
+        eventId
       }
     }
   }
@@ -12840,6 +13635,8 @@ query GetSingleCompetitorSeasonBests($id: Int, $seasonsBestsSeason: Int) {
       date
       listPosition
       resultScore
+      eventId
+      competitionId
       records
     }
   }
@@ -13689,10 +14486,10 @@ query GetCombinedPoints($eventId: Int, $sexCode: String, $combinedDisciplineType
   }
 }
 
-query GetEventPhaseResults($phaseCode: String, $resultOrder: Int, $eventId: Int, $orderBy: eventPhaseOrderByEnum, $orderDirection: OrderDirectionEnum) {
+query GetEventPhaseResults($phaseCode: String, $resultRank: Int, $eventId: Int, $orderBy: eventPhaseOrderByEnum, $orderDirection: OrderDirectionEnum) {
   getEventPhaseResults(
     phaseCode: $phaseCode
-    resultOrder: $resultOrder
+    resultRank: $resultRank
     eventId: $eventId
     orderBy: $orderBy
     orderDirection: $orderDirection
@@ -13997,9 +14794,10 @@ query GetEventTeamStandingDetails($teamId: Int, $orderDirection: OrderDirectionE
   }
 }
 
-query GetEventTimetable($eventId: Int, $orderBy: eventPhaseOrderByEnum, $orderDirection: OrderDirectionEnum) {
+query GetEventTimetable($eventId: Int, $disciplineCode: String, $orderBy: eventPhaseOrderByEnum, $orderDirection: OrderDirectionEnum) {
   getEventTimetable(
     eventId: $eventId
+    disciplineCode: $disciplineCode
     orderBy: $orderBy
     orderDirection: $orderDirection
   ) {
@@ -14175,6 +14973,7 @@ query GetEvents($subCategoryNameUrlSlug: String, $circuitTypeCode: String, $orde
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       siteId
       minisite {
@@ -14281,6 +15080,7 @@ query GetEvents($subCategoryNameUrlSlug: String, $circuitTypeCode: String, $orde
           language
           relatedCompetitorIds
           relatedDisciplineCodes
+          relatedDisciplineCodesWithSex
           relatedCompetitionIds
           relatedEventIds
           relatedArticleIds
@@ -14332,6 +15132,7 @@ query GetEvents($subCategoryNameUrlSlug: String, $circuitTypeCode: String, $orde
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         relatedCompetitorIds
         relatedCompetitors {
@@ -14371,6 +15172,7 @@ query GetEvents($subCategoryNameUrlSlug: String, $circuitTypeCode: String, $orde
           facebookUsername
           twitterUsername
           instagramUsername
+          male
           mediaIds
         }
         relatedDisciplineCodes
@@ -14551,6 +15353,10 @@ query GetEvents($subCategoryNameUrlSlug: String, $circuitTypeCode: String, $orde
           playerId
           tagId
           standFirst
+          signedInCTA
+          signedOutCTA
+          metatags
+          thumbnailTitle
         }
         videoId
         relatedVideo {
@@ -14570,6 +15376,10 @@ query GetEvents($subCategoryNameUrlSlug: String, $circuitTypeCode: String, $orde
           playerId
           tagId
           standFirst
+          signedInCTA
+          signedOutCTA
+          metatags
+          thumbnailTitle
         }
       }
       gatedContent
@@ -14595,15 +15405,17 @@ query GetEvents($subCategoryNameUrlSlug: String, $circuitTypeCode: String, $orde
     eventStartDateTime
     eventEndDateTime
     venueTimezone
+    bannerLeadTimeInHours
   }
 }
 
-query GetWawEvent($nameUrlSlug: String, $id: Int, $circuitTypeCode: String, $subCategoryNameUrlSlug: String) {
+query GetWawEvent($nameUrlSlug: String, $id: Int, $circuitTypeCode: String, $subCategoryNameUrlSlug: String, $getNextWAC: Boolean) {
   getWawEvent(
     nameUrlSlug: $nameUrlSlug
     id: $id
     circuitTypeCode: $circuitTypeCode
     subCategoryNameUrlSlug: $subCategoryNameUrlSlug
+    getNextWAC: $getNextWAC
   ) {
     id
     updatedOn
@@ -14716,6 +15528,7 @@ query GetWawEvent($nameUrlSlug: String, $id: Int, $circuitTypeCode: String, $sub
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       siteId
       minisite {
@@ -14822,6 +15635,7 @@ query GetWawEvent($nameUrlSlug: String, $id: Int, $circuitTypeCode: String, $sub
           language
           relatedCompetitorIds
           relatedDisciplineCodes
+          relatedDisciplineCodesWithSex
           relatedCompetitionIds
           relatedEventIds
           relatedArticleIds
@@ -14873,6 +15687,7 @@ query GetWawEvent($nameUrlSlug: String, $id: Int, $circuitTypeCode: String, $sub
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         relatedCompetitorIds
         relatedCompetitors {
@@ -14912,6 +15727,7 @@ query GetWawEvent($nameUrlSlug: String, $id: Int, $circuitTypeCode: String, $sub
           facebookUsername
           twitterUsername
           instagramUsername
+          male
           mediaIds
         }
         relatedDisciplineCodes
@@ -15092,6 +15908,10 @@ query GetWawEvent($nameUrlSlug: String, $id: Int, $circuitTypeCode: String, $sub
           playerId
           tagId
           standFirst
+          signedInCTA
+          signedOutCTA
+          metatags
+          thumbnailTitle
         }
         videoId
         relatedVideo {
@@ -15111,6 +15931,10 @@ query GetWawEvent($nameUrlSlug: String, $id: Int, $circuitTypeCode: String, $sub
           playerId
           tagId
           standFirst
+          signedInCTA
+          signedOutCTA
+          metatags
+          thumbnailTitle
         }
       }
       gatedContent
@@ -15136,6 +15960,7 @@ query GetWawEvent($nameUrlSlug: String, $id: Int, $circuitTypeCode: String, $sub
     eventStartDateTime
     eventEndDateTime
     venueTimezone
+    bannerLeadTimeInHours
   }
 }
 
@@ -15211,6 +16036,17 @@ query GetAllGoldTourEvents {
       NameofLocation
       YoutubeVideoId
       EventDate
+    }
+  }
+}
+
+query GetSearchResults($query: String!, $start: Int) {
+  getSearchResults(query: $query, start: $start) {
+    items {
+      title
+      link
+      snippet
+      thumbnail
     }
   }
 }
@@ -15711,6 +16547,7 @@ query GetWawMenu($language: String, $type: String, $relatedEventId: Int, $relate
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -15801,6 +16638,7 @@ query GetWawMenu($language: String, $type: String, $relatedEventId: Int, $relate
       eventStartDateTime
       eventEndDateTime
       venueTimezone
+      bannerLeadTimeInHours
     }
     items {
       title
@@ -15849,6 +16687,7 @@ query GetWawMenu($language: String, $type: String, $relatedEventId: Int, $relate
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -16194,6 +17033,7 @@ query GetPage($urlSlug: String, $relatedEventId: Int, $language: String!, $typeI
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -16284,6 +17124,7 @@ query GetPage($urlSlug: String, $relatedEventId: Int, $language: String!, $typeI
       eventStartDateTime
       eventEndDateTime
       venueTimezone
+      bannerLeadTimeInHours
     }
     siteId
     minisite {
@@ -16486,6 +17327,7 @@ query GetPage($urlSlug: String, $relatedEventId: Int, $language: String!, $typeI
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         blogUpdated
         liveBlog
@@ -16528,6 +17370,7 @@ query GetPage($urlSlug: String, $relatedEventId: Int, $language: String!, $typeI
           facebookUsername
           twitterUsername
           instagramUsername
+          male
           mediaIds
         }
         relatedDisciplineCodes
@@ -16554,6 +17397,7 @@ query GetPage($urlSlug: String, $relatedEventId: Int, $language: String!, $typeI
           nameUrlSlug
           typeNameUrlSlug
         }
+        relatedDisciplineCodesWithSex
         relatedCompetitionIds
         relatedCompetitions {
           id
@@ -16612,6 +17456,7 @@ query GetPage($urlSlug: String, $relatedEventId: Int, $language: String!, $typeI
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         relatedArticleIds
         relatedArticles {
@@ -16642,6 +17487,7 @@ query GetPage($urlSlug: String, $relatedEventId: Int, $language: String!, $typeI
           language
           relatedCompetitorIds
           relatedDisciplineCodes
+          relatedDisciplineCodesWithSex
           relatedCompetitionIds
           relatedEventIds
           relatedArticleIds
@@ -16693,6 +17539,8 @@ query GetPage($urlSlug: String, $relatedEventId: Int, $language: String!, $typeI
           videoIds
           videoPlaylistId
           videoId
+          tagId
+          slug
         }
         gatedContent
       }
@@ -16759,6 +17607,7 @@ query GetPage($urlSlug: String, $relatedEventId: Int, $language: String!, $typeI
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
       relatedCompetitorIds
       relatedCompetitors {
@@ -16827,6 +17676,7 @@ query GetPage($urlSlug: String, $relatedEventId: Int, $language: String!, $typeI
         facebookUsername
         twitterUsername
         instagramUsername
+        male
         mediaIds
       }
       relatedDisciplineCodes
@@ -16923,6 +17773,7 @@ query GetPage($urlSlug: String, $relatedEventId: Int, $language: String!, $typeI
           eventStartDateTime
           eventEndDateTime
           venueTimezone
+          bannerLeadTimeInHours
         }
         siteId
         minisite {
@@ -17212,6 +18063,10 @@ query GetPage($urlSlug: String, $relatedEventId: Int, $language: String!, $typeI
         playerId
         tagId
         standFirst
+        signedInCTA
+        signedOutCTA
+        metatags
+        thumbnailTitle
       }
       videoId
       relatedVideo {
@@ -17231,6 +18086,10 @@ query GetPage($urlSlug: String, $relatedEventId: Int, $language: String!, $typeI
         playerId
         tagId
         standFirst
+        signedInCTA
+        signedOutCTA
+        metatags
+        thumbnailTitle
       }
     }
     gatedContent
@@ -17418,6 +18277,29 @@ query GetPreChampionshipHighlights($competitionId: String) {
         countryUrlSlug
       }
     }
+  }
+}
+
+query GetPredictorGameBanner($eventId: Int) {
+  getPredictorGameBanner(eventId: $eventId) {
+    id
+    desktopBannerId
+    desktopBannerEdited
+    mobileBannerId
+    mobileBannerEdited
+    bannerUrl
+    isLive
+  }
+}
+
+query GetPredictorGameNotification($eventId: Int) {
+  getPredictorGameNotification(eventId: $eventId) {
+    id
+    notificationText
+    notificationButtonText
+    notificationUrl
+    createdAt
+    publishedAt
   }
 }
 
@@ -17700,6 +18582,10 @@ query GetVideoList($limit: Int, $offset: Int, $language: String, $playlistId: St
     playerId
     tagId
     standFirst
+    signedInCTA
+    signedOutCTA
+    metatags
+    thumbnailTitle
   }
 }
 
@@ -17721,6 +18607,10 @@ query GetVideoById($contentId: String!, $language: String) {
     playerId
     tagId
     standFirst
+    signedInCTA
+    signedOutCTA
+    metatags
+    thumbnailTitle
   }
 }
 
@@ -17768,6 +18658,82 @@ query GetUsersVotes($userCognitoId: String) {
     id
     voteId
     userCognitoId
+  }
+}
+
+query GetWhereToWatch($eventId: Int) {
+  getWhereToWatch(eventId: $eventId) {
+    id
+    introText
+    bottomText
+    bannerStrapline
+    desktopBannerId
+    desktopBannerImageEdited
+    mobileBannerId
+    mobileBannerImageEdited
+    bannerUrl
+    isLive
+    eventDaysCount
+    eventDaysFilledCount
+    endDate
+    eventLevelGeneralChannels {
+      category
+      channelId
+      logoId
+      logoFileName
+      title
+      days {
+        day
+        date
+        sessionFirstUrl
+        sessionSecondUrl
+        countries
+      }
+    }
+  }
+}
+
+query GetSchedule($eventId: Int, $countryId: String) {
+  getSchedule(eventId: $eventId, countryId: $countryId) {
+    id
+    countryId
+    countryName
+    eventId
+    eventId_WA
+    days {
+      day
+      date
+      channels {
+        _id
+        category
+        logoId
+        logoFileName
+        title
+        time
+      }
+    }
+  }
+}
+
+query GetAllSchedules {
+  getAllSchedules {
+    id
+    countryId
+    countryName
+    eventId
+    eventId_WA
+    days {
+      day
+      date
+      channels {
+        _id
+        category
+        logoId
+        logoFileName
+        title
+        time
+      }
+    }
   }
 }
 
@@ -17914,6 +18880,7 @@ query GetRecentResults($limit: Int) {
         eventStartDateTime
         eventEndDateTime
         venueTimezone
+        bannerLeadTimeInHours
       }
     }
   }

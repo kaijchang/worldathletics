@@ -2,15 +2,20 @@
 directive @defer on FIELD
 
 """
-Tells the service this field/object has access authorized by an OIDC token.
+Tells the service which subscriptions will be published to when this mutation is
+called. This directive is deprecated use @aws_susbscribe directive instead.
 """
-directive @aws_oidc on OBJECT | FIELD_DEFINITION
-
-"""Directs the schema to enforce authorization on a field"""
-directive @aws_auth(
-  """List of cognito user pool groups which have access on this field"""
-  cognito_groups: [String]
+directive @aws_publish(
+  """
+  List of subscriptions which will be published to when this mutation is called.
+  """
+  subscriptions: [String]
 ) on FIELD_DEFINITION
+
+"""
+Tells the service this field/object has access authorized by an API key.
+"""
+directive @aws_api_key on OBJECT | FIELD_DEFINITION
 
 """Tells the service which mutation triggers this subscription."""
 directive @aws_subscribe(
@@ -21,17 +26,17 @@ directive @aws_subscribe(
 ) on FIELD_DEFINITION
 
 """
-Tells the service this field/object has access authorized by an API key.
-"""
-directive @aws_api_key on OBJECT | FIELD_DEFINITION
-
-"""
 Tells the service this field/object has access authorized by a Cognito User Pools token.
 """
 directive @aws_cognito_user_pools(
   """List of cognito user pool groups which have access on this field"""
   cognito_groups: [String]
 ) on OBJECT | FIELD_DEFINITION
+
+"""
+Tells the service this field/object has access authorized by an OIDC token.
+"""
+directive @aws_oidc on OBJECT | FIELD_DEFINITION
 
 """
 Tells the service this field/object has access authorized by sigv4 signing.
@@ -43,15 +48,10 @@ Tells the service this field/object has access authorized by a Lambda Authorizer
 """
 directive @aws_lambda on OBJECT | FIELD_DEFINITION
 
-"""
-Tells the service which subscriptions will be published to when this mutation is
-called. This directive is deprecated use @aws_susbscribe directive instead.
-"""
-directive @aws_publish(
-  """
-  List of subscriptions which will be published to when this mutation is called.
-  """
-  subscriptions: [String]
+"""Directs the schema to enforce authorization on a field"""
+directive @aws_auth(
+  """List of cognito user pool groups which have access on this field"""
+  cognito_groups: [String]
 ) on FIELD_DEFINITION
 
 input AAapiQuery {
@@ -130,6 +130,8 @@ type allTimePersonalTop10Details {
   score: Int
   records: [String]
   remark: String
+  eventId: String
+  competitionId: String
 }
 
 type allTimePersonalTop10Disciplines {
@@ -226,11 +228,81 @@ type ArticleContentModules {
   videoPlaylistId: String
   relatedVideos: [VideoPublished]
   videoId: String
+  tagId: String
   relatedVideo: VideoPublished
+  slug: String
+}
+
+type ArticleDisciplineStats {
+  discipline: ArticleDisciplineWithSex
+  seasonBest: [ArticleSeasonBestStats]
+  previousMedalists: [PreviousMedalist]
+  records: [ArticleRecord]
+  timetable: [ArticleEventPhase]
+  results: [CalendarResultsRace]
+}
+
+type ArticleDisciplineWithSex {
+  sexName: String
+  disciplineName: String
+  disciplineCode: String
+  urlSlug: String
+  isRelay: Boolean
+}
+
+type ArticleEventPhase {
+  id: Int
+  updatedOn: AWSDateTime
+  hash: String
+  phaseCode: String
+  phaseName: String
+  eventID: Int
+  phaseDateAndTime: AWSDateTime
+  sexCode: String
+  sexName: String
+  discipline: disciplineObject
+  isStartlistPublished: Boolean
+  isResultPublished: Boolean
+  isPhaseSummaryPublished: Boolean
+  isTeamStandingPublished: Boolean
+  combinedDisciplineOrder: Int
+  phaseOrder: Int
+  phaseSessionName: String
+  phaseSessionOrder: Int
+  status: Int
+  hasTime: Boolean
+  eventId_WA: Int
+  primaryPhaseOrder: Int
+  isPointsPublished: Boolean
+  phaseNameUrlSlug: String
+  sexNameUrlSlug: String
+  unitName: String
+  unitTypeName: String
+  urlSlug: String
 }
 
 type ArticleLocation {
   name: String
+}
+
+type ArticleRecord {
+  categoryId: Int
+  resultMark: String
+  name: String
+  countryCode: String
+  urlSlug: String
+  linkUrl: String
+  pending: Boolean
+}
+
+type ArticleSeasonBestStats {
+  aaId: Int
+  result: String
+  urlSlug: String
+  achiever: String
+  nationality: String
+  resultScore: Int
+  achieverPosition: Int
 }
 
 type Asset {
@@ -337,6 +409,7 @@ type AthleteNewData {
   facebookUsername: String
   twitterUsername: String
   instagramUsername: String
+  male: Boolean
   mediaIds: [String]
 }
 
@@ -372,6 +445,7 @@ type AthleteRepresentativeProfile {
   toplist: Toplist
   country: String
   email: [String]
+  comment: String
 }
 
 type AthleteResult {
@@ -459,6 +533,7 @@ type AthleteShortProfile {
   lastName: String
   country: String
   gender: String
+  expiry: String
 }
 
 type AthletesRepresentativeTopList {
@@ -772,6 +847,7 @@ type CalendarResultsRace {
 }
 
 type CalendarResultsRaceResult {
+  id: String
   competitor: CalendarResultsCompetitor
   mark: String
   nationality: String
@@ -1032,6 +1108,15 @@ type ChampionshipRound {
   time: String
   title: String
   worldRecords: [WorldRecord]
+}
+
+type ChannelType {
+  _id: String
+  category: String
+  logoId: String
+  logoFileName: String
+  title: String
+  time: [String]
 }
 
 input ChunkType {
@@ -1360,6 +1445,11 @@ type combinedPointsResponse {
   competitors: [combinedPoints]
 }
 
+type comInformationPrizes {
+  gender: String
+  prizes: [String]
+}
+
 type Competition {
   id: ID
   name: String
@@ -1436,11 +1526,12 @@ type CompetitionEntries {
 
 type competitionInformation {
   units: [compInformationUnits]
+  prizeMoney: [comInformationPrizes]
   websiteUrl: String
   resultsPageUrl: String
   liveStreamingUrl: String
-  contactPersonsGeneralMatters: [compInformationContacts]
-  contactPersonsGeneralResults: [compInformationContacts]
+  additionalInfo: String
+  contactPersons: [compInformationContacts]
 }
 
 type CompetitionSuccess {
@@ -1602,6 +1693,7 @@ type compInformationContacts {
   name: String
   email: String
   phoneNumber: String
+  title: String
 }
 
 type compInformationUnits {
@@ -1639,6 +1731,12 @@ type CountryObj {
   isValid: Boolean
   areaNameUrlSlug: String
   countryNameUrlSlug: String
+}
+
+type DayType {
+  day: Int
+  date: AWSDateTime
+  channels: [ChannelType]
 }
 
 type DeviceLocation {
@@ -1939,6 +2037,15 @@ type EventLeadingStandingsType {
   totalPoints: String
   eventCircuitStandingOrder: Int
   discipline: DisciplineType
+}
+
+type EventLevelGeneralChannelsType {
+  category: String
+  channelId: String
+  logoId: String
+  logoFileName: String
+  title: String
+  days: [WhereToWatchDaysType]
 }
 
 type EventMedia {
@@ -2365,6 +2472,25 @@ type FlashInterviewUnit {
   interviews: [FlashInterview]
 }
 
+type GameBanner {
+  id: Int
+  desktopBannerId: String
+  desktopBannerEdited: String
+  mobileBannerId: String
+  mobileBannerEdited: String
+  bannerUrl: String
+  isLive: Boolean
+}
+
+type GameNotification {
+  id: Int
+  notificationText: String
+  notificationButtonText: String
+  notificationUrl: String
+  createdAt: AWSDateTime
+  publishedAt: AWSDateTime
+}
+
 type Gender {
   gender: String
   genderCode: String
@@ -2522,6 +2648,8 @@ type honourResult {
   venue: String
   mark: String
   date: String
+  competitionId: String
+  eventId: String
 }
 
 type honourSummary {
@@ -3006,6 +3134,8 @@ type majorChampionshipsDetails {
   withDrop: Boolean
   drop: String
   date: String
+  eventId: String
+  competitionId: String
 }
 
 type majorChampionshipType {
@@ -3176,10 +3306,12 @@ type Mutation {
   competitionEntry(email: String!, designersAge: String!, mascotStory: String!, mascotImage: String!, mascotName: String!, mascotImageBase64: String!, designersName: String!, competitionName: String!, verified: Boolean!): CompetitionSuccess
   removeProfile: SuccessRemoveProfile
   syncMailchimp(email: String): SuccessMailChimp
-  updateUser(firstName: String, lastName: String, ageGroup: String, sex: String, email: String, countryCode: String, nationalTeamSupportCountryCode: String, userTypes: [String], userSubTypes: [String], disciplineCategories: [String], interests: [String], mailingListConsent: Boolean, contactPreferences: [String], tags: [String]): Success
+  updateUser(firstName: String, lastName: String, nickname: String, ageGroup: String, sex: String, email: String, countryCode: String, nationalTeamSupportCountryCode: String, userTypes: [String], userSubTypes: [String], disciplineCategories: [String], interests: [String], mailingListConsent: Boolean, contactPreferences: [String], tags: [String], globalTokyoMailingListConsent: Boolean, locale: String, countryRegionCode: String): Success
   updateUserFollowedCompetitors(competitorId: Int): UserFollowedCompetitorsSuccess
+  updateUserFollowedCountry(countryCode: String, competitionId: Int): UserFollowedCountrySuccess
+  updateUserUnfollowedCountry(countryCode: String, competitionId: Int): UserFollowedCountrySuccess
   updateUserTermsAndConditions: UserTermsAndConditionsSuccess
-  register(firstName: String!, lastName: String!, email: String!, password: String!, ageGroup: String, sex: String, countryCode: String, nationalTeamSupportCountryCode: String, mailingListConsent: Boolean, kidsAthleticsTermsAndConditions: String, interests: [String], userTypes: [String], userSubTypes: [String], disciplineCategories: [String], contactPreferences: [String], source: String!, tags: [String], clientMetadata: [ClientMetadataInput]): Success
+  register(firstName: String!, lastName: String!, email: String!, password: String!, ageGroup: String, sex: String, countryCode: String, nationalTeamSupportCountryCode: String, mailingListConsent: Boolean, globalTokyoMailingListConsent: Boolean, kidsAthleticsTermsAndConditions: String, interests: [String], userTypes: [String], userSubTypes: [String], disciplineCategories: [String], contactPreferences: [String], source: String!, tags: [String], clientMetadata: [ClientMetadataInput], nickname: String, locale: String, countryRegionCode: String): Success
   verifyEmail(confirmationCode: String!, username: String!): SuccessVerifyEmail
   liveBlogPostUpdated(id: String!): LiveBlogPostsUpdate
   sendSpikesEmail(email: String!, firstName: String!, lastName: String!, emailMessage: String!, emailText: String!): SendSpikesEmailSuccess
@@ -3232,6 +3364,8 @@ type NewArticle {
   relatedCompetitors: [AthleteNewData]
   relatedDisciplineCodes: [String]!
   relatedDiscipline: [DisciplineDetail]
+  relatedDisciplineCodesWithSex: [String]
+  relatedDisciplineStats: ArticleDisciplineStats
   relatedCompetitionIds: [String]!
   relatedCompetitions: [Competition]
   relatedEventIds: [Int]!
@@ -3679,6 +3813,16 @@ type PreviousMedal {
   countryUrlSlug: String
 }
 
+type PreviousMedalist {
+  name: String
+  countryCode: String
+  typeId: Int
+  resultMark: String
+  urlSlug: String
+  countryUrlSlug: String
+  linkUrl: String
+}
+
 input PreviousMedalQuery {
   eventId: Int
   eventId_WA: Int
@@ -3788,16 +3932,17 @@ type Query {
   getEventPhaseByDiscipline(eventId: Int, disciplineCode: String, sexCode: String, phaseCode: String, combinedEvent: String): eventPhaseWithResults
   getAllEventPhasesByDiscipline(eventId: Int, disciplineCode: String, sexCode: String, combinedEvent: String): [eventPhase]
   getCombinedPoints(eventId: Int, sexCode: String, combinedDisciplineType: String, currentCombinedDiscipline: String): combinedPointsResponse
-  getEventPhaseResults(phaseCode: String, resultOrder: Int, eventId: Int, orderBy: eventPhaseOrderByEnum, orderDirection: OrderDirectionEnum): [EventPhaseResults]
+  getEventPhaseResults(phaseCode: String, resultRank: Int, eventId: Int, orderBy: eventPhaseOrderByEnum, orderDirection: OrderDirectionEnum): [EventPhaseResults]
   getEventPhaseResultDetail(countryCode: String, eventId: Int): [EventPhaseResults]
   getEventTeamStandings(eventId: Int, orderBy: TeamStandingOrderBy, orderDirection: OrderDirectionEnum): [EventTeamStandings]
   getEventTeamStandingDetails(teamId: Int, orderDirection: OrderDirectionEnum): [EventTeamStandingDetails]
-  getEventTimetable(eventId: Int, orderBy: eventPhaseOrderByEnum, orderDirection: OrderDirectionEnum): [eventPhase]
+  getEventTimetable(eventId: Int, disciplineCode: String, orderBy: eventPhaseOrderByEnum, orderDirection: OrderDirectionEnum): [eventPhase]
   getEvents(subCategoryNameUrlSlug: String, circuitTypeCode: String, orderBy: OrderByEnum, orderDirection: OrderDirectionEnum, limit: Int, offset: Int): [WAWEvent]
-  getWawEvent(nameUrlSlug: String, id: Int, circuitTypeCode: String, subCategoryNameUrlSlug: String): WAWEvent
+  getWawEvent(nameUrlSlug: String, id: Int, circuitTypeCode: String, subCategoryNameUrlSlug: String, getNextWAC: Boolean): WAWEvent
   getWawEventCountryList(nameUrlSlug: String, id: Int): [WawEventCountryList]
   getFilterTypes(limit: Int, offset: Int, language: String, minisiteId: String): [FilterType]
   getAllGoldTourEvents: GoldEvents
+  getSearchResults(query: String!, start: Int): SearchResults
   getLatestQualifiedCompetitors(competitionId: Int!, limit: Int, offset: Int): LatestQualifiedCompetitors
   getChampionshipQualifications(competitionId: Int!, eventId: Int, country: String, qualificationType: String): ChampionshipQualificationCompetitors
   getLeadingAthletes(limit: Int, countryOfResidence: String, preferredCountry: String, all: Boolean): LeadingAthletes
@@ -3818,6 +3963,8 @@ type Query {
   getWawPlacingTables(eventId: Int, orderBy: PlacingTableOrderBy, orderDirection: OrderDirectionEnum): [WawPlacingTable]
   getWawPlacingTableDetails(placingTableId: Int, orderDirection: OrderDirectionEnum): [WawPlacingTableDetails]
   getPreChampionshipHighlights(competitionId: String): PreChampionshipHighlights
+  getPredictorGameBanner(eventId: Int): GameBanner
+  getPredictorGameNotification(eventId: Int): GameNotification
   getRankingScoreCalculation(athleteId: Int): RankingScoreCalculation
   getResultInfo(competitionId: String, eventId: Int, isOther: Boolean): [ResultInfo]
   searchCompetitors(query: String, gender: GenderType, disciplineCode: String, environment: String, countryCode: String): [AthleteSearchResult]
@@ -3832,6 +3979,9 @@ type Query {
   getVocabulary(language: String!): Vocabulary
   getVoteOptions: [VoteOption]
   getUsersVotes(userCognitoId: String): [VoteUser]
+  getWhereToWatch(eventId: Int): [WhereToWatchType]
+  getSchedule(eventId: Int, countryId: String): ScheduleType
+  getAllSchedules: [ScheduleType]
   getWorldLeadingCompetitors(limit: Int, all: Boolean): WorldLeadingCompetitors
   getMetaData(types: [MetaDataTypes]!): AAMetaData
   getRecentResults(limit: Int): RecentResults
@@ -3990,6 +4140,8 @@ type resultsByDateResults {
   notLegal: Boolean
   resultScore: Int
   remark: String
+  competitionId: String
+  eventId: String
 }
 
 type resultsByDateType {
@@ -4021,6 +4173,8 @@ type resultsByEventResult {
   notLegal: Boolean
   resultScore: Int
   remark: String
+  competitionId: String
+  eventId: String
 }
 
 type resultsByEventType {
@@ -4061,6 +4215,26 @@ type ResultType {
   place: Int
   date: String
   details: String
+}
+
+type ScheduleType {
+  id: String
+  countryId: String
+  countryName: String
+  eventId: String
+  eventId_WA: String
+  days: [DayType]
+}
+
+type SearchItem {
+  title: String
+  link: String
+  snippet: String
+  thumbnail: String
+}
+
+type SearchResults {
+  items: [SearchItem]
 }
 
 type seasonsBestsParamsType {
@@ -4153,6 +4327,7 @@ type singleCompetitorProgression {
   discipline: String
   withWind: Boolean
   mainEvent: Boolean
+  eventId: String
   results: [singleCompetitorProgressionResult]
 }
 
@@ -4165,6 +4340,7 @@ type singleCompetitorProgressionResult {
   date: String
   listPosition: Int
   resultScore: Int
+  competitionId: String
 }
 
 type singleCompetitorResult {
@@ -4182,6 +4358,8 @@ type singleCompetitorResult {
   date: String
   listPosition: String
   resultScore: Int
+  eventId: String
+  competitionId: String
   records: [String]
 }
 
@@ -4199,6 +4377,8 @@ type singleCompetitorResultOnly {
   notLegal: Boolean
   resultScore: Int
   remark: String
+  competitionId: String
+  eventId: String
 }
 
 type singleCompetitorResults {
@@ -4650,6 +4830,16 @@ type UserFollowedCompetitorsSuccess {
   followedCompetitors: [Int]
 }
 
+type userFollowedCountries {
+  competition: Int
+  countries: [String]
+}
+
+type UserFollowedCountrySuccess {
+  followedCompetitors: [Int]
+  followedCountries: [userFollowedCountries]
+}
+
 type UserSettings {
   firstName: String
   lastName: String
@@ -4659,6 +4849,7 @@ type UserSettings {
   countryCode: String
   nationalTeamSupportCountryCode: String
   mailingListConsent: Boolean
+  globalTokyoMailingListConsent: Boolean
   kidsAthleticsTermsAndConditions: String
   userTypes: [String]
   userSubTypes: [String]
@@ -4668,6 +4859,10 @@ type UserSettings {
   source: String
   tags: [String]
   followedCompetitors: [Int]
+  followedCountries: [userFollowedCountries]
+  nickname: String
+  locale: String
+  countryRegionCode: String
 }
 
 type UserTermsAndConditionsSuccess {
@@ -4706,6 +4901,10 @@ type VideoPublished {
   playerId: String
   tagId: String
   standFirst: String
+  signedInCTA: String
+  signedOutCTA: String
+  metatags: String
+  thumbnailTitle: String
 }
 
 type VideoTotalNumber {
@@ -4772,6 +4971,7 @@ type WAWEvent {
   eventStartDateTime: AWSDateTime
   eventEndDateTime: AWSDateTime
   venueTimezone: String
+  bannerLeadTimeInHours: Int
 }
 
 type WawEventCountryList {
@@ -4874,6 +5074,31 @@ type WawPlacingTableDetails {
   discipline: DisciplineObj
 }
 
+type WhereToWatchDaysType {
+  day: Int
+  date: AWSDateTime
+  sessionFirstUrl: String
+  sessionSecondUrl: String
+  countries: [String]
+}
+
+type WhereToWatchType {
+  id: Int
+  introText: String
+  bottomText: String
+  bannerStrapline: String
+  desktopBannerId: String
+  desktopBannerImageEdited: String
+  mobileBannerId: String
+  mobileBannerImageEdited: String
+  bannerUrl: String
+  isLive: Boolean
+  eventDaysCount: Int
+  eventDaysFilledCount: Int
+  endDate: String
+  eventLevelGeneralChannels: [EventLevelGeneralChannelsType]
+}
+
 type winningStreaks {
   length: Int
   results: [winningStreaksDetails]
@@ -4886,6 +5111,8 @@ type winningStreaksDetails {
   race: String
   result: String
   discipline: String
+  competitionId: String
+  eventId: String
 }
 
 type winningStreaksDisciplines {

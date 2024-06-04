@@ -39,16 +39,19 @@ def is_scalar(type_definition_node: TypeDefinitionNode | None):
 def get_selection_set_for_type_definition_node(type_definition_node: TypeDefinitionNode, depth=0, max_depth=DEFAULT_MAX_DEPTH):
     if is_scalar(type_definition_node):
         return None
-    
+
     selections = ()
 
     for field_definition_node in type_definition_node.fields:
         field_definition_type_definition_node = find_type_definition_node_by_name(get_nested_type(field_definition_node.type).name.value)
 
         if depth < max_depth or is_scalar(field_definition_type_definition_node):
+            selection_set = get_selection_set_for_type_definition_node(field_definition_type_definition_node, depth + 1, max_depth)
+            if not is_scalar(field_definition_type_definition_node) and len(selection_set.selections) == 0:
+                continue
             selections += (FieldNode(
                 name=field_definition_node.name,
-                selection_set=get_selection_set_for_type_definition_node(field_definition_type_definition_node, depth + 1, max_depth)
+                selection_set=selection_set
             ),)
 
     return SelectionSetNode(
