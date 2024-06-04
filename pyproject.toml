@@ -35,6 +35,8 @@ development=["ariadne-codegen", "gql[all]"]
 [tool.ariadne-codegen]
 queries_path = "graphql/queries.graphql"
 schema_path = "graphql/schema.graphql"
+base_client_file_path = "worldathletics/custom/async_base_client.py"
+base_client_name="AsyncBaseClient"
 # remote_schema_url="https://tol6rynsmvbyvhunna6nzzkkku.appsync-api.eu-west-1.amazonaws.com/graphql"
 # remote_schema_headers={"x-api-key"="da2-wajez2un5je6tlbopgncijf6ai", "x-amz-user-agent"="aws-amplify/3.0.2"}
 target_package_name="worldathletics"
