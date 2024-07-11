@@ -2,6 +2,43 @@
 directive @defer on FIELD
 
 """
+Tells the service this field/object has access authorized by sigv4 signing.
+"""
+directive @aws_iam on OBJECT | FIELD_DEFINITION
+
+"""Directs the schema to enforce authorization on a field"""
+directive @aws_auth(
+  """List of cognito user pool groups which have access on this field"""
+  cognito_groups: [String]
+) on FIELD_DEFINITION
+
+"""
+Tells the service this field/object has access authorized by an OIDC token.
+"""
+directive @aws_oidc on OBJECT | FIELD_DEFINITION
+
+"""Tells the service which mutation triggers this subscription."""
+directive @aws_subscribe(
+  """
+  List of mutations which will trigger this subscription when they are called.
+  """
+  mutations: [String]
+) on FIELD_DEFINITION
+
+"""
+Tells the service this field/object has access authorized by a Lambda Authorizer.
+"""
+directive @aws_lambda on OBJECT | FIELD_DEFINITION
+
+"""
+Tells the service this field/object has access authorized by a Cognito User Pools token.
+"""
+directive @aws_cognito_user_pools(
+  """List of cognito user pool groups which have access on this field"""
+  cognito_groups: [String]
+) on OBJECT | FIELD_DEFINITION
+
+"""
 Tells the service which subscriptions will be published to when this mutation is
 called. This directive is deprecated use @aws_susbscribe directive instead.
 """
@@ -16,43 +53,6 @@ directive @aws_publish(
 Tells the service this field/object has access authorized by an API key.
 """
 directive @aws_api_key on OBJECT | FIELD_DEFINITION
-
-"""Tells the service which mutation triggers this subscription."""
-directive @aws_subscribe(
-  """
-  List of mutations which will trigger this subscription when they are called.
-  """
-  mutations: [String]
-) on FIELD_DEFINITION
-
-"""
-Tells the service this field/object has access authorized by a Cognito User Pools token.
-"""
-directive @aws_cognito_user_pools(
-  """List of cognito user pool groups which have access on this field"""
-  cognito_groups: [String]
-) on OBJECT | FIELD_DEFINITION
-
-"""
-Tells the service this field/object has access authorized by an OIDC token.
-"""
-directive @aws_oidc on OBJECT | FIELD_DEFINITION
-
-"""
-Tells the service this field/object has access authorized by sigv4 signing.
-"""
-directive @aws_iam on OBJECT | FIELD_DEFINITION
-
-"""
-Tells the service this field/object has access authorized by a Lambda Authorizer.
-"""
-directive @aws_lambda on OBJECT | FIELD_DEFINITION
-
-"""Directs the schema to enforce authorization on a field"""
-directive @aws_auth(
-  """List of cognito user pool groups which have access on this field"""
-  cognito_groups: [String]
-) on FIELD_DEFINITION
 
 input AAapiQuery {
   disciplineCode: String
@@ -992,6 +992,13 @@ enum CarouselTypeEnum {
   EventReport
 }
 
+type Category {
+  id: Int
+  name: String
+  urlSlug: String
+  items: [Category]
+}
+
 type ChampionshipCompetitor {
   birthDate: String
   country: String
@@ -1587,6 +1594,17 @@ type competitorCombinedPoints {
   competitorId_WA: Int
 }
 
+type CompetitorData {
+  id: Int
+  iaafId: Int
+  name: String
+  country: String
+  urlSlug: String
+  birthDate: String
+  hasProfile: Boolean
+  teamMembers: [CompetitorForRecord]
+}
+
 type CompetitorDiscipline {
   _id: String
   updatedOn: AWSDateTime
@@ -1609,6 +1627,16 @@ type CompetitorDiscipline {
   isValidIAAF: Boolean
   nameUrlSlug: String
   typeNameUrlSlug: String
+}
+
+type CompetitorForRecord {
+  id: Int
+  iaafId: Int
+  name: String
+  country: String
+  urlSlug: String
+  birthDate: String
+  hasProfile: Boolean
 }
 
 type CompetitorHonour {
@@ -1842,6 +1870,12 @@ type disciplineObject {
   isValidIAAF: Boolean
   nameUrlSlug: String
   typeNameUrlSlug: String
+}
+
+type DisciplineProgression {
+  name: String
+  disciplineCode: String
+  urlSlug: String
 }
 
 type DisciplineType {
@@ -2370,6 +2404,13 @@ type FeatureLinksObj {
   url: String
 }
 
+type File {
+  language: Int
+  fileName: String
+  order: Int
+  show: Boolean
+}
+
 type Filter {
   id: String
   contentId: String
@@ -2751,6 +2792,49 @@ type LegacyAthlete {
   friendlyName: String
   friendlyNameLetter: String
   friendlyNameFirst3Letter: String
+}
+
+type LegacyContent {
+  id: String
+  type: String
+  Text: String
+  GroupId: String
+  SectionId: String
+  relatedMediaIds: [String]
+  relatedMedia: [Media]
+  DocumentIds: [String]
+  legacyDocument: [LegacyDocument]
+}
+
+type LegacyDocument {
+  id: String
+  title: String
+  urlSlug: String
+  description: String
+  format: Int
+  order: Int
+  files: [File]
+}
+
+type LegacyPage {
+  id: String
+  Url: String
+  SEOTitle: String
+  MetaDescription: String
+  Content: [LegacyContent]
+  Template: LegacyTemplate
+  Status: Int
+  Order: Int
+}
+
+type LegacyTemplate {
+  id: String
+  DisplayName: String
+  ViewName: String
+  Description: String
+  showSort: Boolean
+  showFilter: Boolean
+  FilterText: String
 }
 
 type lifestyleLinksObj {
@@ -3946,6 +4030,7 @@ type Query {
   getLatestQualifiedCompetitors(competitionId: Int!, limit: Int, offset: Int): LatestQualifiedCompetitors
   getChampionshipQualifications(competitionId: Int!, eventId: Int, country: String, qualificationType: String): ChampionshipQualificationCompetitors
   getLeadingAthletes(limit: Int, countryOfResidence: String, preferredCountry: String, all: Boolean): LeadingAthletes
+  getLegacyPage(name: String, urlSlug: String): LegacyPage
   getLiveBlogPosts(parentId: String, limit: Int, offset: Int, orderBy: OrderByLiveBlogPostEnum, orderDirection: OrderDirectionEnum): [LiveBlogPost]
   getArticleLocations(minisiteId: String, tags: [String]): [Location]
   getMedals(eventId: Int, orderBy: medalsOrderByEnum, orderDirection: OrderDirectionEnum, countryCode: String): [Medals]
@@ -3966,6 +4051,11 @@ type Query {
   getPredictorGameBanner(eventId: Int): GameBanner
   getPredictorGameNotification(eventId: Int): GameNotification
   getRankingScoreCalculation(athleteId: Int): RankingScoreCalculation
+  getRecordsCategories: [Category]
+  getRecordsDetailByCategory(categoryId: Int!): [Record]
+  getRecordsDisciplineList: [RecordDiscipline]
+  getRecordsDetailByDiscipline(eventId: Int!): [RecordByDiscipline]
+  getRecordsDetailByProgression(progressionId: Int!): RecordProgression
   getResultInfo(competitionId: String, eventId: Int, isOther: Boolean): [ResultInfo]
   searchCompetitors(query: String, gender: GenderType, disciplineCode: String, environment: String, countryCode: String): [AthleteSearchResult]
   getSocialCarousel: [SocialCarouselItem]
@@ -4052,6 +4142,61 @@ type RecentResultsItem {
   event: WAWEvent
 }
 
+type Record {
+  gender: String
+  results: [RecordUnit]
+}
+
+type RecordByDiscipline {
+  ageCategory: String
+  items: [RecordByDisciplineItem]
+}
+
+type RecordByDisciplineItem {
+  progressionListId: Int
+  category: String
+  categoryId: Int
+  performance: String
+  equal: Boolean
+  pending: Boolean
+  setIndoor: Boolean
+  womenOnly: Boolean
+  mixed: Boolean
+  yard: Boolean
+  wind: String
+  competitor: CompetitorData
+  country: String
+  venue: String
+  date: String
+}
+
+type RecordDiscipline {
+  gender: String
+  disciplineTypes: [RecordDisciplineType]
+}
+
+type RecordDisciplineData {
+  eventId: String
+  name: String
+  urlSlug: String
+}
+
+type RecordDisciplineType {
+  name: String
+  urlSlug: String
+  disciplines: [RecordDisciplineData]
+}
+
+type RecordProgression {
+  ageCategory: String
+  environment: String
+  gender: String
+  discipline: DisciplineProgression
+  originType: String
+  origin: String
+  entries: [RecordByDisciplineItem]
+}
+
 type RecordsByDiscipline {
   progressionListId: Int
   category: String
@@ -4070,6 +4215,21 @@ type RecordsByDiscipline {
   legend: String
   discipline: String
   disciplineNameUrlSlug: String
+}
+
+type RecordUnit {
+  progressionListId: Int
+  discipline: String
+  disciplineNameUrlSlug: String
+  typeNameUrlSlug: String
+  performance: String
+  pending: Boolean
+  setIndoor: Boolean
+  wind: String
+  competitor: CompetitorData
+  venue: String
+  country: String
+  date: String
 }
 
 enum RelatedCompetitionEnum {

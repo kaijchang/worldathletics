@@ -15,7 +15,7 @@ from graphql.language import (
 )
 
 # config
-DEFAULT_MAX_DEPTH = 3
+DEFAULT_MAX_DEPTH = 5
 SCHEMA_PATH = 'graphql/schema.graphql'
 QUERIES_PATH = 'graphql/queries.graphql'
 

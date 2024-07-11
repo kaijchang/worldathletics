@@ -15,7 +15,7 @@ description = "Python Wrapper for World Athletics' GraphQL API"
 readme = "README.md"
 requires-python = ">=3.7"
 dependencies = [
-  "pydantic < 2",
+  "pydantic",
   "httpx",
   "websockets"
 ]
@@ -27,7 +27,7 @@ classifiers = [
 keywords = ["worldathletics", "api-wrapper", "graphql"]
 
 [project.optional-dependencies]
-development=["ariadne-codegen", "gql[all]"]
+development=["ariadne-codegen == 0.14.0.dev1", "gql[all]"]
 
 [project.urls]
 "Homepage" = "https://github.com/kajchang/worldathletics"
@@ -37,7 +37,7 @@ queries_path = "graphql/queries.graphql"
 schema_path = "graphql/schema.graphql"
 base_client_file_path = "worldathletics/custom/async_base_client.py"
 base_client_name="AsyncBaseClient"
-# remote_schema_url="https://tol6rynsmvbyvhunna6nzzkkku.appsync-api.eu-west-1.amazonaws.com/graphql"
-# remote_schema_headers={"x-api-key"="da2-wajez2un5je6tlbopgncijf6ai", "x-amz-user-agent"="aws-amplify/3.0.2"}
+#emote_schema_url="https://gt2rau4y6beytpdxktx26qss2a.appsync-api.eu-west-1.amazonaws.com/graphql"
+remote_schema_headers={"x-api-key"="da2-344bv27kgnd6lpilqwwbxqz7bq", "x-amz-user-agent"="aws-amplify/3.0.2"}
 target_package_name="worldathletics"
 client_name="WorldAthletics"
