@@ -15,7 +15,7 @@ description = "Python Wrapper for World Athletics' GraphQL API"
 readme = "README.md"
 requires-python = ">=3.7"
 dependencies = [
-  "pydantic",
+  "pydantic == 2.8.2",
   "httpx",
   "websockets"
 ]
