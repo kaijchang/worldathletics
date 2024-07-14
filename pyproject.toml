@@ -7,7 +7,7 @@ packages = ["worldathletics"]
 
 [project]
 name = "worldathletics"
-version = "1.2.1"
+version = "1.2.2"
 authors = [
   { name="Kai Chang", email="kaijchang@gmail.com" },
 ]
