@@ -1,21 +1,13 @@
 """This directive allows results to be deferred during execution"""
 directive @defer on FIELD
 
-"""
-Tells the service which subscriptions will be published to when this mutation is
-called. This directive is deprecated use @aws_susbscribe directive instead.
-"""
-directive @aws_publish(
+"""Tells the service which mutation triggers this subscription."""
+directive @aws_subscribe(
   """
-  List of subscriptions which will be published to when this mutation is called.
+  List of mutations which will trigger this subscription when they are called.
   """
-  subscriptions: [String]
+  mutations: [String]
 ) on FIELD_DEFINITION
-
-"""
-Tells the service this field/object has access authorized by an API key.
-"""
-directive @aws_api_key on OBJECT | FIELD_DEFINITION
 
 """
 Tells the service this field/object has access authorized by an OIDC token.
@@ -28,6 +20,11 @@ Tells the service this field/object has access authorized by sigv4 signing.
 directive @aws_iam on OBJECT | FIELD_DEFINITION
 
 """
+Tells the service this field/object has access authorized by an API key.
+"""
+directive @aws_api_key on OBJECT | FIELD_DEFINITION
+
+"""
 Tells the service this field/object has access authorized by a Cognito User Pools token.
 """
 directive @aws_cognito_user_pools(
@@ -35,12 +32,15 @@ directive @aws_cognito_user_pools(
   cognito_groups: [String]
 ) on OBJECT | FIELD_DEFINITION
 
-"""Tells the service which mutation triggers this subscription."""
-directive @aws_subscribe(
+"""
+Tells the service which subscriptions will be published to when this mutation is
+called. This directive is deprecated use @aws_susbscribe directive instead.
+"""
+directive @aws_publish(
   """
-  List of mutations which will trigger this subscription when they are called.
+  List of subscriptions which will be published to when this mutation is called.
   """
-  mutations: [String]
+  subscriptions: [String]
 ) on FIELD_DEFINITION
 
 """Directs the schema to enforce authorization on a field"""
@@ -2286,6 +2286,40 @@ type eventPhaseWithResults {
   documents: [eventPhaseDocuments]
 }
 
+type eventPhaseWithResultsCombined {
+  id: Int
+  updatedOn: AWSDateTime
+  hash: String
+  phaseCode: String
+  phaseName: String
+  eventID: Int
+  phaseDateAndTime: AWSDateTime
+  sexCode: String
+  sexName: String
+  discipline: disciplineObject
+  isStartlistPublished: Boolean
+  isResultPublished: Boolean
+  isPhaseSummaryPublished: Boolean
+  isTeamStandingPublished: Boolean
+  combinedDisciplineOrder: Int
+  phaseOrder: Int
+  phaseSessionName: String
+  phaseSessionOrder: Int
+  status: Int
+  hasTime: Boolean
+  eventId_WA: Int
+  primaryPhaseOrder: Int
+  isPointsPublished: Boolean
+  phaseNameUrlSlug: String
+  sexNameUrlSlug: String
+  unitName: String
+  unitTypeName: String
+  isTrack: Boolean
+  units: [eventPhaseUnit]
+  summary: [eventSummaryResult]
+  documents: [eventPhaseDocuments]
+}
+
 type eventSummaryResult {
   competitorName: String
   competitorFirstName: String
@@ -4022,6 +4056,7 @@ type Query {
   getEventTeamStandings(eventId: Int, orderBy: TeamStandingOrderBy, orderDirection: OrderDirectionEnum): [EventTeamStandings]
   getEventTeamStandingDetails(teamId: Int, orderDirection: OrderDirectionEnum): [EventTeamStandingDetails]
   getEventTimetable(eventId: Int, disciplineCode: String, orderBy: eventPhaseOrderByEnum, orderDirection: OrderDirectionEnum): [eventPhase]
+  getEventTimetableWithContent(eventId: Int, disciplineCode: String, orderBy: eventPhaseOrderByEnum, orderDirection: OrderDirectionEnum): [eventPhaseWithResultsCombined]
   getEvents(subCategoryNameUrlSlug: String, circuitTypeCode: String, orderBy: OrderByEnum, orderDirection: OrderDirectionEnum, limit: Int, offset: Int): [WAWEvent]
   getWawEvent(nameUrlSlug: String, id: Int, circuitTypeCode: String, subCategoryNameUrlSlug: String, getNextWAC: Boolean): WAWEvent
   getWawEventCountryList(nameUrlSlug: String, id: Int): [WawEventCountryList]
@@ -4062,7 +4097,9 @@ type Query {
   getSocialCarousel: [SocialCarouselItem]
   getSpikes(orderBy: OrderByEnum, orderDirection: OrderDirectionEnum, limit: Int, offset: Int, RelatedCompetitorIds: [Int]): [SpikeArticle]
   getTopRankings(limit: Int, all: Boolean): TopRankings
+  getTopPanel: [TopPanel]
   getUpcomingCompetitions(today: String): [UpcomingCompetitions]
+  getUserCountry: UserCountryData
   getVideoList(limit: Int, offset: Int, language: String, playlistId: String, type: String, slug: String, isRelatedVideos: Boolean): [VideoPublished]
   getVideoById(contentId: String!, language: String): VideoPublished
   getVideosTotalNumber(language: String, playlistId: String, type: String, slug: String): VideoTotalNumber
@@ -4226,6 +4263,10 @@ type RecordUnit {
   performance: String
   pending: Boolean
   setIndoor: Boolean
+  equal: Boolean
+  womenOnly: Boolean
+  mixed: Boolean
+  yard: Boolean
   wind: String
   competitor: CompetitorData
   venue: String
@@ -4893,6 +4934,15 @@ type TopListResultResponse {
   payload: [TopListResult]
 }
 
+type TopPanel {
+  title: String
+  subtitle: String
+  description: String
+  buttonLabel: String
+  buttonLink: String
+  logo: String
+}
+
 type TopRankingItem {
   rankingCalculationId: Int
   competitorId: Int
@@ -4989,6 +5039,11 @@ type User {
   dateModified: String
   name: String
   settings: UserSettings
+}
+
+type UserCountryData {
+  ip: String
+  country: String
 }
 
 type UserFollowedCompetitorsSuccess {

@@ -15,9 +15,9 @@ class GetCISSingleCompetitor(BaseModel):
 
 
 class GetCISSingleCompetitorGetCisSingleCompetitor(BaseModel):
-    basic_data: Optional[
-        "GetCISSingleCompetitorGetCisSingleCompetitorBasicData"
-    ] = Field(alias="basicData")
+    basic_data: Optional["GetCISSingleCompetitorGetCisSingleCompetitorBasicData"] = (
+        Field(alias="basicData")
+    )
     personal_bests: Optional[
         "GetCISSingleCompetitorGetCisSingleCompetitorPersonalBests"
     ] = Field(alias="personalBests")

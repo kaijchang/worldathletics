@@ -37,7 +37,7 @@ queries_path = "graphql/queries.graphql"
 schema_path = "graphql/schema.graphql"
 base_client_file_path = "worldathletics/custom/async_base_client.py"
 base_client_name="AsyncBaseClient"
-#emote_schema_url="https://gt2rau4y6beytpdxktx26qss2a.appsync-api.eu-west-1.amazonaws.com/graphql"
+#remote_schema_url="https://gt2rau4y6beytpdxktx26qss2a.appsync-api.eu-west-1.amazonaws.com/graphql"
 remote_schema_headers={"x-api-key"="da2-344bv27kgnd6lpilqwwbxqz7bq", "x-amz-user-agent"="aws-amplify/3.0.2"}
 target_package_name="worldathletics"
 client_name="WorldAthletics"

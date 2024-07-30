@@ -63044,6 +63044,7 @@ query GetSingleCompetitor($id: Int, $urlSlug: String, $ids: [Int]) {
         eventId
         competitionId
         records
+        eventName
       }
     }
     seasonsBests {
@@ -63071,6 +63072,7 @@ query GetSingleCompetitor($id: Int, $urlSlug: String, $ids: [Int]) {
         eventId
         competitionId
         records
+        eventName
       }
     }
     progressionOfSeasonsBests {
@@ -63092,6 +63094,7 @@ query GetSingleCompetitor($id: Int, $urlSlug: String, $ids: [Int]) {
         listPosition
         resultScore
         competitionId
+        eventName
       }
     }
     worldRankings {
@@ -63131,6 +63134,7 @@ query GetSingleCompetitor($id: Int, $urlSlug: String, $ids: [Int]) {
         date
         competitionId
         eventId
+        eventName
       }
     }
     resultsByYear {
@@ -63161,6 +63165,7 @@ query GetSingleCompetitor($id: Int, $urlSlug: String, $ids: [Int]) {
           remark
           competitionId
           eventId
+          eventName
         }
       }
     }
@@ -63270,6 +63275,7 @@ query GetSingleCompetitorResultsDiscipline($id: Int, $resultsByYear: Int, $resul
         remark
         competitionId
         eventId
+        eventName
       }
     }
     resultsByDate {
@@ -63288,6 +63294,7 @@ query GetSingleCompetitorResultsDiscipline($id: Int, $resultsByYear: Int, $resul
       remark
       competitionId
       eventId
+      eventName
     }
   }
 }
@@ -63535,6 +63542,7 @@ query GetSingleCompetitorSeasonBests($id: Int, $seasonsBestsSeason: Int) {
       eventId
       competitionId
       records
+      eventName
     }
   }
 }
@@ -64806,6 +64814,267 @@ query GetEventTimetable($eventId: Int, $disciplineCode: String, $orderBy: eventP
     sexNameUrlSlug
     unitName
     unitTypeName
+  }
+}
+
+query GetEventTimetableWithContent($eventId: Int, $disciplineCode: String, $orderBy: eventPhaseOrderByEnum, $orderDirection: OrderDirectionEnum) {
+  getEventTimetableWithContent(
+    eventId: $eventId
+    disciplineCode: $disciplineCode
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+  ) {
+    id
+    updatedOn
+    hash
+    phaseCode
+    phaseName
+    eventID
+    phaseDateAndTime
+    sexCode
+    sexName
+    discipline {
+      updatedOn
+      hash
+      _id
+      name
+      typeCode
+      typeName
+      typeOrder
+      order
+      isTrack
+      isField
+      isRoad
+      isCombined
+      isWalk
+      isIndoor
+      isReaction
+      isOutdoor
+      isWind
+      isRelay
+      isValidIAAF
+      nameUrlSlug
+      typeNameUrlSlug
+    }
+    isStartlistPublished
+    isResultPublished
+    isPhaseSummaryPublished
+    isTeamStandingPublished
+    combinedDisciplineOrder
+    phaseOrder
+    phaseSessionName
+    phaseSessionOrder
+    status
+    hasTime
+    eventId_WA
+    primaryPhaseOrder
+    isPointsPublished
+    phaseNameUrlSlug
+    sexNameUrlSlug
+    unitName
+    unitTypeName
+    isTrack
+    units {
+      unitId
+      unitDateTime
+      hasStandingPoints
+      unitRuleDetail
+      unitTypeCode
+      unitTypeName
+      unitCode
+      unitOrder
+      results {
+        competitorName
+        competitorFirstName
+        competitorLastName
+        competitorId_WA
+        teamId_WA
+        competitorTypeCode
+        resultCountryName
+        resultCountryCode
+        competitorCountryName
+        competitorCountryCode
+        standingPoints
+        combinedPoints
+        competitorId
+        resultMark
+        resultWind
+        resultRank
+        resultOrder
+        reactionTime
+        record
+        bib
+        qualified
+        teamMembers {
+          competitorId
+          competitorId_WA
+          competitorName
+          competitorFirstName
+          competitorLastName
+          competitorCountryCode
+          resultMark
+          resultRank
+          resultCountryName
+          resultCountryCode
+          countryName
+          competitorOrder
+          standingDetailScoring
+        }
+      }
+      startlist {
+        competitorName
+        competitorFirstName
+        competitorLastName
+        competitorId_WA
+        teamId_WA
+        competitorTypeCode
+        competitorCountryName
+        competitorCountryCode
+        resultCountryName
+        resultCountryCode
+        competitorId
+        personalBestMark
+        seasonBestMark
+        worldRanking
+        bib
+        startlistOrder
+        record
+        start
+        teamMembers {
+          competitorId
+          competitorId_WA
+          competitorName
+          competitorFirstName
+          competitorLastName
+          competitorCountryCode
+          resultMark
+          resultRank
+          resultCountryName
+          resultCountryCode
+          countryName
+          competitorOrder
+          standingDetailScoring
+        }
+      }
+      series {
+        competitorName
+        competitorFirstName
+        competitorLastName
+        competitorId_WA
+        teamId_WA
+        competitorTypeCode
+        resultCountryName
+        resultCountryCode
+        competitorCountryName
+        competitorCountryCode
+        competitorId
+        bib
+        startlistOrder
+        qualified
+        resultWind
+        resultMark
+        resultOrder
+        record
+        attempts {
+          intermediateMark
+          intermediateWind
+          competitionIntermediateName
+          intermediateGap
+        }
+      }
+      splits {
+        competitionIntermediateResultOrder
+        competitionIntermediateName
+        intermediateMark
+        intermediateGap
+        competitorName
+        competitorFirstName
+        competitorLastName
+        competitorCountryCode
+        competitorCountryName
+        resultCountryName
+        resultCountryCode
+        competitorId_WA
+      }
+      teamStandings {
+        _id
+        phaseId
+        unitId
+        rank
+        teamId
+        teamName
+        teamCountryCode
+        standingMark
+        competitorId
+        teamStandingOrder
+        teamEventPoints
+        teamId_WA
+        competitorId_WA
+        teamMembers {
+          competitorId
+          competitorId_WA
+          competitorName
+          competitorFirstName
+          competitorLastName
+          competitorCountryCode
+          resultMark
+          resultRank
+          resultCountryName
+          resultCountryCode
+          countryName
+          competitorOrder
+          standingDetailScoring
+        }
+      }
+    }
+    summary {
+      competitorName
+      competitorFirstName
+      competitorLastName
+      competitorId_WA
+      teamId_WA
+      competitorTypeCode
+      competitorCountryName
+      competitorCountryCode
+      resultCountryName
+      resultCountryCode
+      phaseSummaryOrder
+      combinedPoints
+      competitorId
+      resultMark
+      resultWind
+      resultRank
+      resultOrder
+      unitCode
+      unitName
+      reactionTime
+      record
+      bib
+      qualified
+      summaryRank
+      teamMembers {
+        competitorId
+        competitorId_WA
+        competitorName
+        competitorFirstName
+        competitorLastName
+        competitorCountryCode
+        resultMark
+        resultRank
+        resultCountryName
+        resultCountryCode
+        countryName
+        competitorOrder
+        standingDetailScoring
+      }
+    }
+    documents {
+      type
+      typeName
+      fileName
+      filePath
+      unitId
+    }
   }
 }
 
@@ -81346,6 +81615,10 @@ query GetRecordsDetailByCategory($categoryId: Int!) {
       performance
       pending
       setIndoor
+      equal
+      womenOnly
+      mixed
+      yard
       wind
       competitor {
         id
@@ -81672,6 +81945,17 @@ query GetTopRankings($limit: Int, $all: Boolean) {
   }
 }
 
+query GetTopPanel {
+  getTopPanel {
+    title
+    subtitle
+    description
+    buttonLabel
+    buttonLink
+    logo
+  }
+}
+
 query GetUpcomingCompetitions($today: String) {
   getUpcomingCompetitions(today: $today) {
     competitions {
@@ -81685,6 +81969,13 @@ query GetUpcomingCompetitions($today: String) {
       urlSlug
     }
     label
+  }
+}
+
+query GetUserCountry {
+  getUserCountry {
+    ip
+    country
   }
 }
 

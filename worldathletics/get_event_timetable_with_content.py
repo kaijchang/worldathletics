@@ -8,13 +8,13 @@ from pydantic import Field
 from .base_model import BaseModel
 
 
-class GetEventPhaseByDiscipline(BaseModel):
-    get_event_phase_by_discipline: Optional[
-        "GetEventPhaseByDisciplineGetEventPhaseByDiscipline"
-    ] = Field(alias="getEventPhaseByDiscipline")
+class GetEventTimetableWithContent(BaseModel):
+    get_event_timetable_with_content: Optional[
+        List[Optional["GetEventTimetableWithContentGetEventTimetableWithContent"]]
+    ] = Field(alias="getEventTimetableWithContent")
 
 
-class GetEventPhaseByDisciplineGetEventPhaseByDiscipline(BaseModel):
+class GetEventTimetableWithContentGetEventTimetableWithContent(BaseModel):
     id: Optional[int]
     updated_on: Optional[Any] = Field(alias="updatedOn")
     hash: Optional[str]
@@ -24,7 +24,9 @@ class GetEventPhaseByDisciplineGetEventPhaseByDiscipline(BaseModel):
     phase_date_and_time: Optional[Any] = Field(alias="phaseDateAndTime")
     sex_code: Optional[str] = Field(alias="sexCode")
     sex_name: Optional[str] = Field(alias="sexName")
-    discipline: Optional["GetEventPhaseByDisciplineGetEventPhaseByDisciplineDiscipline"]
+    discipline: Optional[
+        "GetEventTimetableWithContentGetEventTimetableWithContentDiscipline"
+    ]
     is_startlist_published: Optional[bool] = Field(alias="isStartlistPublished")
     is_result_published: Optional[bool] = Field(alias="isResultPublished")
     is_phase_summary_published: Optional[bool] = Field(alias="isPhaseSummaryPublished")
@@ -40,19 +42,27 @@ class GetEventPhaseByDisciplineGetEventPhaseByDiscipline(BaseModel):
     is_points_published: Optional[bool] = Field(alias="isPointsPublished")
     phase_name_url_slug: Optional[str] = Field(alias="phaseNameUrlSlug")
     sex_name_url_slug: Optional[str] = Field(alias="sexNameUrlSlug")
+    unit_name: Optional[str] = Field(alias="unitName")
+    unit_type_name: Optional[str] = Field(alias="unitTypeName")
     is_track: Optional[bool] = Field(alias="isTrack")
     units: Optional[
-        List[Optional["GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnits"]]
+        List[Optional["GetEventTimetableWithContentGetEventTimetableWithContentUnits"]]
     ]
     summary: Optional[
-        List[Optional["GetEventPhaseByDisciplineGetEventPhaseByDisciplineSummary"]]
+        List[
+            Optional["GetEventTimetableWithContentGetEventTimetableWithContentSummary"]
+        ]
     ]
     documents: Optional[
-        List[Optional["GetEventPhaseByDisciplineGetEventPhaseByDisciplineDocuments"]]
+        List[
+            Optional[
+                "GetEventTimetableWithContentGetEventTimetableWithContentDocuments"
+            ]
+        ]
     ]
 
 
-class GetEventPhaseByDisciplineGetEventPhaseByDisciplineDiscipline(BaseModel):
+class GetEventTimetableWithContentGetEventTimetableWithContentDiscipline(BaseModel):
     updated_on: Optional[Any] = Field(alias="updatedOn")
     hash: Optional[str]
     id: Optional[str] = Field(alias="_id")
@@ -76,7 +86,7 @@ class GetEventPhaseByDisciplineGetEventPhaseByDisciplineDiscipline(BaseModel):
     type_name_url_slug: Optional[str] = Field(alias="typeNameUrlSlug")
 
 
-class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnits(BaseModel):
+class GetEventTimetableWithContentGetEventTimetableWithContentUnits(BaseModel):
     unit_id: Optional[int] = Field(alias="unitId")
     unit_date_time: Optional[Any] = Field(alias="unitDateTime")
     has_standing_points: Optional[bool] = Field(alias="hasStandingPoints")
@@ -86,22 +96,32 @@ class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnits(BaseModel):
     unit_code: Optional[str] = Field(alias="unitCode")
     unit_order: Optional[int] = Field(alias="unitOrder")
     results: Optional[
-        List[Optional["GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsResults"]]
+        List[
+            Optional[
+                "GetEventTimetableWithContentGetEventTimetableWithContentUnitsResults"
+            ]
+        ]
     ]
     startlist: Optional[
         List[
-            Optional["GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsStartlist"]
+            Optional[
+                "GetEventTimetableWithContentGetEventTimetableWithContentUnitsStartlist"
+            ]
         ]
     ]
     series: Optional[
-        List[Optional["GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsSeries"]]
+        List[
+            Optional[
+                "GetEventTimetableWithContentGetEventTimetableWithContentUnitsSeries"
+            ]
+        ]
     ]
     splits: Optional[
         List[
             Optional[
                 List[
                     Optional[
-                        "GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsSplits"
+                        "GetEventTimetableWithContentGetEventTimetableWithContentUnitsSplits"
                     ]
                 ]
             ]
@@ -110,13 +130,13 @@ class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnits(BaseModel):
     team_standings: Optional[
         List[
             Optional[
-                "GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsTeamStandings"
+                "GetEventTimetableWithContentGetEventTimetableWithContentUnitsTeamStandings"
             ]
         ]
     ] = Field(alias="teamStandings")
 
 
-class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsResults(BaseModel):
+class GetEventTimetableWithContentGetEventTimetableWithContentUnitsResults(BaseModel):
     competitor_name: Optional[str] = Field(alias="competitorName")
     competitor_first_name: Optional[str] = Field(alias="competitorFirstName")
     competitor_last_name: Optional[str] = Field(alias="competitorLastName")
@@ -141,13 +161,13 @@ class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsResults(BaseModel):
     team_members: Optional[
         List[
             Optional[
-                "GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsResultsTeamMembers"
+                "GetEventTimetableWithContentGetEventTimetableWithContentUnitsResultsTeamMembers"
             ]
         ]
     ] = Field(alias="teamMembers")
 
 
-class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsResultsTeamMembers(
+class GetEventTimetableWithContentGetEventTimetableWithContentUnitsResultsTeamMembers(
     BaseModel
 ):
     competitor_id: Optional[int] = Field(alias="competitorId")
@@ -165,7 +185,7 @@ class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsResultsTeamMembers(
     standing_detail_scoring: Optional[bool] = Field(alias="standingDetailScoring")
 
 
-class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsStartlist(BaseModel):
+class GetEventTimetableWithContentGetEventTimetableWithContentUnitsStartlist(BaseModel):
     competitor_name: Optional[str] = Field(alias="competitorName")
     competitor_first_name: Optional[str] = Field(alias="competitorFirstName")
     competitor_last_name: Optional[str] = Field(alias="competitorLastName")
@@ -187,13 +207,13 @@ class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsStartlist(BaseModel
     team_members: Optional[
         List[
             Optional[
-                "GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsStartlistTeamMembers"
+                "GetEventTimetableWithContentGetEventTimetableWithContentUnitsStartlistTeamMembers"
             ]
         ]
     ] = Field(alias="teamMembers")
 
 
-class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsStartlistTeamMembers(
+class GetEventTimetableWithContentGetEventTimetableWithContentUnitsStartlistTeamMembers(
     BaseModel
 ):
     competitor_id: Optional[int] = Field(alias="competitorId")
@@ -211,7 +231,7 @@ class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsStartlistTeamMember
     standing_detail_scoring: Optional[bool] = Field(alias="standingDetailScoring")
 
 
-class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsSeries(BaseModel):
+class GetEventTimetableWithContentGetEventTimetableWithContentUnitsSeries(BaseModel):
     competitor_name: Optional[str] = Field(alias="competitorName")
     competitor_first_name: Optional[str] = Field(alias="competitorFirstName")
     competitor_last_name: Optional[str] = Field(alias="competitorLastName")
@@ -233,13 +253,15 @@ class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsSeries(BaseModel):
     attempts: Optional[
         List[
             Optional[
-                "GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsSeriesAttempts"
+                "GetEventTimetableWithContentGetEventTimetableWithContentUnitsSeriesAttempts"
             ]
         ]
     ]
 
 
-class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsSeriesAttempts(BaseModel):
+class GetEventTimetableWithContentGetEventTimetableWithContentUnitsSeriesAttempts(
+    BaseModel
+):
     intermediate_mark: Optional[str] = Field(alias="intermediateMark")
     intermediate_wind: Optional[str] = Field(alias="intermediateWind")
     competition_intermediate_name: Optional[str] = Field(
@@ -248,7 +270,7 @@ class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsSeriesAttempts(Base
     intermediate_gap: Optional[str] = Field(alias="intermediateGap")
 
 
-class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsSplits(BaseModel):
+class GetEventTimetableWithContentGetEventTimetableWithContentUnitsSplits(BaseModel):
     competition_intermediate_result_order: Optional[int] = Field(
         alias="competitionIntermediateResultOrder"
     )
@@ -267,7 +289,9 @@ class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsSplits(BaseModel):
     competitor_id_wa: Optional[int] = Field(alias="competitorId_WA")
 
 
-class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsTeamStandings(BaseModel):
+class GetEventTimetableWithContentGetEventTimetableWithContentUnitsTeamStandings(
+    BaseModel
+):
     id: Optional[int] = Field(alias="_id")
     phase_id: Optional[int] = Field(alias="phaseId")
     unit_id: Optional[int] = Field(alias="unitId")
@@ -284,13 +308,13 @@ class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsTeamStandings(BaseM
     team_members: Optional[
         List[
             Optional[
-                "GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsTeamStandingsTeamMembers"
+                "GetEventTimetableWithContentGetEventTimetableWithContentUnitsTeamStandingsTeamMembers"
             ]
         ]
     ] = Field(alias="teamMembers")
 
 
-class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsTeamStandingsTeamMembers(
+class GetEventTimetableWithContentGetEventTimetableWithContentUnitsTeamStandingsTeamMembers(
     BaseModel
 ):
     competitor_id: Optional[int] = Field(alias="competitorId")
@@ -308,7 +332,7 @@ class GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsTeamStandingsTeamMe
     standing_detail_scoring: Optional[bool] = Field(alias="standingDetailScoring")
 
 
-class GetEventPhaseByDisciplineGetEventPhaseByDisciplineSummary(BaseModel):
+class GetEventTimetableWithContentGetEventTimetableWithContentSummary(BaseModel):
     competitor_name: Optional[str] = Field(alias="competitorName")
     competitor_first_name: Optional[str] = Field(alias="competitorFirstName")
     competitor_last_name: Optional[str] = Field(alias="competitorLastName")
@@ -336,13 +360,15 @@ class GetEventPhaseByDisciplineGetEventPhaseByDisciplineSummary(BaseModel):
     team_members: Optional[
         List[
             Optional[
-                "GetEventPhaseByDisciplineGetEventPhaseByDisciplineSummaryTeamMembers"
+                "GetEventTimetableWithContentGetEventTimetableWithContentSummaryTeamMembers"
             ]
         ]
     ] = Field(alias="teamMembers")
 
 
-class GetEventPhaseByDisciplineGetEventPhaseByDisciplineSummaryTeamMembers(BaseModel):
+class GetEventTimetableWithContentGetEventTimetableWithContentSummaryTeamMembers(
+    BaseModel
+):
     competitor_id: Optional[int] = Field(alias="competitorId")
     competitor_id_wa: Optional[int] = Field(alias="competitorId_WA")
     competitor_name: Optional[str] = Field(alias="competitorName")
@@ -358,7 +384,7 @@ class GetEventPhaseByDisciplineGetEventPhaseByDisciplineSummaryTeamMembers(BaseM
     standing_detail_scoring: Optional[bool] = Field(alias="standingDetailScoring")
 
 
-class GetEventPhaseByDisciplineGetEventPhaseByDisciplineDocuments(BaseModel):
+class GetEventTimetableWithContentGetEventTimetableWithContentDocuments(BaseModel):
     type: Optional[int]
     type_name: Optional[str] = Field(alias="typeName")
     file_name: Optional[str] = Field(alias="fileName")
@@ -366,11 +392,11 @@ class GetEventPhaseByDisciplineGetEventPhaseByDisciplineDocuments(BaseModel):
     unit_id: Optional[int] = Field(alias="unitId")
 
 
-GetEventPhaseByDiscipline.model_rebuild()
-GetEventPhaseByDisciplineGetEventPhaseByDiscipline.model_rebuild()
-GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnits.model_rebuild()
-GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsResults.model_rebuild()
-GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsStartlist.model_rebuild()
-GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsSeries.model_rebuild()
-GetEventPhaseByDisciplineGetEventPhaseByDisciplineUnitsTeamStandings.model_rebuild()
-GetEventPhaseByDisciplineGetEventPhaseByDisciplineSummary.model_rebuild()
+GetEventTimetableWithContent.model_rebuild()
+GetEventTimetableWithContentGetEventTimetableWithContent.model_rebuild()
+GetEventTimetableWithContentGetEventTimetableWithContentUnits.model_rebuild()
+GetEventTimetableWithContentGetEventTimetableWithContentUnitsResults.model_rebuild()
+GetEventTimetableWithContentGetEventTimetableWithContentUnitsStartlist.model_rebuild()
+GetEventTimetableWithContentGetEventTimetableWithContentUnitsSeries.model_rebuild()
+GetEventTimetableWithContentGetEventTimetableWithContentUnitsTeamStandings.model_rebuild()
+GetEventTimetableWithContentGetEventTimetableWithContentSummary.model_rebuild()
